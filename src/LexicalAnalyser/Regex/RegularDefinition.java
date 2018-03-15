@@ -20,4 +20,8 @@ public class RegularDefinition extends Regex implements RegexElement {
     NFA getBasis(){
         return new NFA();
     }
+
+    public String getRawValue(){
+        return rawRegex;
+    }
 }

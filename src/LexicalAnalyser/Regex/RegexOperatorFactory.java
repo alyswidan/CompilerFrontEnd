@@ -9,9 +9,10 @@ import java.util.Map;
 public class RegexOperatorFactory {
 
 
-    private Map<Character, RegexOperator> operators = new HashMap<>();
+    private static Map<Character, RegexOperator> operators;
 
-    public RegexOperatorFactory() {
+    static {
+        operators = new HashMap<>();
         operators.put('+', new PlusClosureOperator());
         operators.put('*', new KleenClosureOperator());
         operators.put('.', new ConcatenationOperator());
@@ -19,10 +20,12 @@ public class RegexOperatorFactory {
         operators.put('-', new RangeOperator());
     }
 
-    RegexOperator getOperator(char operator){
+    static RegexOperator getOperator(char operator){
         return operators.get(operator);
     }
 
-
+    static boolean isOperator(char candidate){
+        return operators.containsKey(candidate);
+    }
 
 }

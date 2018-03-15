@@ -11,4 +11,8 @@ public class KleenClosureOperator implements UnaryRegexOperator {
     public NFA execute(NFA operand) {
         return null;
     }
+
+    public String getRawValue(){
+        return "*";
+    }
 }

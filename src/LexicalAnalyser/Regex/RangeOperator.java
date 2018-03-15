@@ -16,4 +16,8 @@ public class RangeOperator implements BinaryRegexOperator{
         return null;
     }
 
+    public String getRawValue(){
+        return "-";
+    }
+
 }

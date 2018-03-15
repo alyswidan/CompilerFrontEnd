@@ -13,4 +13,8 @@ public class UnionOperator implements MaryRegexOperator {
     public NFA execute(List<NFA> operands) {
         return null;
     }
+
+    public String getRawValue(){
+        return "|";
+    }
 }

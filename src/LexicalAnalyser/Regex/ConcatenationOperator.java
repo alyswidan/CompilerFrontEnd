@@ -12,4 +12,8 @@ public class ConcatenationOperator implements BinaryRegexOperator{
     public NFA execute(NFA leftOperand, NFA rightOperand) {
         return null;
     }
+
+    public String getRawValue(){
+        return ".";
+    }
 }

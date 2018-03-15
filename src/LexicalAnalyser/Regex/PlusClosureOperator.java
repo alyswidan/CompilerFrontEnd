@@ -12,4 +12,8 @@ public class PlusClosureOperator implements UnaryRegexOperator {
         return null;
     }
 
+    public String getRawValue(){
+        return "+";
+    }
+
 }

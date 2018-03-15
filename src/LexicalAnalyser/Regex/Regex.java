@@ -1,5 +1,6 @@
 package LexicalAnalyser.Regex;
 
+import java.util.Deque;
 import java.util.Iterator;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Iterator;
  */
 public class Regex implements Iterable<RegexElement>{
 
-    private String rawRegex;
+    protected String rawRegex;
     private boolean isPostfix = false;
 
     Regex(String rawRegex){
@@ -15,12 +16,17 @@ public class Regex implements Iterable<RegexElement>{
     }
 
     Regex toPostfix(){
+
+        /*
+        * perform infix to postfix conversion of the raw regex string to a
+        * postfix regex string and replacing the value of raw regex with
+        * this postfix expression
+        */
+
         if(isPostfix()){
             return this;
         }
-        //perform infix to postfix conversion of the raw regex string to a
-        //postfix regex string and replacing the value of raw regex with
-        //this postfix expression
+
 
         return null;
     }
@@ -33,6 +39,11 @@ public class Regex implements Iterable<RegexElement>{
     public Iterator<RegexElement> iterator() {
         return new RegexIterator(this);
     }
+
+    public int length(){
+        return rawRegex.length();
+    }
+
 
 
 }

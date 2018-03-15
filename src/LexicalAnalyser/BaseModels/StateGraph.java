@@ -10,5 +10,4 @@ public class StateGraph {
     private State startState;
     private List<State> acceptingStates;
 
-
 }
