@@ -18,6 +18,14 @@ public class StateGraph {
         startStates = new HashSet<>();
     }
 
+    public Set<State> getStartStates() {
+        return startStates;
+    }
+
+    public Set<State> getAcceptingStates() {
+        return acceptingStates;
+    }
+
     void addState(State state){
         states.add(state);
         if(state.isAccepting()){
