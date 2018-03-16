@@ -10,15 +10,13 @@ import java.util.List;
  */
 public class NFA extends StateGraph {
 
-    static final int EPSILON = 0;
+
 
     public NFA fromRegex(Regex regex){
         //uses Thompson's algorithm to convert the regex string to an nfa
         return new NFA();
     }
 
-    List<State> getEpsilonClosure(State state) {
-        return null;
-    }
+
 
 }
