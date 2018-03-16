@@ -16,7 +16,7 @@ public class Regex implements Iterable<RegexElement>{
 
 
 
-    Regex toPostfix(){
+    void toPostfix(){
 
         /*
         * perform infix to postfix conversion of the raw regex string to a
@@ -25,11 +25,9 @@ public class Regex implements Iterable<RegexElement>{
         */
 
         if(isPostfix()){
-            return this;
+            return;
         }
 
-
-        return null;
     }
 
     public boolean isPostfix() {

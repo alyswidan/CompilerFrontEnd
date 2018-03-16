@@ -18,7 +18,7 @@ public class NFAState extends State {
     public NFAState(){
         super();
     }
-    public List<State> getEpsilonClosure(State state) {
+    public Collection<State> getEpsilonClosure(State state) {
         return null;
     }
 

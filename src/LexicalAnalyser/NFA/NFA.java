@@ -10,8 +10,6 @@ import java.util.List;
  */
 public class NFA extends StateGraph {
 
-
-
     public NFA fromRegex(Regex regex){
         //uses Thompson's algorithm to convert the regex string to an nfa
         return new NFA();

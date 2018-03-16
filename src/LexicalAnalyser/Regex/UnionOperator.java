@@ -22,4 +22,6 @@ public class UnionOperator implements MaryRegexOperator,BinaryRegexOperator {
     public NFA execute(NFA leftOperand, NFA rightOperand) {
         return null;
     }
+
+
 }
