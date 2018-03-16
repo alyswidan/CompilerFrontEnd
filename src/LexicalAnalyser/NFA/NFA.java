@@ -1,7 +1,9 @@
 package LexicalAnalyser.NFA;
+import LexicalAnalyser.Regex.ConcatenationOperator;
 import LexicalAnalyser.Regex.Regex;
 import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.BaseModels.StateGraph;
+import LexicalAnalyser.Regex.UnionOperator;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,8 +19,8 @@ public class NFA extends StateGraph {
     }
 
     public static NFA fromMultiple(Collection<NFA> NFAs){
-
-
+        UnionOperator union = new UnionOperator();
+        return union.execute((List<NFA>) NFAs);
     }
 
 
