@@ -21,7 +21,7 @@ public class State {
 
     public State transition(RegularDefinition input){
         //transitions to a new state based on the input regular definition
-        return new State();
+        return transitions.get(input);
     }
 
     public void addTransition(RegularDefinition regdef, State nextState){
