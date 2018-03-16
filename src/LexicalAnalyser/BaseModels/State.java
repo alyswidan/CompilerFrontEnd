@@ -14,9 +14,14 @@ public class State {
     private Map<RegularDefinition, State> transitions;
 
     public State(boolean isAccepting, boolean isStart) {
-        transitions = new HashMap<>();
         this.isAccepting = isAccepting;
         this.isStart = isStart;
+    }
+
+    public State(){
+        this.isStart = false;
+        this.isAccepting = false;
+        transitions = new HashMap<>();
     }
 
     public State transition(RegularDefinition input){

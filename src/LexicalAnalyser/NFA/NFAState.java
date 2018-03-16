@@ -11,6 +11,13 @@ import java.util.List;
  */
 public class NFAState extends State {
 
+    public NFAState(boolean isAccepting, boolean isStart) {
+        super(isAccepting, isStart);
+    }
+
+    public NFAState(){
+        super();
+    }
     public List<State> getEpsilonClosure(State state) {
         return null;
     }
