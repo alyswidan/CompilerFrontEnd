@@ -19,12 +19,12 @@ public class State {
         isStart = false;
     }
 
-    State transition(RegularDefinition input){
+    public State transition(RegularDefinition input){
         //transitions to a new state based on the input regular definition
         return new State();
     }
 
-    void addTransition(RegularDefinition regdef, State nextState){
+    public void addTransition(RegularDefinition regdef, State nextState){
         transitions.put(regdef,nextState);
     }
 
