@@ -13,10 +13,10 @@ public class State {
     private boolean isStart;
     private Map<RegularDefinition, State> transitions;
 
-    public State() {
+    public State(boolean isAccepting, boolean isStart) {
         transitions = new HashMap<>();
-        isAccepting = false;
-        isStart = false;
+        this.isAccepting = isAccepting;
+        this.isStart = isStart;
     }
 
     public State transition(RegularDefinition input){
@@ -32,6 +32,11 @@ public class State {
         return transitions;
     }
 
+    public boolean isAccepting() {
+        return isAccepting;
+    }
 
-
+    public boolean isStart() {
+        return isStart;
+    }
 }

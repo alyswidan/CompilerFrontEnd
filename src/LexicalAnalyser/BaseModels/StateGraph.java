@@ -9,16 +9,23 @@ import java.util.Set;
  */
 public class StateGraph {
     private Set<State> states;
-    private State startState;
+    private Set<State> startStates;
     private Set<State> acceptingStates;
 
     public StateGraph() {
         states = new HashSet<>();
         acceptingStates = new HashSet<>();
+        startStates = new HashSet<>();
     }
 
     void addState(State state){
         states.add(state);
+        if(state.isAccepting()){
+            acceptingStates.add(state);
+        }
+        if(state.isStart()){
+            startStates.add(state);
+        }
         state.getTransitions().forEach((regdef, nxtState) -> {
             if(!states.contains(nxtState)){
                 states.add(nxtState);
