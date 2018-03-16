@@ -2,6 +2,7 @@ package LexicalAnalyser.NFA;
 
 import LexicalAnalyser.BaseModels.State;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -9,9 +10,12 @@ import java.util.List;
  */
 public class NFAState extends State {
 
-    List<State> getEpsilonClosure(State state) {
+    public List<State> getEpsilonClosure(State state) {
         return null;
     }
 
+    public static NFAState epsilonSink(Collection<NFAState> inStates){
+        NFAState thisState = new NFAState();
 
+    }
 }
