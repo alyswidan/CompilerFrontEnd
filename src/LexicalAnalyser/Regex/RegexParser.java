@@ -2,7 +2,10 @@ package LexicalAnalyser.Regex;
 
 import LexicalAnalyser.NFA.NFA;
 
+import java.util.Collection;
 import java.util.Deque;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by alyswidan on 15/03/18.
@@ -17,7 +20,10 @@ public class RegexParser {
     private NFA currentNFA;
     private Deque<NFA> currentStack; // using a deque as our stack
 
-    NFA parse(Regex regex){
+    public Collection<NFA> parseAll(Collection<Regex> regexes){
+        return regexes.stream().map(this::parse).collect(Collectors.toList());
+    }
+    public NFA parse(Regex regex){
         /*
         * iterate over elements of the regex and use the execute element method to build
         * the NFA incrementally

@@ -3,6 +3,7 @@ import LexicalAnalyser.Regex.Regex;
 import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.BaseModels.StateGraph;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -10,9 +11,14 @@ import java.util.List;
  */
 public class NFA extends StateGraph {
 
-    public NFA fromRegex(Regex regex){
+    public static NFA fromRegex(Regex regex){
         //uses Thompson's algorithm to convert the regex string to an nfa
         return new NFA();
+    }
+
+    public static NFA fromMultiple(Collection<NFA> NFAs){
+
+
     }
 
 

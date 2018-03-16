@@ -7,7 +7,7 @@ import LexicalAnalyser.DFA.DFA;
  */
 public class NFAToDFAConverter {
 
-    DFA convert(NFA nfa){
+    public DFA convert(NFA nfa){
         return new DFA();
     }
 
