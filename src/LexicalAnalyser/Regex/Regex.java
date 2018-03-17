@@ -39,9 +39,8 @@ public class Regex implements Iterable<RegexElement>{
             }
             }*/
         char elements [] = this.rawRegex.toCharArray();
-        for( int i=0 ; i<StringSize-1;i++ ){
+        for( int i=0 ; i<StringSize;i++ ){
             char Element = elements[i];
-            char NextElement = elements[i+1];
             if(RegexOperatorFactory.isOperator(Element)){// the first element is an operator
                  RegexOperator operator = RegexOperatorFactory.getOperator(Element);
                 if(operator instanceof OpenBracketOperator){
@@ -82,22 +81,21 @@ public class Regex implements Iterable<RegexElement>{
                 }
             }
             else{
-                output += Element;
-                if(RegexOperatorFactory.isOperator(NextElement)){
-                    RegexOperator operator = RegexOperatorFactory.getOperator(Element);
-                    if(operator instanceof OpenBracketOperator){
+                if(i!=StringSize-1){
+                    char NextElement = elements[i+1];
+                    output += Element;
+                    if(RegexOperatorFactory.isOperator(NextElement)){
+                        RegexOperator operator = RegexOperatorFactory.getOperator(Element);
+                        if(operator instanceof OpenBracketOperator){
+                            stack.addFirst(new ConcatenationOperator());
+                        }
+                    }
+                    else{
                         stack.addFirst(new ConcatenationOperator());
                     }
                 }
-                else{
-                    stack.addFirst(new ConcatenationOperator());
-                }
-
 
             }
-
-
-
         }
 
 
