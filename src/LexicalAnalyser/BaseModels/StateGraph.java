@@ -9,30 +9,32 @@ import java.util.Set;
  */
 public class StateGraph {
     private Set<State> states;
-    private Set<State> startStates;
+    private State startState;
+    private State endState;
+
+
     private Set<State> acceptingStates;
 
     public StateGraph() {
         states = new HashSet<>();
         acceptingStates = new HashSet<>();
-        startStates = new HashSet<>();
     }
 
-    public Set<State> getStartStates() {
-        return startStates;
+    public State getStartState() {
+        return startState;
     }
 
     public Set<State> getAcceptingStates() {
         return acceptingStates;
     }
 
-    void addState(State state){
+    public void addState(State state){
         states.add(state);
         if(state.isAccepting()){
             acceptingStates.add(state);
         }
         if(state.isStart()){
-            startStates.add(state);
+            startState = state;
         }
         state.getTransitions().forEach((regdef, nxtState) -> {
             if(!states.contains(nxtState)){
@@ -42,4 +44,11 @@ public class StateGraph {
 
     }
 
+    public void setStartState(State startState) {
+        this.startState = startState;
+    }
+
+    public void setEndState(State endState) {
+        this.endState = endState;
+    }
 }
