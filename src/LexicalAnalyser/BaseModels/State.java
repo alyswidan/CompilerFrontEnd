@@ -44,4 +44,12 @@ public class State {
     public boolean isStart() {
         return isStart;
     }
+
+    public void setAccepting(boolean accepting) {
+        isAccepting = accepting;
+    }
+
+    public void setStart(boolean start) {
+        isStart = start;
+    }
 }
