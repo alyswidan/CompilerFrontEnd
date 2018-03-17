@@ -5,8 +5,7 @@ import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.BaseModels.StateGraph;
 import LexicalAnalyser.Regex.UnionOperator;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by alyswidan on 15/03/18.
@@ -23,6 +22,26 @@ public class NFA extends StateGraph {
         return union.execute((List<NFA>) NFAs);
     }
 
+    @Override
+    public void addState(State state) {
+        if(state.isStart()){
+            Set<State> states = new HashSet<>(Arrays.asList(state,getStartState()));
+            NFAState newStart = NFAState.epsilonSource(states);
+            setStartState(newStart);
+            state = newStart;
+        }
+        super.addState(state);
+    }
 
-
+    public NFAState mergeAcceptStates(){
+        Set<State> acceptStates = super.getAcceptingStates();
+        NFAState newEnd;
+        if (acceptStates.size()>1){
+            newEnd = NFAState.epsilonSink(super.getAcceptingStates());
+            acceptStates.forEach(acceptState -> acceptState.setAccepting(false));
+        }else {
+            newEnd = (NFAState) super.getAcceptingStates();
+        }
+        return newEnd;
+    }
 }
