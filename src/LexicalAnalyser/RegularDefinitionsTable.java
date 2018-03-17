@@ -30,7 +30,10 @@ public class RegularDefinitionsTable {
         return regularDefinitions.get(o);
     }
 
-    public static RegularDefinition put(String s, RegularDefinition regularDefinition) {
+    public static RegularDefinition put(String s, String regdef) {
+
+        RegularDefinition regularDefinition=new RegularDefinition(regdef);
+
         return regularDefinitions.put(s, regularDefinition);
     }
 

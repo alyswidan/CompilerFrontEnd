@@ -13,7 +13,7 @@ public class RegularDefinition extends Regex implements RegexElement {
 * */
 
 
-    RegularDefinition(String rawRegex) {
+    public RegularDefinition(String rawRegex) {
         super(rawRegex);
     }
 

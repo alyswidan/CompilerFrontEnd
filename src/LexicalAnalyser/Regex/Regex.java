@@ -10,7 +10,7 @@ public class Regex implements Iterable<RegexElement>{
     protected String rawRegex;
     private boolean isPostfix = false;
 
-    Regex(String rawRegex){
+    public Regex(String rawRegex){
         this.rawRegex = rawRegex;
     }
 

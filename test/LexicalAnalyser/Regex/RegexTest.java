@@ -18,8 +18,8 @@ class RegexTest {
 
     @org.junit.jupiter.api.Test
     void iterator() {
-        RegularDefinitionsTable.put("letter", new RegularDefinition("letter"));
-        RegularDefinitionsTable.put("digit", new RegularDefinition("digit"));
+        RegularDefinitionsTable.put("letter", "letter");
+        RegularDefinitionsTable.put("digit","digit");
         Regex regex = new Regex("letterdigit|*");
         Iterator<RegexElement> iter = regex.iterator();
         assert iter.next().getRawValue().equals("letter");
