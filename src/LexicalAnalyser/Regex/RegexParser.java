@@ -2,8 +2,10 @@ package LexicalAnalyser.Regex;
 
 import LexicalAnalyser.NFA.NFA;
 
+import javax.swing.text.Position;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +20,7 @@ public class RegexParser {
     * */
 
     private NFA currentNFA;
-    private Deque<NFA> currentStack; // using a deque as our stack
+    private Deque<NFA> currentStack = new LinkedList<>(); // using a deque as our stack
 
     public Collection<NFA> parseAll(Collection<Regex> regexes){
         return regexes.stream().map(this::parse).collect(Collectors.toList());
@@ -31,7 +33,22 @@ public class RegexParser {
         if(!regex.isPostfix()){
             regex.toPostfix();
         }
-        return new NFA();
+        for (RegexElement element : regex){
+            if(element instanceof RegularDefinition){
+                NFA b = ((RegularDefinition) element).getBasis();
+                currentStack.addFirst(b);
+            }
+            if(element instanceof  UnaryRegexOperator){
+                currentStack.addFirst(((UnaryRegexOperator) element).execute(currentStack.removeFirst()));
+            }
+            if(element instanceof BinaryRegexOperator){
+                NFA a = currentStack.removeFirst();
+                NFA b = currentStack.removeFirst();
+                currentStack.addFirst(((BinaryRegexOperator) element).execute(b,a));
+            }
+
+        }
+        return currentStack.removeFirst();
     }
 
     void executeElement(RegexElement regexElement, NFA currentNFA){
