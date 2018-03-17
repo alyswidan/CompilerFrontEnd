@@ -23,7 +23,7 @@ public class Regex implements Iterable<RegexElement>{
         * postfix regex string and replacing the value of raw regex with
         * this postfix expression
         */
-          // new branch added
+          // new branch added as InfixToPostfix
         if(isPostfix()){
             return;
         }
