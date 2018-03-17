@@ -20,6 +20,11 @@ public class Regex implements Iterable<RegexElement>{
 
     void toPostfix(){
 
+
+        if(isPostfix()){
+            return;
+        }
+
         // new branch added as InfixToPostfix
         /*
         * perform infix to postfix conversion of the raw regex string to a
@@ -41,6 +46,7 @@ public class Regex implements Iterable<RegexElement>{
         char elements [] = this.rawRegex.toCharArray();
         for( int i=0 ; i<StringSize;i++ ){
             char Element = elements[i];
+           // System.out.println(Element);
             if(RegexOperatorFactory.isOperator(Element)){// the first element is an operator
                  RegexOperator operator = RegexOperatorFactory.getOperator(Element);
                 if(operator instanceof OpenBracketOperator){
@@ -48,7 +54,7 @@ public class Regex implements Iterable<RegexElement>{
                 }
                 else if(operator instanceof ClosedBracketOperator){
                     // we have to pop till we find '('
-                    while (!stack.isEmpty()) { // as long as the stack is not empty and the stack element has a higher priority than the element
+                    while (!stack.isEmpty()) { // as long as the stack is not empty
                         RegexOperator  Operator = stack.removeFirst();
                         if (Operator instanceof OpenBracketOperator)
                             break;
@@ -58,35 +64,74 @@ public class Regex implements Iterable<RegexElement>{
                     }
                 }
                 else{
-                    int priority= stack.peekFirst().compareTo(operator);
-                    if(priority >=0){
-                        // the operator in stack is higher in priority than Element
-                        stack.addFirst(operator);
 
-                    }else{
-                        // this means the operator in the stack is smaller than the Element
+                    if(operator instanceof KleenClosureOperator || operator instanceof PlusClosureOperator){
+                        if(i!=StringSize-1) {
+                            int j = i;
+                            char NextElement = elements[j + 1];
+                            if (RegexOperatorFactory.isOperator(NextElement)) {
 
-                        while (!stack.isEmpty() && stack.peekFirst().compareTo(operator)<0) { // as long as the stack is not empty and the stack element has a higher priority than the element
-                            RegexOperator  Operator = stack.peekFirst();
-                            if (Operator instanceof OpenBracketOperator)
-                                break;
+                                RegexOperator Operator = RegexOperatorFactory.getOperator(NextElement);
+                                if (Operator instanceof OpenBracketOperator) {
+
+                                    stack.addFirst(operator);
+                                    operator=new ConcatenationOperator();
+                                }
+
+                            }
                             else{
-                                Operator = stack.removeFirst();
-                                output = output + Operator.getRawValue();
+                                stack.addFirst(operator);
+                                operator=new ConcatenationOperator();
+
                             }
                         }
-                        stack.addFirst(operator);
 
                     }
+
+                    if(!stack.isEmpty()) {
+                        if(stack.peekFirst() instanceof OpenBracketOperator){
+                            stack.addFirst(operator);
+                        }
+                        else {
+                            int priority = stack.peekFirst().compareTo(operator);
+                            if (priority >= 0) {
+                                // the operator in stack is higher in priority than Element
+                                stack.addFirst(operator);
+
+                            } else {
+
+                                // this means the operator in the stack is smaller than the Element
+
+                                while (!stack.isEmpty() && stack.peekFirst().compareTo(operator) < 0) { // as long as the stack is not empty and the stack element has a higher priority than the element
+                                    RegexOperator Operator = stack.peekFirst();
+                                    if (Operator instanceof OpenBracketOperator)
+                                        break;
+                                    else {
+                                        Operator = stack.removeFirst();
+                                        output = output + Operator.getRawValue();
+                                    }
+                                }
+                                stack.addFirst(operator);
+
+                            }
+                        }
+                    }
+                    else {
+                    stack.addFirst(operator);
+                    }
+
                 }
             }
             else{
+                 output += Element;
                 if(i!=StringSize-1){
-                    char NextElement = elements[i+1];
-                    output += Element;
+                    int j=i;
+                    char NextElement = elements[j+1];
+
                     if(RegexOperatorFactory.isOperator(NextElement)){
-                        RegexOperator operator = RegexOperatorFactory.getOperator(Element);
+                        RegexOperator operator = RegexOperatorFactory.getOperator(NextElement);
                         if(operator instanceof OpenBracketOperator){
+
                             stack.addFirst(new ConcatenationOperator());
                         }
                     }
@@ -98,13 +143,15 @@ public class Regex implements Iterable<RegexElement>{
             }
         }
 
+        while (!stack.isEmpty()) { // as long as the stack is not empty add whats rest
+            RegexOperator Operator = stack.removeFirst();
+              // System.out.println("d5l hnaaa ");
+                output = output + Operator.getRawValue();
+            }
 
 
-
-
-        if(isPostfix()){
-            return;
-        }
+        this.rawRegex=output;
+        isPostfix=true;
 
     }
 

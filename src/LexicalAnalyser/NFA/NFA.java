@@ -20,7 +20,7 @@ public class NFA extends StateGraph {
 
     public static NFA fromMultiple(Collection<NFA> NFAs){
         UnionOperator union = new UnionOperator();
-        return union.execute((List<NFA>) NFAs);
+        return null;
     }
 
 

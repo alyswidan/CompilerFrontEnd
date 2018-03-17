@@ -11,9 +11,39 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class RegexTest {
     @org.junit.jupiter.api.Test
-    void toPostfix() {
-
-
+    void orPostfix() {
+        Regex regex = new Regex("a|b");
+        regex.toPostfix();
+        System.out.print(regex.rawRegex);
+        assert regex.rawRegex.equals( "ab|");
+    }
+    @org.junit.jupiter.api.Test
+    void concatPostfix() {
+        Regex regex = new Regex("a+b");
+        regex.toPostfix();
+        System.out.print(regex.rawRegex);
+        assert regex.rawRegex.equals( "a+b.");
+    }
+    @org.junit.jupiter.api.Test
+    void braketPostfix() {
+        Regex regex = new Regex("(a|b)*");
+        regex.toPostfix();
+        System.out.print(regex.rawRegex);
+        assert regex.rawRegex.equals( "ab|*");
+    }
+    @org.junit.jupiter.api.Test
+    void checkingPostfix() {
+        Regex regex = new Regex("a(a|b)*");
+        regex.toPostfix();
+        System.out.print(regex.rawRegex);
+        assert regex.rawRegex.equals( "aab|*.");
+    }
+    @org.junit.jupiter.api.Test
+    void BigbossPostfix() {
+        Regex regex = new Regex("a+b(xb|(ab(ab)*)*)*");
+        regex.toPostfix();
+        System.out.print(regex.rawRegex);
+        assert regex.rawRegex.equals("a+bxb.abab.*..*|*..");
     }
 
     @org.junit.jupiter.api.Test
