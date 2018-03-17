@@ -25,7 +25,8 @@ public class NFA extends StateGraph {
     @Override
     public void addState(State state) {
         if(state.isStart()){
-            Set<State> states = new HashSet<>(Arrays.asList(state,getStartState()));
+            Set<State> states = new HashSet<>(Arrays.asList(state, getStartState()));
+            states.remove(null);
             NFAState newStart = NFAState.epsilonSource(states);
             setStartState(newStart);
             state = newStart;
