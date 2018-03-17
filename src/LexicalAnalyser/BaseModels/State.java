@@ -16,12 +16,11 @@ public class State {
     public State(boolean isAccepting, boolean isStart) {
         this.isAccepting = isAccepting;
         this.isStart = isStart;
+        transitions = new HashMap<>();
     }
 
     public State(){
-        this.isStart = false;
-        this.isAccepting = false;
-        transitions = new HashMap<>();
+        this(false,false);
     }
 
     public State transition(RegularDefinition input){

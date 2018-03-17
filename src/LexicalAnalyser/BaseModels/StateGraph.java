@@ -36,11 +36,6 @@ public class StateGraph {
         if(state.isStart()){
             startState = state;
         }
-        state.getTransitions().forEach((regdef, nxtState) -> {
-            if(!states.contains(nxtState)){
-                states.add(nxtState);
-            }
-        });
 
     }
 
