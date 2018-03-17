@@ -5,7 +5,12 @@ import LexicalAnalyser.NFA.NFA;
 /**
  * Created by alyswidan on 15/03/18.
  */
-public class PlusClosureOperator implements UnaryRegexOperator {
+public class PlusClosureOperator extends UnaryRegexOperator {
+
+    public PlusClosureOperator() {
+
+        priority = RegexOperator.MINPRIORITY;
+    }
 
     @Override
     public NFA execute(NFA operand) {

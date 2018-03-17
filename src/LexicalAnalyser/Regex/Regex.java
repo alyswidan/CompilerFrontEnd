@@ -1,7 +1,9 @@
 package LexicalAnalyser.Regex;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Created by alyswidan on 15/03/18.
@@ -18,12 +20,90 @@ public class Regex implements Iterable<RegexElement>{
 
     void toPostfix(){
 
+        // new branch added as InfixToPostfix
         /*
         * perform infix to postfix conversion of the raw regex string to a
         * postfix regex string and replacing the value of raw regex with
         * this postfix expression
         */
-          // new branch added as InfixToPostfix
+        String output = "";
+        int StringSize = this.length();
+        Deque<RegexOperator> stack = new LinkedList<>();
+           /* boolean  isoperator= RegexOperatorFactory.isOperator(element);
+            if(isoperator==true){{
+
+                RegexOperator operator = RegexOperatorFactory.getOperator(element);
+                stack.pop().compareTo(operator);
+
+
+            }
+            }*/
+        char elements [] = this.rawRegex.toCharArray();
+        for( int i=0 ; i<StringSize-1;i++ ){
+            char Element = elements[i];
+            char NextElement = elements[i+1];
+            if(RegexOperatorFactory.isOperator(Element)){// the first element is an operator
+                 RegexOperator operator = RegexOperatorFactory.getOperator(Element);
+                if(operator instanceof OpenBracketOperator){
+                    stack.addFirst(operator);
+                }
+                else if(operator instanceof ClosedBracketOperator){
+                    // we have to pop till we find '('
+                    while (!stack.isEmpty()) { // as long as the stack is not empty and the stack element has a higher priority than the element
+                        RegexOperator  Operator = stack.removeFirst();
+                        if (Operator instanceof OpenBracketOperator)
+                            break;
+                        else{
+                            output = output + Operator.getRawValue();
+                        }
+                    }
+                }
+                else{
+                    int priority= stack.peekFirst().compareTo(operator);
+                    if(priority >=0){
+                        // the operator in stack is higher in priority than Element
+                        stack.addFirst(operator);
+
+                    }else{
+                        // this means the operator in the stack is smaller than the Element
+
+                        while (!stack.isEmpty() && stack.peekFirst().compareTo(operator)<0) { // as long as the stack is not empty and the stack element has a higher priority than the element
+                            RegexOperator  Operator = stack.peekFirst();
+                            if (Operator instanceof OpenBracketOperator)
+                                break;
+                            else{
+                                Operator = stack.removeFirst();
+                                output = output + Operator.getRawValue();
+                            }
+                        }
+                        stack.addFirst(operator);
+
+                    }
+                }
+            }
+            else{
+                output += Element;
+                if(RegexOperatorFactory.isOperator(NextElement)){
+                    RegexOperator operator = RegexOperatorFactory.getOperator(Element);
+                    if(operator instanceof OpenBracketOperator){
+                        stack.addFirst(new ConcatenationOperator());
+                    }
+                }
+                else{
+                    stack.addFirst(new ConcatenationOperator());
+                }
+
+
+            }
+
+
+
+        }
+
+
+
+
+
         if(isPostfix()){
             return;
         }

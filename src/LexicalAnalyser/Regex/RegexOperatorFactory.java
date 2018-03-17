@@ -18,6 +18,8 @@ public class RegexOperatorFactory {
         operators.put('.', new ConcatenationOperator());
         operators.put('|', new UnionOperator());
         operators.put('-', new RangeOperator());
+        operators.put('(', new OpenBracketOperator());
+        operators.put(')', new ClosedBracketOperator());
     }
 
     static RegexOperator getOperator(char operator){

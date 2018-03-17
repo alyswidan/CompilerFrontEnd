@@ -7,12 +7,13 @@ import java.util.List;
 /**
  * Created by alyswidan on 15/03/18.
  */
-public class UnionOperator implements MaryRegexOperator,BinaryRegexOperator {
+public class UnionOperator extends BinaryRegexOperator {
 
-    @Override
-    public NFA execute(List<NFA> operands) {
-        return null;
+
+    public UnionOperator() {
+        priority = RegexOperator.MINPRIORITY + 3;
     }
+
 
     public String getRawValue(){
         return "|";
