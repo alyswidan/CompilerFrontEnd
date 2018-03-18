@@ -6,7 +6,7 @@ import LexicalAnalyser.NFA.NFAState;
 /**
  * Created by alyswidan on 15/03/18.
  */
-public class KleeneClosureOperator implements UnaryRegexOperator {
+public class KleeneClosureOperator extends UnaryRegexOperator {
 
     @Override
     public NFA execute(NFA operand) {

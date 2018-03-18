@@ -67,7 +67,7 @@ public class Regex implements Iterable<RegexElement>{
                 }
                 else{
 
-                    if(operator instanceof KleenClosureOperator || operator instanceof PlusClosureOperator){
+                    if(operator instanceof KleeneClosureOperator || operator instanceof PlusClosureOperator){
                         if(i!=StringSize-1) {
                             int j = i;
                             char NextElement = elements[j + 1];
