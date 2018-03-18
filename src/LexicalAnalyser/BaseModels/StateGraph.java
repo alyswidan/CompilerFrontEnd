@@ -34,4 +34,12 @@ public class StateGraph {
 
     }
 
+
+    public void unVisitAll() {
+        states.forEach(State::unVisit);
+    }
+
+    public boolean hasState(State state) {
+        return states.contains(state);
+    }
 }

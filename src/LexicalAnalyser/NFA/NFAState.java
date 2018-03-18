@@ -3,6 +3,7 @@ package LexicalAnalyser.NFA;
 import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.Regex.EpsilonRegularDefinition;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,9 +18,6 @@ public class NFAState extends State {
 
     public NFAState(){
         super();
-    }
-    public Collection<State> getEpsilonClosure(State state) {
-        return null;
     }
 
     public static NFAState epsilonSink(Collection<NFAState> inStates){

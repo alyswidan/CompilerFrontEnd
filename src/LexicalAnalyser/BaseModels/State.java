@@ -9,6 +9,7 @@ import java.util.Map;
  * Created by alyswidan on 14/03/18.
  */
 public class State {
+    boolean isVisited;
     private boolean isAccepting;
     private boolean isStart;
     private Map<RegularDefinition, State> transitions;
@@ -43,5 +44,35 @@ public class State {
 
     public boolean isStart() {
         return isStart;
+    }
+
+    public boolean isVisited() {
+        return isVisited;
+    }
+
+    public void visit() {
+        isVisited = true;
+    }
+
+    public void unVisit() {
+        isVisited = false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof State)) return false;
+
+        State state = (State) o;
+
+        if (isAccepting() != state.isAccepting()) return false;
+        return getTransitions().equals(state.getTransitions());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (isAccepting() ? 1 : 0);
+        result = 31 * result + getTransitions().hashCode();
+        return result;
     }
 }
