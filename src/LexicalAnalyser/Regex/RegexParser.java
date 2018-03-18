@@ -31,6 +31,10 @@ public class RegexParser {
         if(!regex.isPostfix()){
             regex.toPostfix();
         }
+
+
+        
+
         return new NFA();
     }
 
