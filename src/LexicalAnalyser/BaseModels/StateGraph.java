@@ -46,4 +46,12 @@ public class StateGraph {
     public void setEndState(State endState) {
         this.endState = endState;
     }
+
+    public void dsf(){
+
+    }
+
+    public void getEdges(){
+
+    }
 }
