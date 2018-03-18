@@ -14,7 +14,7 @@ public class RegexOperatorFactory {
     static {
         operators = new HashMap<>();
         operators.put('+', new PlusClosureOperator());
-        operators.put('*', new KleenClosureOperator());
+        operators.put('*', new KleeneClosureOperator());
         operators.put('.', new ConcatenationOperator());
         operators.put('|', new UnionOperator());
         operators.put('-', new RangeOperator());

@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 /**
  * Created by alyswidan on 15/03/18.
  */
-public class RegularDefinitionsTable {
+public class RegularDefinitionsTable implements Iterable<RegularDefinition>{
 
     static Map<String, RegularDefinition> regularDefinitions = new HashMap<>();
 
@@ -45,4 +45,10 @@ public class RegularDefinitionsTable {
     public static void forEach(BiConsumer<? super String, ? super RegularDefinition> biConsumer) {
         regularDefinitions.forEach(biConsumer);
     }
+
+    @Override
+    public Iterator<RegularDefinition> iterator() {
+        return regularDefinitions.values().iterator();
+    }
+
 }

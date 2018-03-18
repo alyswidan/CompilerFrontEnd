@@ -13,6 +13,8 @@ public class Regex implements Iterable<RegexElement>{
     private boolean isPostfix = false;
 
     Regex(String rawRegex){
+
+
         this.rawRegex = rawRegex;
     }
 
