@@ -47,6 +47,31 @@ public class NFA extends StateGraph {
         return closure;
     }
 
+    @Override
+    public void addState(State state) {
+        if(state.isStart()){
+            if(getStartState() == null){
+                super.setStartState(state);
+            }
+            else{
+                Set<State> states = new HashSet<>(Arrays.asList(state, getStartState()));
+                NFAState newStart = NFAState.epsilonSource(states);
+                setStartState(newStart);
+                state = newStart;
+            }
+        }
+        super.addState(state);
+    }
 
-
+    public NFAState mergeAcceptStates(){
+        Set<State> acceptStates = getAcceptingStates();
+        NFAState newEnd;
+        if (acceptStates.size()>1){
+            newEnd = NFAState.epsilonSink(getAcceptingStates());
+            acceptStates.forEach(acceptState -> acceptState.setAccepting(false));
+        }else {
+            newEnd = (NFAState) getAcceptingStates();
+        }
+        return newEnd;
+    }
 }

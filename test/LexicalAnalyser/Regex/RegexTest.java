@@ -18,15 +18,14 @@ class RegexTest {
 
     @org.junit.jupiter.api.Test
     void iterator() {
-        RegularDefinitionsTable.put("letter", new RegularDefinition("letter"));
-        RegularDefinitionsTable.put("digit", new RegularDefinition("digit"));
-        Regex regex = new Regex("letterdigit|*");
+            RegularDefinitionsTable.put("letter", new RegularDefinition("letter"));
+            RegularDefinitionsTable.put("digit", new RegularDefinition("digit"));
+
+        Regex regex = new Regex("\\. letter digit A|.|");
         Iterator<RegexElement> iter = regex.iterator();
-        assert iter.next().getRawValue().equals("letter");
-        assert iter.next().getRawValue().equals("digit");
-        assert iter.next().getRawValue().equals("|");
-        assert iter.next().getRawValue().equals("*");
-        assertFalse(iter.hasNext());
+        for (RegexElement element : regex){
+            System.out.println(element.getRawValue());
+        }
     }
 
 }

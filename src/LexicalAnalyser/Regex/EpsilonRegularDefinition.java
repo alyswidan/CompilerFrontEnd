@@ -5,9 +5,10 @@ package LexicalAnalyser.Regex;
  */
 public class EpsilonRegularDefinition extends RegularDefinition {
 
-    public EpsilonRegularDefinition() {
+    public EpsilonRegularDefinition(){
         super("\\L");
     }
+
 
     @Override
     public String getRawValue() {

@@ -9,20 +9,25 @@ import java.util.Map;
  * Created by alyswidan on 14/03/18.
  */
 public class State {
-    boolean isVisited;
     private boolean isAccepting;
     private boolean isStart;
     private Map<RegularDefinition, State> transitions;
+    private boolean isVisited;
+    private String name;
 
-    public State(boolean isAccepting, boolean isStart) {
+    public State(boolean isAccepting, boolean isStart, String name) {
         this.isAccepting = isAccepting;
         this.isStart = isStart;
+        this.name = name;
+        transitions = new HashMap<>();
+    }
+
+    public State(boolean isAccepting, boolean isStart) {
+        this(isAccepting,isStart,"");
     }
 
     public State(){
-        this.isStart = false;
-        this.isAccepting = false;
-        transitions = new HashMap<>();
+        this(false,false);
     }
 
     public State transition(RegularDefinition input){
@@ -32,6 +37,10 @@ public class State {
 
     public void addTransition(RegularDefinition regdef, State nextState){
         transitions.put(regdef,nextState);
+    }
+
+    public void addTransition(String string, State nextState){
+        transitions.put(new RegularDefinition(string),nextState);
     }
 
     public Map<RegularDefinition, State> getTransitions() {
@@ -45,6 +54,7 @@ public class State {
     public boolean isStart() {
         return isStart;
     }
+
 
     public boolean isVisited() {
         return isVisited;
@@ -74,5 +84,17 @@ public class State {
         int result = (isAccepting() ? 1 : 0);
         result = 31 * result + getTransitions().hashCode();
         return result;
+
+    }
+    public void setAccepting(boolean accepting) {
+        isAccepting = accepting;
+    }
+
+    public void setStart(boolean start) {
+        isStart = start;
+    }
+
+    public String toString() {
+        return this.name;
     }
 }
