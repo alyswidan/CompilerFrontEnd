@@ -8,6 +8,7 @@ import LexicalAnalyser.Regex.UnionOperator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by alyswidan on 15/03/18.
@@ -49,28 +50,32 @@ public class NFA extends StateGraph {
 
     @Override
     public void addState(State state) {
-        if(state.isStart()){
-            if(getStartState() == null){
-                super.setStartState(state);
+
+        if (state instanceof NFAState) {
+            NFAState nfaState = (NFAState) state;
+            if (nfaState.isStart()) {
+                if (getStartState() == null) {
+                    setStartState(nfaState);
+                } else {
+                    Set<NFAState> states = new HashSet<>(Arrays.asList(nfaState, (NFAState) getStartState()));
+                    NFAState newStart = NFAState.epsilonSource(states);
+                    setStartState(newStart);
+                    state = newStart;
+                }
             }
-            else{
-                Set<State> states = new HashSet<>(Arrays.asList(state, getStartState()));
-                NFAState newStart = NFAState.epsilonSource(states);
-                setStartState(newStart);
-                state = newStart;
-            }
+            super.addState(state);
         }
-        super.addState(state);
     }
 
     public NFAState mergeAcceptStates(){
-        Set<State> acceptStates = getAcceptingStates();
+        Set<NFAState> acceptStates = getAcceptingStates().stream().map(state -> (NFAState)state).collect(Collectors.toSet());
         NFAState newEnd;
         if (acceptStates.size()>1){
-            newEnd = NFAState.epsilonSink(getAcceptingStates());
+            newEnd = NFAState.epsilonSink(acceptStates);
             acceptStates.forEach(acceptState -> acceptState.setAccepting(false));
         }else {
-            newEnd = (NFAState) getAcceptingStates();
+
+            newEnd = acceptStates.stream().findFirst().get();
         }
         return newEnd;
     }

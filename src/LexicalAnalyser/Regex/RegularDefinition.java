@@ -2,6 +2,7 @@ package LexicalAnalyser.Regex;
 
 import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.NFA.NFA;
+import LexicalAnalyser.NFA.NFAState;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -67,8 +68,8 @@ public class RegularDefinition implements RegexElement {
     }
 
     NFA getBasis(){
-        State start = new State(false,true);
-        State end = new State(true,false);
+        NFAState start = new NFAState(false,true,"start "+getRawValue());
+        NFAState end = new NFAState(true,false, "end "+getRawValue());
         start.addTransition(this,end);
         NFA nfa = new NFA();
         //System.out.println("start state is: "+start);

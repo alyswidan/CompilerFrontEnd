@@ -11,6 +11,10 @@ class KleeneClosureOperatorTest {
         RegularDefinition a = new RegularDefinition("a");
         // System.out.println("regular def is :"+a);
         NFA basis = a.getBasis();
+        KleeneClosureOperator kc = new KleeneClosureOperator();
+        kc.execute(basis);
+        System.out.println(basis);
+
         // System.out.println("Basis is :"+basis);
     }
 }

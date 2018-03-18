@@ -20,17 +20,6 @@ public class DFAState extends State {
         return equivalentNFAStates;
     }
 
-/*    @Override
-    public boolean equals(Object o) {
-            return o instanceof DFAState
-                    && ((DFAState) o).getEquivalentNFAStates().equals(getEquivalentNFAStates());
-    }
-
-    @Override
-    public int hashCode() {
-        return equivalentNFAStates.hashCode();
-    }*/
-
 
     @Override
     public boolean equals(Object o) {

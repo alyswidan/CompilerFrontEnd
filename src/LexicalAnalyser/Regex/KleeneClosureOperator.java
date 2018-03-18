@@ -24,8 +24,8 @@ public class KleeneClosureOperator implements UnaryRegexOperator {
         NFAState start = (NFAState) operand.getStartState();
         NFAState end  = operand.mergeAcceptStates();
 
-        NFAState newStart = new NFAState();
-        NFAState newEnd = new NFAState();
+        NFAState newStart = new NFAState(false,true,"kleeneClousreStart");
+        NFAState newEnd = new NFAState(true, false, "KleeneeClosureEnd");
 
         newStart.addTransition(new EpsilonRegularDefinition(), start);
         end.addTransition(new EpsilonRegularDefinition(), newEnd);
