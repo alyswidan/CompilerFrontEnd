@@ -5,7 +5,7 @@ import LexicalAnalyser.Regex.Regex;
 import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.BaseModels.StateGraph;
 import LexicalAnalyser.Regex.UnionOperator;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.*;
 import java.util.stream.Collectors;

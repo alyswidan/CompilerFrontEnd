@@ -13,7 +13,6 @@ public class StateGraph {
     private State startState;
     private State endState;
 
-
     private Set<State> acceptingStates;
 
     public StateGraph() {

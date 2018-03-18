@@ -11,9 +11,30 @@ import java.util.Map;
 public class State {
     private boolean isAccepting;
     private boolean isStart;
+    private boolean isEnd;
     private Map<RegularDefinition, State> transitions;
     private boolean isVisited;
     private String name;
+
+    public void makeEnd() {
+        isEnd = true;
+    }
+
+    public void unEnd() {
+        isEnd = false;
+    }
+
+    public void makeStart() {
+        isStart = true;
+    }
+
+    public void unStart() {
+        isStart = false;
+    }
+
+    public boolean isStart() {
+        return isStart;
+    }
 
     public State(boolean isAccepting, boolean isStart, String name) {
         this.isAccepting = isAccepting;
@@ -50,11 +71,6 @@ public class State {
     public boolean isAccepting() {
         return isAccepting;
     }
-
-    public boolean isStart() {
-        return isStart;
-    }
-
 
     public boolean isVisited() {
         return isVisited;
