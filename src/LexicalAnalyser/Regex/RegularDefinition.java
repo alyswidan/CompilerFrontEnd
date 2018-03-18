@@ -21,7 +21,7 @@ public class RegularDefinition implements RegexElement {
     private String rawRegdef;
     private Set<AsciiRange> asciiRanges;
 
-    RegularDefinition(String rawRegdef)  {
+    public RegularDefinition(String rawRegdef)  {
         this.rawRegdef = rawRegdef;
         this.asciiRanges = parse(rawRegdef);
     }
@@ -82,6 +82,9 @@ public class RegularDefinition implements RegexElement {
         return this.rawRegdef;
     }
 
+    public String toString() {
+        return this.rawRegdef;
+    }
 
     private class AsciiRange{
         private int start, end;
@@ -114,5 +117,7 @@ public class RegularDefinition implements RegexElement {
         public boolean belongs(char c){
             return c>=start && c<=end;
         }
+
+
     }
 }

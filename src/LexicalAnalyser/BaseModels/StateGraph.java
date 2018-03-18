@@ -1,8 +1,9 @@
 package LexicalAnalyser.BaseModels;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import LexicalAnalyser.Regex.RegularDefinition;
+
+import javax.swing.table.TableRowSorter;
+import java.util.*;
 
 /**
  * Created by alyswidan on 14/03/18.
@@ -47,11 +48,32 @@ public class StateGraph {
         this.endState = endState;
     }
 
-    public void dsf(){
+    StringBuilder DFSUtil(State state)
+    {
+        state.setVisited(true);
 
+        Map<RegularDefinition, State> adj = state.getTransitions();
+        StringBuilder builder = new StringBuilder();
+        for (Map.Entry<RegularDefinition, State> entry : adj.entrySet())
+        {
+            builder.append("from: ")
+                    .append(state)
+                    .append(" to: ")
+                    .append(entry.getValue())
+                    .append(" value: ")
+                    .append(entry.getKey())
+                    .append("\n");
+            if(!entry.getValue().isVisited()){
+                builder.append(DFSUtil(entry.getValue()));
+            }
+        }
+        return builder;
     }
 
-    public void getEdges(){
 
+    @Override
+    public String toString() {
+        states.forEach(s-> s.setVisited(false));//mark all as not visited
+        return DFSUtil(getStartState()).toString();
     }
 }

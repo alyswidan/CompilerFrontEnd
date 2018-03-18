@@ -12,11 +12,26 @@ public class State {
     private boolean isAccepting;
     private boolean isStart;
     private Map<RegularDefinition, State> transitions;
+    private boolean isVisited;
+    private String name;
 
-    public State(boolean isAccepting, boolean isStart) {
+    public void setVisited(boolean visited) {
+        isVisited = visited;
+    }
+
+    public boolean isVisited() {
+        return isVisited;
+    }
+
+    public State(boolean isAccepting, boolean isStart, String name) {
         this.isAccepting = isAccepting;
         this.isStart = isStart;
+        this.name = name;
         transitions = new HashMap<>();
+    }
+
+    public State(boolean isAccepting, boolean isStart) {
+        this(isAccepting,isStart,"");
     }
 
     public State(){
@@ -30,6 +45,10 @@ public class State {
 
     public void addTransition(RegularDefinition regdef, State nextState){
         transitions.put(regdef,nextState);
+    }
+
+    public void addTransition(String string, State nextState){
+        transitions.put(new RegularDefinition(string),nextState);
     }
 
     public Map<RegularDefinition, State> getTransitions() {
@@ -50,5 +69,9 @@ public class State {
 
     public void setStart(boolean start) {
         isStart = start;
+    }
+
+    public String toString() {
+        return this.name;
     }
 }
