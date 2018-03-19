@@ -16,6 +16,10 @@ public class State {
     private boolean isVisited;
     private String name;
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void makeEnd() {
         isEnd = true;
     }
