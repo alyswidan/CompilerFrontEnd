@@ -21,6 +21,11 @@ public class NFAToDFAConverter {
         this.unmarkedStates = new LinkedList<>();
     }
 
+    /*
+    * todo: if one of the nfa states is in the dfa state is an accepting state the dfa has to be an accepting
+    * todo: equals is not right this way
+    * todo: whole project needs refactoring
+    * */
     public DFA convert(NFA nfa){
         int currentStateNumber = 0;
         DFAState start = new DFAState(nfa.getEpsilonClosure((NFAState)nfa.getStartState()),""+currentStateNumber++);
