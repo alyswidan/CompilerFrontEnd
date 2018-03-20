@@ -13,6 +13,9 @@ import java.util.Set;
  */
 public class NFAState extends State {
 
+    public NFAState(String name) {
+        super(name);
+    }
 
     public NFAState(boolean isAccepting, boolean isStart, String name) {
         super(isAccepting, isStart, name);

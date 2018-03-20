@@ -1,5 +1,8 @@
 package LexicalAnalyser.BaseModels;
 
+import LexicalAnalyser.DFA.DFA;
+import LexicalAnalyser.DFA.DFAState;
+import LexicalAnalyser.Regex.EpsilonRegularDefinition;
 import LexicalAnalyser.Regex.RegularDefinition;
 
 import javax.swing.table.TableRowSorter;
@@ -9,16 +12,18 @@ import java.util.*;
  * Created by alyswidan on 14/03/18.
  */
 public class StateGraph {
-    private Set<State> states;
+    private Map<State,State> states;
     private State startState;
     private State endState;
+    private Set<RegularDefinition> language;
 
 
     private Set<State> acceptingStates;
 
     public StateGraph() {
-        states = new HashSet<>();
+        states = new HashMap<>();
         acceptingStates = new HashSet<>();
+        language = new HashSet<>();
     }
 
     public State getStartState() {
@@ -30,7 +35,14 @@ public class StateGraph {
     }
 
     public void addState(State state){
-        states.add(state);
+        states.put(state,state);
+
+        /*add all regular definitions on edges out of state to this graph's language*/
+        state.forEach((regDef, s) -> {
+            if(!language.contains(regDef) && !(regDef instanceof EpsilonRegularDefinition))
+                language.add((regDef));
+        });
+
         if(state.isAccepting()){
             acceptingStates.add(state);
         }
@@ -40,13 +52,25 @@ public class StateGraph {
 
     }
 
+    public void removeState(State state){
+        states.remove(state);
+    }
+
+    public void addAll(Collection<State> states){
+        states.forEach(this::addState);
+    }
 
     public void unVisitAll() {
-        states.forEach(State::unVisit);
+        states.forEach((state, state2) -> state.unVisit());
     }
 
     public boolean hasState(State state) {
-        return states.contains(state);
+
+        return states.containsKey(state);
+    }
+
+    public State getState(State state) {
+        return states.get(state);
     }
 
     public void setStartState(State startState) {
@@ -61,24 +85,27 @@ public class StateGraph {
     {
         state.visit();
 
-        Map<RegularDefinition, State> adj = state.getTransitions();
         StringBuilder builder = new StringBuilder();
-        for (Map.Entry<RegularDefinition, State> entry : adj.entrySet())
-        {
+
+
+        state.forEach((regDef,neighbour) ->{
             builder.append("from: ")
                     .append(state)
                     .append(" to: ")
-                    .append(entry.getValue())
+                    .append(neighbour)
                     .append(" value: ")
-                    .append(entry.getKey())
+                    .append(regDef)
                     .append("\n");
-            if(!entry.getValue().isVisited()){
-                builder.append(DFSUtil(entry.getValue()));
+            if(!neighbour.isVisited()){
+                builder.append(DFSUtil(neighbour));
             }
-        }
+        });
         return builder;
     }
 
+    public Set<RegularDefinition> getLanguage() {
+        return language;
+    }
 
     @Override
     public String toString() {

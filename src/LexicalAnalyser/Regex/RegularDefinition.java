@@ -72,9 +72,7 @@ public class RegularDefinition implements RegexElement {
         NFAState end = new NFAState(true,false, "end "+getRawValue());
         start.addTransition(this,end);
         NFA nfa = new NFA();
-        //System.out.println("start state is: "+start);
         nfa.addState(start);
-        //System.out.println("end state is: "+end);
         nfa.addState(end);
         return nfa;
     }
@@ -85,6 +83,22 @@ public class RegularDefinition implements RegexElement {
 
     public String toString() {
         return this.rawRegdef;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RegularDefinition)) return false;
+
+        RegularDefinition that = (RegularDefinition) o;
+
+        return rawRegdef != null ? rawRegdef.equals(that.rawRegdef) : that.rawRegdef == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return rawRegdef.hashCode();
     }
 
     private class AsciiRange{
@@ -118,7 +132,6 @@ public class RegularDefinition implements RegexElement {
         public boolean belongs(char c){
             return c>=start && c<=end;
         }
-
 
     }
 }
