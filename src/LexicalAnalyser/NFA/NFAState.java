@@ -16,6 +16,21 @@ public class NFAState extends State {
     public NFAState(String name) {
         super(name);
     }
+    public static NFAState newAcceptingState(){
+        return new NFAState(true,false);
+    }
+
+    public static NFAState newStartState(){
+        return new NFAState(false,true);
+    }
+
+    public static NFAState newAcceptingState(String name){
+        return new NFAState(true,false,name);
+    }
+
+    public static NFAState newStartState(String name){
+        return new NFAState(false,true,name);
+    }
 
     public NFAState(boolean isAccepting, boolean isStart, String name) {
         super(isAccepting, isStart, name);

@@ -16,8 +16,6 @@ public class StateGraph {
     private State startState;
     private State endState;
     private Set<RegularDefinition> language;
-
-
     private Set<State> acceptingStates;
 
     public StateGraph() {
@@ -39,8 +37,8 @@ public class StateGraph {
 
         /*add all regular definitions on edges out of state to this graph's language*/
         state.forEach((regDef, s) -> {
-            if(!language.contains(regDef) && !(regDef instanceof EpsilonRegularDefinition))
-                language.add((regDef));
+            if(!(regDef instanceof EpsilonRegularDefinition))
+                language.addAll(regDef.getParts());
         });
 
         if(state.isAccepting()){
@@ -65,7 +63,6 @@ public class StateGraph {
     }
 
     public boolean hasState(State state) {
-
         return states.containsKey(state);
     }
 

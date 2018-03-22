@@ -20,6 +20,7 @@ public class State {
     private boolean isVisited;
     private String name;
 
+
     public State(String name) {
         this(false,false,name);
     }
@@ -52,7 +53,7 @@ public class State {
 
     public void addTransition(String string, State nextState){
         RegularDefinition regDef = string.equals("\\L")?new EpsilonRegularDefinition():new RegularDefinition(string);
-        addTransition(regDef,nextState);
+        regDef.getParts().forEach(r -> addTransition(r,nextState));
     }
 
     public MultiMap<RegularDefinition,State> getTransitions() {
@@ -85,7 +86,6 @@ public class State {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof State)) return false;
-
         State state = (State) o;
 
         return this.hashCode() == state.hashCode();
@@ -112,7 +112,7 @@ public class State {
     }
 
     public String toString() {
-        return this.name;
+        return this.name + " "+(isAccepting()?"A ":"") + (isStart()?"S":"");
     }
 
 

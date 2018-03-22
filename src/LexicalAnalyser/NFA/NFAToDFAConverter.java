@@ -12,8 +12,6 @@ import java.util.*;
  * Created by alyswidan on 15/03/18.
  */
 public class NFAToDFAConverter {
-
-    private NFA currentNFA;
     private Deque<DFAState> unmarkedStates;
 
     public NFAToDFAConverter() {
@@ -22,7 +20,6 @@ public class NFAToDFAConverter {
     }
 
     /*
-    * todo: if one of the nfa states is in the dfa state is an accepting state the dfa has to be an accepting
     * todo: equals is not right this way
     * todo: whole project needs refactoring
     * */
@@ -36,20 +33,18 @@ public class NFAToDFAConverter {
         DFAState currentState;
         while(!unmarkedStates.isEmpty()){
             currentState = unmarkedStates.remove();
+
             for (RegularDefinition regDef : nfa.getLanguage()) {
 
                 DFAState newState = currentState.transition(regDef);
                 Set<NFAState> epsClosure = nfa.getEpsilonClosure(newState.getEquivalentNFAStates());
 
-                DFAState state = new DFAState(epsClosure,""+(currentStateNumber++));
+                DFAState state = epsClosure.isEmpty()?new DeadState():new DFAState(epsClosure,""+(currentStateNumber++));
 
-                if(epsClosure.isEmpty()){
-                    state = new DeadState();
+                if (state instanceof DeadState){
+
                 }
-
-                if(!resultDFA.hasState(state)){
-                    System.out.println(resultDFA.hasState(state));
-                    System.out.println(state.getEquivalentNFAStates());
+                else if(!resultDFA.hasState(state) ){
                     resultDFA.addState(state);
                     unmarkedStates.add(state);
                 }

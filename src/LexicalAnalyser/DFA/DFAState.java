@@ -4,6 +4,7 @@ import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.NFA.NFAState;
 import LexicalAnalyser.Regex.RegularDefinition;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,19 +20,23 @@ public class DFAState extends State {
 
     public DFAState(Set<NFAState> equivalentNFAStates, String name) {
         super(name);
-        this.equivalentNFAStates = equivalentNFAStates;
+        this.equivalentNFAStates = new HashSet<>();
+        equivalentNFAStates.forEach(this::addNFAState);
     }
 
     public DFAState(Set<NFAState> equivalentNFAStates) {
-        this.equivalentNFAStates = equivalentNFAStates;
+        this(equivalentNFAStates,"");
     }
 
     public void addNFAState(NFAState state){
+        if(state != null && state.isAccepting()) {
+            setAccepting(true);
+        }
         equivalentNFAStates.add(state);
     }
 
     public void setEquivalentNFAStates(Set<NFAState> equivalentNFAStates) {
-        this.equivalentNFAStates = equivalentNFAStates;
+        equivalentNFAStates.forEach(this::addNFAState);
     }
 
     public Set<NFAState> getEquivalentNFAStates() {
@@ -56,12 +61,12 @@ public class DFAState extends State {
 
     @Override
     public int hashCode() {
-        int result = 31 * getEquivalentNFAStates().hashCode();
-        return result;
+        return 31 * getEquivalentNFAStates().hashCode();
     }
 
     @Override
     public String toString() {
-        return super.toString() + "-" + equivalentNFAStates.toString();
+        return super.toString() + "-" + equivalentNFAStates.toString()
+                + " "+(isAccepting()?"A ":"") + (isStart()?"S":"");
     }
 }
