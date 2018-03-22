@@ -40,15 +40,15 @@ public class RegularDefinition implements RegexElement {
     private List<String> split(String s, char sep){
         List<String> out = new ArrayList<>();
         StringBuilder currentString = new StringBuilder();
-        for (char c : s.toCharArray()){
-            if(c != sep)
+        for (char c : s.toCharArray()) {
+            if (c != sep)
                 currentString.append(c);
-            else{
+            else {
                 out.add(currentString.toString());
                 currentString = new StringBuilder();
             }
         }
-        if(currentString.length() != 0)
+        if (currentString.length() != 0)
             out.add(currentString.toString());
 
         return out;
@@ -57,16 +57,14 @@ public class RegularDefinition implements RegexElement {
 
     private Set<String> parse(String rawRegdef) {
 
-        List<String> oredRanges = split(rawRegdef,'|');
+        List<String> oredRanges = split(rawRegdef, '|');
         Set<String> parsedRanges = new HashSet<>();
-        for(String range : oredRanges){
-            List<String> startAndEnd = split(range,'-');
-            if(startAndEnd.size() > 2)
+        for (String range : oredRanges) {
+            List<String> startAndEnd = split(range, '-');
+            if (startAndEnd.size() > 2)
                 System.out.println("exception regdef");
-            if(startAndEnd.size() == 1)
+            if (startAndEnd.size() == 1)
                 parsedRanges.add(startAndEnd.get(0));
-            else
-                parsedRanges.addAll(rangeToChars(startAndEnd.get(0), startAndEnd.get(1)));
         }
         return parsedRanges;
     }
@@ -79,7 +77,8 @@ public class RegularDefinition implements RegexElement {
                 .collect(Collectors.toList());
     }
 
-    NFA getBasis(){
+
+    NFA getBasis() {
         NFAState start = NFAState.newStartState("start "+getRawValue());
         NFAState end = NFAState.newAcceptingState("end "+getRawValue());
         start.addTransition(this,end);
@@ -88,7 +87,6 @@ public class RegularDefinition implements RegexElement {
         nfa.addState(end);
         return nfa;
     }
-
 
 
     public String getRawValue(){
@@ -101,17 +99,15 @@ public class RegularDefinition implements RegexElement {
 
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o){
         if (this == o) return true;
         if (!(o instanceof RegularDefinition)) return false;
-
-        RegularDefinition that = (RegularDefinition) o;
-
-        return rawRegdef != null ? rawRegdef.equals(that.rawRegdef) : that.rawRegdef == null;
+        RegularDefinition that = (RegularDefinition)o;
+        return that.toString().equals(this.toString());
     }
 
     @Override
     public int hashCode() {
-        return rawRegdef.hashCode();
+        return rawRegdef != null ? rawRegdef.hashCode() : 0;
     }
 }

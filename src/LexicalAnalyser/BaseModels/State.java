@@ -19,10 +19,37 @@ public class State {
     private MultiMap<RegularDefinition,State> transitions;
     private boolean isVisited;
     private String name;
+    private boolean isEnd;
 
 
     public State(String name) {
-        this(false,false,name);
+        this(false, false, name);
+    }
+
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void makeEnd() {
+        isEnd = true;
+    }
+
+    public void unEnd() {
+        isEnd = false;
+    }
+
+    public void makeStart() {
+        isStart = true;
+    }
+
+    public void unStart() {
+        isStart = false;
+    }
+
+    public boolean isStart() {
+        return isStart;
     }
 
     public State(boolean isAccepting, boolean isStart, String name) {
@@ -64,11 +91,6 @@ public class State {
     public boolean isAccepting() {
         return isAccepting;
     }
-
-    public boolean isStart() {
-        return isStart;
-    }
-
 
     public boolean isVisited() {
         return isVisited;

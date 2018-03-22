@@ -16,6 +16,7 @@ public class StateGraph {
     private State startState;
     private State endState;
     private Set<RegularDefinition> language;
+
     private Set<State> acceptingStates;
 
     public StateGraph() {
