@@ -23,7 +23,7 @@ public class RegularDefinition implements RegexElement {
         this.rawRegdef = rawRegdef;
         Set<String> stringParts = parse(rawRegdef);
         parts = new HashSet<>();
-        if(rawRegdef.length() > 1 && rawRegdef.charAt(0)!='\\'){
+        if(stringParts.size() > 1 && rawRegdef.charAt(0)!='\\'){
             this.parts = stringParts.stream()
                     .map(RegularDefinition::new).collect(Collectors.toSet());
         }
@@ -58,20 +58,21 @@ public class RegularDefinition implements RegexElement {
     private Set<String> parse(String rawRegdef) {
 
         List<String> oredRanges = split(rawRegdef, '|');
-        Set<String> parsedRanges = new HashSet<>();
+        Set<String> parsedStrings = new HashSet<>();
         for (String range : oredRanges) {
             List<String> startAndEnd = split(range, '-');
             if (startAndEnd.size() > 2)
                 System.out.println("exception regdef");
             if (startAndEnd.size() == 1)
-                parsedRanges.add(startAndEnd.get(0));
+                parsedStrings.add(startAndEnd.get(0));
+            else
+                parsedStrings.addAll(rangeToChars(startAndEnd.get(0),startAndEnd.get(1)));
         }
-        return parsedRanges;
+        return parsedStrings;
     }
 
 
     private List<String> rangeToChars(String start_str, String end_str){
-
         return IntStream.rangeClosed(start_str.charAt(0), end_str.charAt(0))
                 .mapToObj(c -> (char) c + "")
                 .collect(Collectors.toList());

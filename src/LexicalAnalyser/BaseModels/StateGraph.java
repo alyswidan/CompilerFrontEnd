@@ -138,6 +138,7 @@ public class StateGraph {
     }
 
     public Set<RegularDefinition> getLanguage() {
+
         return language;
     }
 
