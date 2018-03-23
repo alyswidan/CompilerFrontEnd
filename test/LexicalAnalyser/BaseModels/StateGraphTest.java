@@ -20,7 +20,7 @@ class StateGraphTest {
         temp = new State(false,false,"temp");
         start.addTransition("a", end);
         start.addTransition("b", end);
-        start.addTransition("a-z",temp);
+        start.addTransition("a",temp);
         temp.addTransition("e",end);
         g.addState(start);
         g.addState(end);
@@ -29,6 +29,20 @@ class StateGraphTest {
 
     @Test
     void getEdges() {
+        System.out.println(g);
+    }
+
+    @Test
+    void duplicateStateNames(){
+        State s1 =  new State("start" );
+        State s2 = new State();
+        start.addTransition("a",s1);
+        start.addTransition("c",s2);
+
+        s1.addTransition("a", end);
+        s2.addTransition("b", end);
+        g.addState(s1);
+        g.addState(s2);
         System.out.println(g);
     }
 }

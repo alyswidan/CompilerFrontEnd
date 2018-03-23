@@ -18,21 +18,7 @@ public class Regex implements Iterable<RegexElement> {
         this.rawRegex = rawRegex;
     }
 
-
-    void toPostfix() {
-
-
-        if (isPostfix()) {
-            return;
-        }
-
-        // new branch added as InfixToPostfix
-        /*
-         * perform infix to postfix conversion of the raw regex string to a
-         * postfix regex string and replacing the value of raw regex with
-         * this postfix expression
-         */
-
+    void oldStuff(){
         /*
 
         int StringSize = this.length();
@@ -157,6 +143,21 @@ public class Regex implements Iterable<RegexElement> {
 
         this.rawRegex=output;
         isPostfix=true;*/
+    }
+
+    void toPostfix() {
+
+
+        if (isPostfix()) {
+            return;
+        }
+
+        // new branch added as InfixToPostfix
+        /*
+         * perform infix to postfix conversion of the raw regex string to a
+         * postfix regex string and replacing the value of raw regex with
+         * this postfix expression
+         */
 
         String output = "";
         Deque<RegexElement> stack = new LinkedList<>();
@@ -165,34 +166,24 @@ public class Regex implements Iterable<RegexElement> {
         for (RegexElement Present : this) {
 
             if (Previous != null) {
-
-                if (Previous instanceof KleeneClosureOperator || Previous instanceof PlusClosureOperator || Previous instanceof RegularDefinition) {
+                if (Previous instanceof KleeneClosureOperator ||
+                    Previous instanceof PlusClosureOperator ||
+                    Previous instanceof RegularDefinition) {
 
                     if (Present instanceof RegularDefinition) {
                         dot = new ConcatenationOperator();//!!!! where will i put the output(b:character) **
 
-                    } else {
+                    } else if (Present instanceof OpenBracketOperator) {
 
-                        if (Present instanceof OpenBracketOperator) {
-
-                            dot = new ConcatenationOperator(); // where will put the open bracket
-                        }
-
+                        dot = new ConcatenationOperator(); // where will put the open bracket
                     }
                     checkPriority(stack, dot, output);
-
-
                 }
-
             }
-
 
             if (Present instanceof RegularDefinition) {
                 // this means its a charchter ex : a,b,letter, digit
-
                 output += Present;
-
-
             } else {
                 // this means this is an operator
                 if (Present instanceof OpenBracketOperator) {
@@ -201,19 +192,17 @@ public class Regex implements Iterable<RegexElement> {
                     // we have to pop till we find '('
                     while (!stack.isEmpty()) { // as long as the stack is not empty
                         RegexElement Operator = stack.removeFirst();
-                        if (Operator instanceof OpenBracketOperator)
+                        if (Operator instanceof OpenBracketOperator) {
                             break;
-                        else {
+                        } else {
                             output = output + Operator.getRawValue();
 
                         }
                     }
                 }
                 checkPriority(stack, Present, output);
-
-
             }
-
+            Previous = Present;
         }
     }
 
@@ -231,7 +220,9 @@ public class Regex implements Iterable<RegexElement> {
 
                     // this means the operator in the stack is smaller than the Element
 
-                    while (!stack.isEmpty() && ((RegexOperator) stack.peekFirst()).compareTo((RegexOperator) Present) < 0) { // as long as the stack is not empty and the stack element has a higher priority than the element
+                    while (!stack.isEmpty() && ((RegexOperator) stack.peekFirst()).compareTo((RegexOperator) Present) < 0) {
+                        // as long as the stack is not empty and the stack element has
+                        // a higher priority than the element
                         RegexElement Operator = stack.peekFirst();
                         if (Operator instanceof OpenBracketOperator)
                             break;
@@ -250,8 +241,6 @@ public class Regex implements Iterable<RegexElement> {
         } else {
             stack.addFirst(Present);
         }
-
-
     }
 
 

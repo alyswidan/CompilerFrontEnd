@@ -1,6 +1,10 @@
 package LexicalAnalyser.BaseModels;
 
+import LexicalAnalyser.DFA.DFA;
+import LexicalAnalyser.DFA.DFAState;
+import LexicalAnalyser.Regex.EpsilonRegularDefinition;
 import LexicalAnalyser.Regex.RegularDefinition;
+import LexicalAnalyser.Utils;
 
 import javax.swing.table.TableRowSorter;
 import java.util.*;
@@ -9,16 +13,20 @@ import java.util.*;
  * Created by alyswidan on 14/03/18.
  */
 public class StateGraph {
-    private Set<State> states;
+    private Map<State,State> states;
     private State startState;
     private State endState;
-
-
+    private Set<RegularDefinition> language;
     private Set<State> acceptingStates;
+    private int currentStateNumber;
+    private Map<String,Integer> StateNameCounts;
 
     public StateGraph() {
-        states = new HashSet<>();
+        StateNameCounts = new HashMap<>();
+        currentStateNumber = 0;
+        states = new HashMap<>();
         acceptingStates = new HashSet<>();
+        language = new HashSet<>();
     }
 
     public State getStartState() {
@@ -30,7 +38,15 @@ public class StateGraph {
     }
 
     public void addState(State state){
-        states.add(state);
+        state.setName(getAdjustedName(state.getName()));
+        states.put(state,state);
+
+        /*add all regular definitions on edges out of state to this graph's language*/
+        state.forEach((regDef, s) -> {
+            if(!(regDef instanceof EpsilonRegularDefinition))
+                language.addAll(regDef.getParts());
+        });
+
         if(state.isAccepting()){
             acceptingStates.add(state);
         }
@@ -40,13 +56,55 @@ public class StateGraph {
 
     }
 
+    private String getAdjustedName(String name){
+        /*
+        *  if the name is an integer or an empty string we adjust it to
+        *  the next state number.
+        *  if it's not we append the number of times we saw this name before in the graph.
+        *  This ensures state names are unique within the graph
+        *  ex:
+        *  if we already have a state named AA
+        *  and we get it again we rename it to AA1
+        *
+        * */
+
+        if(name == null || name.equals("")){
+            return  Integer.toString(currentStateNumber++);
+        }
+        if(Utils.isInteger(name)){
+           return   Integer.toString(currentStateNumber++);
+        }
+        else{
+            int nameCount = StateNameCounts.getOrDefault(name,0);
+            addStateName(name);
+            return name+(nameCount>0?nameCount:"");
+        }
+    }
+
+    private void addStateName(String name){
+        StateNameCounts.computeIfPresent(name, (key,cnt)->cnt + 1);
+        StateNameCounts.putIfAbsent(name,1);
+
+    }
+
+    public void removeState(State state){
+        states.remove(state);
+    }
+
+    public void addAll(Collection<State> states){
+        states.forEach(this::addState);
+    }
 
     public void unVisitAll() {
-        states.forEach(State::unVisit);
+        states.forEach((state, state2) -> state.unVisit());
     }
 
     public boolean hasState(State state) {
-        return states.contains(state);
+        return states.containsKey(state);
+    }
+
+    public State getState(State state) {
+        return states.get(state);
     }
 
     public void setStartState(State startState) {
@@ -61,24 +119,28 @@ public class StateGraph {
     {
         state.visit();
 
-        Map<RegularDefinition, State> adj = state.getTransitions();
         StringBuilder builder = new StringBuilder();
-        for (Map.Entry<RegularDefinition, State> entry : adj.entrySet())
-        {
+
+
+        state.forEach((regDef,neighbour) ->{
             builder.append("from: ")
                     .append(state)
                     .append(" to: ")
-                    .append(entry.getValue())
+                    .append(neighbour)
                     .append(" value: ")
-                    .append(entry.getKey())
+                    .append(regDef)
                     .append("\n");
-            if(!entry.getValue().isVisited()){
-                builder.append(DFSUtil(entry.getValue()));
+            if(!neighbour.isVisited()){
+                builder.append(DFSUtil(neighbour));
             }
-        }
+        });
         return builder;
     }
 
+    public Set<RegularDefinition> getLanguage() {
+
+        return language;
+    }
 
     @Override
     public String toString() {

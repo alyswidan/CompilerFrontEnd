@@ -16,18 +16,22 @@ public class ConcatenationOperator extends BinaryRegexOperator{
     @Override
     public NFA execute(NFA leftOperand, NFA rightOperand) {
         /**
-         * make a joint node joining
-         * the accept states of the leftOperand
-         * and the start state fo the rightOperand
-         * left end --> epsilon --> joint
-         * joint --> epsilon --> right start
+         * make end of left start of right
+         * unEnd end of left
+         * unStart start of right
          */
         NFAState startRightOperand = (NFAState) rightOperand.getStartState();
+        startRightOperand.unStart();
         NFAState endLeftOperand = leftOperand.mergeAcceptStates();
-        NFAState jointState = new NFAState();
-        endLeftOperand.addTransition(new EpsilonRegularDefinition(), jointState);
-        leftOperand.addState(jointState);
-        jointState.addTransition(new EpsilonRegularDefinition(), startRightOperand);
+        endLeftOperand.unEnd();
+        NFAState endRightOperand = rightOperand.mergeAcceptStates();
+//        endLeftOperand.addTransition(startRightOperand
+//                .getTransitions()
+//                .keySet()
+//                .stream()
+//                .findFirst()
+//                .get(), endRightOperand);
+        leftOperand.addState(endRightOperand);
         return leftOperand;
     }
 

@@ -1,11 +1,11 @@
 package LexicalAnalyser.NFA;
-import LexicalAnalyser.Regex.ConcatenationOperator;
-import LexicalAnalyser.Regex.EpsilonRegularDefinition;
-import LexicalAnalyser.Regex.Regex;
+import LexicalAnalyser.DFA.DeadState;
+import LexicalAnalyser.Regex.*;
 import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.BaseModels.StateGraph;
-import LexicalAnalyser.Regex.UnionOperator;
 import org.jetbrains.annotations.NotNull;
+import LexicalAnalyser.Regex.UnionOperator;
+
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  * Created by alyswidan on 15/03/18.
  */
 public class NFA extends StateGraph {
+
 
     public static NFA fromRegex(Regex regex){
         //uses Thompson's algorithm to convert the regex string to an nfa
@@ -25,23 +26,31 @@ public class NFA extends StateGraph {
         return null;
     }
 
-    public Set<State> getEpsilonClosure(State state) {
-        if(!this.hasState(state))
-            return null;
+    public Set<NFAState> getEpsilonClosure(NFAState state) {
+        if(state == null){
+            return new HashSet<>();
+        }
         this.unVisitAll();
         return dfs(state);
     }
 
-    private Set<State> dfs(State state) {
+    public Set<NFAState> getEpsilonClosure(Set<NFAState> states){
+        return states.stream()
+                .map(this::getEpsilonClosure)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<NFAState> dfs(NFAState state) {
         if(state.isVisited()){
             return new HashSet<>();
         }
         state.visit();
-        Set<State> closure = new HashSet<>();
+        Set<NFAState> closure = new HashSet<>();
         closure.add(state);
-        state.getTransitions().forEach((regDef, neighbour) ->{
-            if (regDef instanceof EpsilonRegularDefinition){
-                closure.addAll(dfs(neighbour));
+        state.forEach((regDef, neighbour) ->{
+            if (regDef instanceof EpsilonRegularDefinition && neighbour instanceof NFAState){
+                closure.addAll(dfs((NFAState) neighbour));
             }
         } );
 
@@ -67,6 +76,7 @@ public class NFA extends StateGraph {
         }
     }
 
+
     public NFAState mergeAcceptStates(){
         Set<NFAState> acceptStates = getAcceptingStates().stream().map(state -> (NFAState)state).collect(Collectors.toSet());
         NFAState newEnd;
@@ -79,4 +89,6 @@ public class NFA extends StateGraph {
         }
         return newEnd;
     }
+
+
 }
