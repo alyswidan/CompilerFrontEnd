@@ -26,10 +26,12 @@ public class State {
         this(false, false, name);
     }
 
-
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void makeEnd() {
@@ -134,7 +136,7 @@ public class State {
     }
 
     public String toString() {
-        return this.name + " "+(isAccepting()?"A ":"") + (isStart()?"S":"");
+        return this.name + " "+(isAccepting()?"(A) ":"") + (isStart()?"(S)":"");
     }
 
 

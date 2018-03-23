@@ -21,12 +21,12 @@ public class ConcatenationOperator implements BinaryRegexOperator{
         NFAState endLeftOperand = leftOperand.mergeAcceptStates();
         endLeftOperand.unEnd();
         NFAState endRightOperand = rightOperand.mergeAcceptStates();
-        endLeftOperand.addTransition(startRightOperand
-                .getTransitions()
-                .keySet()
-                .stream()
-                .findFirst()
-                .get(), endRightOperand);
+//        endLeftOperand.addTransition(startRightOperand
+//                .getTransitions()
+//                .keySet()
+//                .stream()
+//                .findFirst()
+//                .get(), endRightOperand);
         leftOperand.addState(endRightOperand);
         return leftOperand;
     }

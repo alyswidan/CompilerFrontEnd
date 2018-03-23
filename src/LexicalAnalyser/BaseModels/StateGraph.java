@@ -4,6 +4,7 @@ import LexicalAnalyser.DFA.DFA;
 import LexicalAnalyser.DFA.DFAState;
 import LexicalAnalyser.Regex.EpsilonRegularDefinition;
 import LexicalAnalyser.Regex.RegularDefinition;
+import LexicalAnalyser.Utils;
 
 import javax.swing.table.TableRowSorter;
 import java.util.*;
@@ -16,10 +17,13 @@ public class StateGraph {
     private State startState;
     private State endState;
     private Set<RegularDefinition> language;
-
     private Set<State> acceptingStates;
+    private int currentStateNumber;
+    private Map<String,Integer> StateNameCounts;
 
     public StateGraph() {
+        StateNameCounts = new HashMap<>();
+        currentStateNumber = 0;
         states = new HashMap<>();
         acceptingStates = new HashSet<>();
         language = new HashSet<>();
@@ -34,6 +38,7 @@ public class StateGraph {
     }
 
     public void addState(State state){
+        state.setName(getAdjustedName(state.getName()));
         states.put(state,state);
 
         /*add all regular definitions on edges out of state to this graph's language*/
@@ -48,6 +53,37 @@ public class StateGraph {
         if(state.isStart()){
             startState = state;
         }
+
+    }
+
+    private String getAdjustedName(String name){
+        /*
+        *  if the name is an integer or an empty string we adjust it to
+        *  the next state number.
+        *  if it's not we append the number of times we saw this name before in the graph.
+        *  This ensures state names are unique within the graph
+        *  ex:
+        *  if we already have a state named AA
+        *  and we get it again we rename it to AA1
+        *
+        * */
+
+        if(name == null || name.equals("")){
+            return  Integer.toString(currentStateNumber++);
+        }
+        if(Utils.isInteger(name)){
+           return   Integer.toString(currentStateNumber++);
+        }
+        else{
+            int nameCount = StateNameCounts.getOrDefault(name,0);
+            addStateName(name);
+            return name+(nameCount>0?nameCount:"");
+        }
+    }
+
+    private void addStateName(String name){
+        StateNameCounts.computeIfPresent(name, (key,cnt)->cnt + 1);
+        StateNameCounts.putIfAbsent(name,1);
 
     }
 
