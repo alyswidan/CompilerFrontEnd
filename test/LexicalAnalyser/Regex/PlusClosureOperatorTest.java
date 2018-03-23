@@ -9,10 +9,14 @@ class PlusClosureOperatorTest {
 
     @Test
     void execute() {
-        RegularDefinition regDef = new RegularDefinition("a|b*");
+        RegularDefinition regDef = new RegularDefinition("a");
+        RegularDefinition regDef1 = new RegularDefinition("b");
         NFA basis = regDef.getBasis();
+        NFA basis1 = regDef1.getBasis();
+        ConcatenationOperator concatenate = new ConcatenationOperator();
+        NFA temp = concatenate.execute(basis, basis1);
         PlusClosureOperator plus = new PlusClosureOperator();
-        plus.execute(basis);
-        System.out.println(basis);
+        System.out.println("concatenation:\n"+temp);
+        System.out.println("plus closure:\n"+plus.execute(temp));
     }
 }

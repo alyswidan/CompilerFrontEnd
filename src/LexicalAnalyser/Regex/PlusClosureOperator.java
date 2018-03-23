@@ -14,11 +14,8 @@ public class PlusClosureOperator implements UnaryRegexOperator {
         /**
          * end --> epsilon --> start
          */
-        NFAState start = (NFAState) operand.getStartState();
-        NFAState end = operand.mergeAcceptStates();
-
-        end.addTransition(new EpsilonRegularDefinition(), start);
-        operand.addState(end);
+        operand.getAcceptingStates()
+                .forEach(s-> s.addTransition(new EpsilonRegularDefinition(), operand.getStartState()));
         return operand;
         /**
          * it can be done like this yet to organize
