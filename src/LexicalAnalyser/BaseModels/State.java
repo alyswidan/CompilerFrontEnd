@@ -2,7 +2,7 @@ package LexicalAnalyser.BaseModels;
 
 import LexicalAnalyser.Regex.EpsilonRegularDefinition;
 import LexicalAnalyser.Regex.RegularDefinition;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,6 +20,10 @@ public class State {
     private boolean isVisited;
     private String name;
 
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public State(String name) {
         this(false,false,name);

@@ -18,6 +18,8 @@ public class StateGraph {
     private Set<RegularDefinition> language;
     private Set<State> acceptingStates;
 
+
+
     public StateGraph() {
         states = new HashMap<>();
         acceptingStates = new HashSet<>();

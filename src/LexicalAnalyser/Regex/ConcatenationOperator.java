@@ -17,17 +17,13 @@ public class ConcatenationOperator implements BinaryRegexOperator{
          * unStart start of right
          */
         NFAState startRightOperand = (NFAState) rightOperand.getStartState();
-        startRightOperand.unStart();
+        startRightOperand.setStart(false);
         NFAState endLeftOperand = leftOperand.mergeAcceptStates();
-        endLeftOperand.unEnd();
-        NFAState endRightOperand = rightOperand.mergeAcceptStates();
-        endLeftOperand.addTransition(startRightOperand
-                .getTransitions()
-                .keySet()
-                .stream()
-                .findFirst()
-                .get(), endRightOperand);
-        leftOperand.addState(endRightOperand);
+        endLeftOperand.setAccepting(false);
+
+        endLeftOperand.addTransition(new EpsilonRegularDefinition(), startRightOperand);
+
+        leftOperand.addState(endLeftOperand);
         return leftOperand;
     }
 

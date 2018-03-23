@@ -1,6 +1,8 @@
 package LexicalAnalyser.BaseModels;
 
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
+
+import com.sun.istack.internal.NotNull;
 
 import java.util.*;
 import java.util.function.Consumer;
