@@ -19,10 +19,11 @@ public class NFA extends StateGraph {
         return new NFA();
     }
 
-    public static NFA fromMultiple(Collection<NFA> NFAs){
-        UnionOperator union = new UnionOperator();
-        return union.execute((List<NFA>) NFAs);
-    }
+//    public static NFA fromMultiple(Collection<NFA> NFAs){
+//        UnionOperator union = new UnionOperator();
+//        return union.execute((List<NFA>) NFAs);
+//        //return null;
+//    }
 
     public Set<NFAState> getEpsilonClosure(NFAState state) {
         if(state == null){

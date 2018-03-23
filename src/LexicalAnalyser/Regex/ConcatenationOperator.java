@@ -11,19 +11,19 @@ public class ConcatenationOperator implements BinaryRegexOperator{
 
     @Override
     public NFA execute(NFA leftOperand, NFA rightOperand) {
-        /**
-         * make end of left start of right
-         * unEnd end of left
-         * unStart start of right
-         */
+
         NFAState startRightOperand = (NFAState) rightOperand.getStartState();
         startRightOperand.setStart(false);
+
         NFAState endLeftOperand = leftOperand.mergeAcceptStates();
         endLeftOperand.setAccepting(false);
 
         endLeftOperand.addTransition(new EpsilonRegularDefinition(), startRightOperand);
 
+        NFAState endRightOperand = rightOperand.mergeAcceptStates();
         leftOperand.addState(endLeftOperand);
+        leftOperand.addState(endRightOperand);
+        leftOperand.setEndState(endLeftOperand);
         return leftOperand;
     }
 

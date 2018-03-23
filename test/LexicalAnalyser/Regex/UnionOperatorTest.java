@@ -23,6 +23,8 @@ class UnionOperatorTest {
         operands.add(basis2);
         operands.add(basis3);
         UnionOperator union = new UnionOperator();
-        System.out.println(union.execute(operands));
+        ConcatenationOperator concatenate = new ConcatenationOperator();
+        NFA test = union.execute(basis1, basis2);
+        System.out.println(concatenate.execute(test, basis3));
     }
 }
