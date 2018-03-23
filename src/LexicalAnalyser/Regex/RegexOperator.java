@@ -10,10 +10,6 @@ public abstract class RegexOperator implements RegexElement,Comparable<RegexOper
     protected int priority = 0;
     @Override
     public int compareTo(RegexOperator regexOperator) {
-
-
-
-
         Comparator<RegexOperator> comparator = Comparator.comparingInt(regexOp -> regexOp.priority);
         return comparator.compare(this, regexOperator);
     }

@@ -7,4 +7,9 @@ public  class OpenBracketOperator extends RegexOperator {
     public String getRawValue() {
         return "(";
     }
+
+    @Override
+    public String toString() {
+        return "(";
+    }
 }

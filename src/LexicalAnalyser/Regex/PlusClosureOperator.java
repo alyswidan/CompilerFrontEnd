@@ -40,4 +40,8 @@ public class PlusClosureOperator extends UnaryRegexOperator {
         return "+";
     }
 
+    @Override
+    public String toString() {
+        return "+";
+    }
 }

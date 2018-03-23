@@ -5,4 +5,9 @@ public class ClosedBracketOperator extends RegexOperator {
     public String getRawValue() {
         return ")";
     }
+
+    @Override
+    public String toString() {
+        return ")";
+    }
 }

@@ -38,4 +38,9 @@ public class ConcatenationOperator extends BinaryRegexOperator{
     public String getRawValue(){
         return ".";
     }
+
+    @Override
+    public String toString() {
+        return ".";
+    }
 }

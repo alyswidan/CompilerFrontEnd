@@ -43,19 +43,75 @@ class RegexTest {
         Regex regex = new Regex("a+b(xb|(ab(ab)*)*)*");
         regex.toPostfix();
         System.out.print(regex.rawRegex);
-        assert regex.rawRegex.equals("a+bxb.abab.*..*|*..");
+        assert regex.rawRegex.equals("a+bxbabab.*..*|*..");
     }
 
     @org.junit.jupiter.api.Test
     void iterator() {
-            RegularDefinitionsTable.put("letter", new RegularDefinition("letter"));
-            RegularDefinitionsTable.put("digit", new RegularDefinition("digit"));
+            RegularDefinitionsTable.put("letter", new RegularDefinition("a-z"));
+            RegularDefinitionsTable.put("digit", new RegularDefinition("0-9"));
 
         Regex regex = new Regex("\\. letter digit A|.|");
-        Iterator<RegexElement> iter = regex.iterator();
         for (RegexElement element : regex){
-            System.out.println(element.getRawValue());
+            System.out.print(element.getRawValue() +" " + element.getClass() + "\n");
         }
     }
+
+    @org.junit.jupiter.api.Test
+    void iteratorInfix() {
+        RegularDefinitionsTable.put("letter", new RegularDefinition("a-z"));
+        RegularDefinitionsTable.put("digit", new RegularDefinition("0-9"));
+
+        Regex regex = new Regex("letter+(letter | digit \\. | \\*)*");
+        for (RegexElement element : regex){
+            System.out.print(element.getRawValue() +" " + element.getClass().getSimpleName() + "\n");
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    void unaryFollowedByBracket() {
+        RegularDefinitionsTable.put("letter", new RegularDefinition("a-z"));
+        RegularDefinitionsTable.put("digit", new RegularDefinition("0-9"));
+
+        Regex regex = new Regex("letter+(letter | digit)*");
+        for (RegexElement element : regex){
+            System.out.print(element.getRawValue() +" " + element.getClass().getSimpleName() + "\n");
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    void consecutiveRegDefs() {
+        RegularDefinitionsTable.put("letter", new RegularDefinition("a-z"));
+        RegularDefinitionsTable.put("digit", new RegularDefinition("0-9"));
+
+        Regex regex = new Regex("letter letter letter digit A B digit");
+        for (RegexElement element : regex){
+            System.out.print(element.getRawValue() +" " + element.getClass().getSimpleName() + "\n");
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    void regDefFollowedByABracket() {
+        RegularDefinitionsTable.put("letter", new RegularDefinition("a-z"));
+        RegularDefinitionsTable.put("digit", new RegularDefinition("0-9"));
+
+        Regex regex = new Regex("(A|B)*letter A B|\\L|\\* \\+");
+        for (RegexElement element : regex){
+            System.out.print(element.getRawValue() +" " + element.getClass().getSimpleName() + "\n");
+        }
+    }
+
+
+    @org.junit.jupiter.api.Test
+    void priority() {
+        RegexOperator k = RegexOperatorFactory.getOperator('*');
+        RegexOperator p = RegexOperatorFactory.getOperator('+');
+        RegexOperator u = RegexOperatorFactory.getOperator('|');
+        System.out.println(u.compareTo(k));
+        System.out.println(k.compareTo(u));
+
+
+    }
+
 
 }

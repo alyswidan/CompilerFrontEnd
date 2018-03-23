@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.function.Predicate;
 
 /**
  * Created by alyswidan on 15/03/18.
@@ -18,7 +19,7 @@ public class Regex implements Iterable<RegexElement> {
         this.rawRegex = rawRegex;
     }
 
-    void oldStuff(){
+    void oldStuff() {
         /*
 
         int StringSize = this.length();
@@ -159,33 +160,18 @@ public class Regex implements Iterable<RegexElement> {
          * this postfix expression
          */
 
-        String output = "";
+        StringBuilder builder = new StringBuilder();
         Deque<RegexElement> stack = new LinkedList<>();
-        RegexElement Previous = null;
-        RegexElement dot = null;
         for (RegexElement Present : this) {
-
-            if (Previous != null) {
-                if (Previous instanceof KleeneClosureOperator ||
-                    Previous instanceof PlusClosureOperator ||
-                    Previous instanceof RegularDefinition) {
-
-                    if (Present instanceof RegularDefinition) {
-                        dot = new ConcatenationOperator();//!!!! where will i put the output(b:character) **
-
-                    } else if (Present instanceof OpenBracketOperator) {
-
-                        dot = new ConcatenationOperator(); // where will put the open bracket
-                    }
-                    checkPriority(stack, dot, output);
-                }
-            }
 
             if (Present instanceof RegularDefinition) {
                 // this means its a charchter ex : a,b,letter, digit
-                output += Present;
+                builder.append(Present);
             } else {
                 // this means this is an operator
+                /*
+                * note: this is repeated in the function push operator so I removed it from the function
+                * */
                 if (Present instanceof OpenBracketOperator) {
                     stack.addFirst(Present);
                 } else if (Present instanceof ClosedBracketOperator) {
@@ -195,49 +181,47 @@ public class Regex implements Iterable<RegexElement> {
                         if (Operator instanceof OpenBracketOperator) {
                             break;
                         } else {
-                            output = output + Operator.getRawValue();
-
+                            builder.append(Operator);
                         }
                     }
+                } else {
+                    pushOperator(stack, Present, builder);
                 }
-                checkPriority(stack, Present, output);
             }
-            Previous = Present;
         }
+        while (!stack.isEmpty()){
+            builder.append(stack.removeFirst());
+        }
+        rawRegex = builder.toString();
     }
 
-    private void checkPriority(Deque<RegexElement> stack, RegexElement Present, String output) {
+    private void pushOperator(Deque<RegexElement> stack, RegexElement Present, StringBuilder builder) {
+        /*
+        * Pops the stack until it's top has a lower priority than the current element
+        *
+        * */
+
+        Predicate<RegexElement> stackPriorityIsHigherThan = regexElement -> ((RegexOperator) stack.peekFirst()).compareTo((RegexOperator) regexElement) == -1;
+
         if (!stack.isEmpty()) {
-            if (stack.peekFirst() instanceof OpenBracketOperator) {
+            if (stackPriorityIsHigherThan.negate().test(Present)) {
+                // the present element has a higher priority than top of the stack
                 stack.addFirst(Present);
             } else {
-                int priority = ((RegexOperator) stack.peekFirst()).compareTo((RegexOperator) Present);
-                if (priority >= 0) {
-                    // the operator in stack is higher in priority than Element
-                    stack.addFirst(Present);
-
-                } else {
-
-                    // this means the operator in the stack is smaller than the Element
-
-                    while (!stack.isEmpty() && ((RegexOperator) stack.peekFirst()).compareTo((RegexOperator) Present) < 0) {
-                        // as long as the stack is not empty and the stack element has
-                        // a higher priority than the element
-                        RegexElement Operator = stack.peekFirst();
-                        if (Operator instanceof OpenBracketOperator)
-                            break;
-                        else {
-                            Operator = stack.removeFirst();
-                            output = output + Operator.getRawValue();
-                        }
+                // the present element has a lower priority than the top of the stack
+                while (!stack.isEmpty() && stackPriorityIsHigherThan.test(Present)) {
+                    // as long as the stack is not empty and the stack element has
+                    // a higher priority than the element
+                    RegexElement Operator = stack.peekFirst();
+                    if (Operator instanceof OpenBracketOperator)
+                        break;
+                    else {
+                        Operator = stack.removeFirst();
+                        builder.append(Operator);
                     }
-                    stack.addFirst(Present);
-
                 }
-
-
+                stack.addFirst(Present);
             }
-
         } else {
             stack.addFirst(Present);
         }

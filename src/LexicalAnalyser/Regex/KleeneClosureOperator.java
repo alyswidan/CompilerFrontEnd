@@ -8,6 +8,11 @@ import LexicalAnalyser.NFA.NFAState;
  */
 public class KleeneClosureOperator extends UnaryRegexOperator {
 
+
+    public KleeneClosureOperator() {
+
+        priority = RegexOperator.MINPRIORITY;
+    }
     @Override
     public NFA execute(NFA operand) {
         /**
@@ -40,6 +45,11 @@ public class KleeneClosureOperator extends UnaryRegexOperator {
     }
 
     public String getRawValue(){
+        return "*";
+    }
+
+    @Override
+    public String toString() {
         return "*";
     }
 }
