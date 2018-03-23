@@ -12,11 +12,9 @@ import java.util.*;
  * Created by alyswidan on 15/03/18.
  */
 public class NFAToDFAConverter {
-    private Deque<DFAState> unmarkedStates;
+
 
     public NFAToDFAConverter() {
-
-        this.unmarkedStates = new LinkedList<>();
     }
 
     /*
@@ -24,13 +22,14 @@ public class NFAToDFAConverter {
     * todo: whole project needs refactoring
     * */
     public DFA convert(NFA nfa){
-        int currentStateNumber = 0;
-        DFAState start = new DFAState(nfa.getEpsilonClosure((NFAState)nfa.getStartState()),""+currentStateNumber++);
+        Deque<DFAState> unmarkedStates = new LinkedList<>();
+        DFAState start = new DFAState(nfa.getEpsilonClosure((NFAState)nfa.getStartState()));
         unmarkedStates.add(start);
         DFA resultDFA = new DFA();
         resultDFA.addState(start);
         resultDFA.setStartState(start);
         DFAState currentState;
+
         while(!unmarkedStates.isEmpty()){
             currentState = unmarkedStates.remove();
 
@@ -39,7 +38,7 @@ public class NFAToDFAConverter {
                 DFAState newState = currentState.transition(regDef);
                 Set<NFAState> epsClosure = nfa.getEpsilonClosure(newState.getEquivalentNFAStates());
 
-                DFAState state = epsClosure.isEmpty()?new DeadState():new DFAState(epsClosure,""+(currentStateNumber++));
+                DFAState state = epsClosure.isEmpty()?new DeadState():new DFAState(epsClosure);
 
                 if (state instanceof DeadState){
 
