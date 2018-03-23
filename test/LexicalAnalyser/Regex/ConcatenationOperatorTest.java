@@ -9,8 +9,8 @@ class ConcatenationOperatorTest {
 
     @Test
     void execute() {
-        RegularDefinition left = new RegularDefinition("a");
-        RegularDefinition right = new RegularDefinition("b");
+        RegularDefinition left = new RegularDefinition("a*");
+        RegularDefinition right = new RegularDefinition("bc");
         NFA basisLeft = left.getBasis();
         NFA basisRight = right.getBasis();
         ConcatenationOperator concatenate = new ConcatenationOperator();

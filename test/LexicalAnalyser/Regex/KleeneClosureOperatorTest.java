@@ -8,7 +8,7 @@ class KleeneClosureOperatorTest {
 
     @org.junit.jupiter.api.Test
     void execute() {
-        RegularDefinition a = new RegularDefinition("a");
+        RegularDefinition a = new RegularDefinition("ab");
         // System.out.println("regular def is :"+a);
         NFA basis = a.getBasis();
         KleeneClosureOperator kc = new KleeneClosureOperator();

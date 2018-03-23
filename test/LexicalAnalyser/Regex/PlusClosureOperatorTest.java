@@ -9,7 +9,7 @@ class PlusClosureOperatorTest {
 
     @Test
     void execute() {
-        RegularDefinition regDef = new RegularDefinition("a");
+        RegularDefinition regDef = new RegularDefinition("a|b*");
         NFA basis = regDef.getBasis();
         PlusClosureOperator plus = new PlusClosureOperator();
         plus.execute(basis);
