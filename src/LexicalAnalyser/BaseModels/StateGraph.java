@@ -124,7 +124,8 @@ public class StateGraph implements Cloneable{
     }
 
     public void setEndState(State endState) {
-        endState.setAccepting(true);
+        if(endState != null)
+            endState.setAccepting(true);
         this.endState = endState;
     }
 
