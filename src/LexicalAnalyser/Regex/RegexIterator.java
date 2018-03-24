@@ -32,7 +32,7 @@ public class RegexIterator implements Iterator<RegexElement> {
     public RegexElement next() {
         Function<Integer,Character> getCharacter = i->regex.rawRegex.charAt(i);
         Predicate<Integer> inRange = i->i<regex.length();
-        Predicate<Integer> isOperator = i->inRange.test(i) && RegexOperatorFactory.isOperator(getCharacter.apply(i));
+        Predicate<Integer> isOperator = i->inRange.test(i) && RegexOperatorFactory.isOperator(getCharacter.apply(i)) && getCharacter.apply(i)!='.';
         Predicate<StringBuilder> isRegDef = s->RegularDefinitionsTable.containsKey(s.toString());
         Predicate<StringBuilder> isEpsilon = s-> s.toString().equals("\\L");
         Predicate<Integer> isEscape = i -> inRange.test(i) && getCharacter.apply(i) == '\\';

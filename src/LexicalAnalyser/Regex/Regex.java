@@ -164,6 +164,7 @@ public class Regex implements Iterable<RegexElement> {
         Deque<RegexElement> stack = new LinkedList<>();
         for (RegexElement Present : this) {
 
+            System.out.println(Present + " "+ Present.getClass().getSimpleName());
             if (Present instanceof RegularDefinition) {
                 // this means its a charchter ex : a,b,letter, digit
                 builder.append(Present);
