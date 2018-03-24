@@ -1,5 +1,6 @@
 package LexicalAnalyser.Regex;
 
+import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.NFA.NFA;
 import LexicalAnalyser.NFA.NFAState;
 import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
@@ -16,18 +17,13 @@ public class PlusClosureOperator extends UnaryRegexOperator {
 
     @Override
     public NFA execute(NFA operand) {
-        /**
-         * end --> epsilon --> start
-         */
 
-        operand.getAcceptingStates()
+        NFA newNFA = new NFA();
+        newNFA.addAll(operand.getStates());
+        newNFA.getAcceptingStates()
                 .forEach(s-> s.addTransition(new EpsilonRegularDefinition(), operand.getStartState()));
-        return operand;
-        /**
-         * it can be done like this yet to organize
-         */
-//        return  new ConcatenationOperator()
-//                .execute(operand, new KleeneClosureOperator().execute(operand));
+        newNFA.setStartState(operand.getStartState());
+        return newNFA;
     }
 
     public String getRawValue(){

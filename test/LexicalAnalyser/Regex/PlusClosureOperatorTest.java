@@ -3,6 +3,8 @@ package LexicalAnalyser.Regex;
 import LexicalAnalyser.NFA.NFA;
 import org.junit.jupiter.api.Test;
 
+import java.lang.management.PlatformLoggingMXBean;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlusClosureOperatorTest {
@@ -18,5 +20,17 @@ class PlusClosureOperatorTest {
         PlusClosureOperator plus = new PlusClosureOperator();
         System.out.println("concatenation:\n"+temp);
         System.out.println("plus closure:\n"+plus.execute(temp));
+    }
+
+    @Test
+    void execute1(){
+        RegularDefinition a = new RegularDefinition("a");
+        RegularDefinition b = new RegularDefinition("b");
+        NFA basis1 = a.getBasis();
+        NFA basis2 = b.getBasis();
+        UnionOperator union = new UnionOperator();
+        PlusClosureOperator plus = new PlusClosureOperator();
+        NFA temp = union.execute(basis1, basis2);
+        System.out.println(plus.execute(temp));
     }
 }
