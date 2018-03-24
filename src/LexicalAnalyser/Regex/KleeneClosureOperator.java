@@ -26,22 +26,43 @@ public class KleeneClosureOperator extends UnaryRegexOperator {
          * return updated operand
          */
 
-        NFAState start = (NFAState) operand.getStartState();
-        NFAState end  = operand.mergeAcceptStates();
+//        NFAState start = (NFAState) operand.getStartState();
+//        NFAState end  = operand.mergeAcceptStates();
+//
+//
+//        NFAState newStart = NFAState.newStartState("kleeneClousreStart");
+//        NFAState newEnd = NFAState.newAcceptingState("KleeneeClosureEnd");
+//
+//        newStart.addTransition(new EpsilonRegularDefinition(), start);
+//        end.addTransition(new EpsilonRegularDefinition(), newEnd);
+//        end.addTransition(new EpsilonRegularDefinition(), start);
+//        newStart.addTransition(new EpsilonRegularDefinition(), newEnd);
+//
+//        operand.setStartState(newStart);
+//        operand.setEndState(newEnd);
 
+        NFA newNFA = new NFA();
+        newNFA.addAll(operand.getStates());
 
-        NFAState newStart = NFAState.newStartState("kleeneClousreStart");
-        NFAState newEnd = NFAState.newAcceptingState("KleeneeClosureEnd");
+        NFAState newStart = new NFAState(false,false,"KleeneClosureStart");
+        NFAState newEnd = new NFAState(false,false,"KleeneeClosureEnd");
 
-        newStart.addTransition(new EpsilonRegularDefinition(), start);
-        end.addTransition(new EpsilonRegularDefinition(), newEnd);
-        end.addTransition(new EpsilonRegularDefinition(), start);
+        newNFA.addState(newStart);
+        newNFA.addState(newEnd);
+
+        newStart.addTransition(new EpsilonRegularDefinition(), operand.getStartState());
+        newNFA.getAcceptingStates().forEach(s->s.addTransition(new EpsilonRegularDefinition(), newEnd));
+
+        newNFA.getAcceptingStates().forEach(s->s.addTransition(new EpsilonRegularDefinition(), operand.getStartState()));
+
+        operand.getStartState().setStart(false);
+        operand.getAcceptingStates().forEach(s->s.setAccepting(false));
+
         newStart.addTransition(new EpsilonRegularDefinition(), newEnd);
 
-        operand.setStartState(newStart);
-        operand.setEndState(newEnd);
-
-        return operand;
+        newNFA.setStartState(newStart);
+        newNFA.setEndState(newEnd);
+        return newNFA;
     }
 
     public String getRawValue(){

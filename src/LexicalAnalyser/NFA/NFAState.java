@@ -44,13 +44,13 @@ public class NFAState extends State {
         super();
     }
 
-    public static NFAState epsilonSource(Set<NFAState> inStates){
+    public static NFAState epsilonSink(Set<NFAState> inStates){
         NFAState thisState = new NFAState();
         inStates.forEach(inState -> inState.addTransition(new EpsilonRegularDefinition(),thisState));
         return thisState;
     }
 
-    public static NFAState epsilonSink(Set<NFAState> outStates){
+    public static NFAState epsilonSource(Set<NFAState> outStates){
         NFAState thisState = new NFAState();
         outStates.forEach(outState -> thisState.addTransition(new EpsilonRegularDefinition(),outState));
         return thisState;

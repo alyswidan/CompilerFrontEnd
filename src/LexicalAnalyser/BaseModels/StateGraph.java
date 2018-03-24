@@ -118,18 +118,17 @@ public class StateGraph implements Cloneable{
     }
 
     public void setStartState(State startState) {
-
         if(startState != null && !startState.isStart())
             startState.setStart(true);
         this.startState = startState;
     }
 
     public void setEndState(State endState) {
+        endState.setAccepting(true);
         this.endState = endState;
     }
 
-    private StringBuilder DFSUtil(State state)
-    {
+    private StringBuilder DFSUtil(State state) {
         state.visit();
 
         StringBuilder builder = new StringBuilder();
