@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * Created by alyswidan on 14/03/18.
  */
-public class StateGraph {
+public class StateGraph implements Cloneable{
     private Map<State,State> states;
     private State startState;
     private State endState;
@@ -42,7 +42,7 @@ public class StateGraph {
     public void addState(State state){
         state.setName(getAdjustedName(state.getName()));
         states.put(state,state);
-
+        state.addParentGraph(this);
         /*add all regular definitions on edges out of state to this graph's language*/
         state.forEach((regDef, s) -> {
             if(!(regDef instanceof EpsilonRegularDefinition))
@@ -89,6 +89,14 @@ public class StateGraph {
 
     }
 
+    public void addAcceptingState(State state){
+        acceptingStates.add(state);
+    }
+
+    public void removeAcceptingState(State state){
+        acceptingStates.remove(state);
+    }
+
     public void removeState(State state){
         states.remove(state);
     }
@@ -110,6 +118,9 @@ public class StateGraph {
     }
 
     public void setStartState(State startState) {
+
+        if(startState != null && !startState.isStart())
+            startState.setStart(true);
         this.startState = startState;
     }
 
@@ -125,6 +136,7 @@ public class StateGraph {
 
 
         state.forEach((regDef,neighbour) ->{
+
             builder.append("from: ")
                     .append(state)
                     .append(" to: ")
@@ -149,4 +161,19 @@ public class StateGraph {
         this.unVisitAll();
         return DFSUtil(getStartState()).toString();
     }
+
+    public Set<State> getStates() {
+        return states.keySet();
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        StateGraph clone = (StateGraph) super.clone();
+        acceptingStates.forEach(clone::addAcceptingState);
+        clone.language.addAll(language);
+        getStates().forEach(state -> clone.addState(state));
+        StateNameCounts.forEach((s, i) -> clone.StateNameCounts.put(s,i));
+        return clone;
+    }
+
 }

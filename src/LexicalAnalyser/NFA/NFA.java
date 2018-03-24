@@ -82,12 +82,11 @@ public class NFA extends StateGraph {
         if (acceptStates.size()>1){
             newEnd = NFAState.epsilonSink(acceptStates);
             acceptStates.forEach(acceptState -> acceptState.setAccepting(false));
+            newEnd.setAccepting(true);
+            addState(newEnd);
         }else {
-
             newEnd = acceptStates.stream().findFirst().get();
         }
         return newEnd;
     }
-
-
 }

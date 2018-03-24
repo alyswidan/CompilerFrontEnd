@@ -1,24 +1,24 @@
 package LexicalAnalyser.BaseModels;
 
+import LexicalAnalyser.NFA.NFA;
 import LexicalAnalyser.Regex.EpsilonRegularDefinition;
 import LexicalAnalyser.Regex.RegularDefinition;
 //import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
  * Created by alyswidan on 14/03/18.
  */
-public class State {
+public class State implements Cloneable{
     private boolean isAccepting;
     private boolean isStart;
     private MultiMap<RegularDefinition,State> transitions;
     private boolean isVisited;
     private String name;
+    private Set<StateGraph> parentGraphs;
 
 
     public String getName() {
@@ -38,6 +38,7 @@ public class State {
         this.isStart = isStart;
         this.name = name;
         transitions = new MultiMap<>();
+        parentGraphs = new HashSet<>();
     }
 
     public State(boolean isAccepting, boolean isStart) {
@@ -113,6 +114,7 @@ public class State {
 
     public void setAccepting(boolean accepting) {
         isAccepting = accepting;
+
     }
 
     public void setStart(boolean start) {
@@ -123,10 +125,24 @@ public class State {
         return this.name + " "+(isAccepting()?"A ":"") + (isStart()?"S":"");
     }
 
+    public void addParentGraph(StateGraph graph){
+        parentGraphs.add(graph);
+    }
+
+    public Set<StateGraph> getParentGraphs(){
+        return parentGraphs;
+    }
 
     public void forEach(BiConsumer<? super RegularDefinition, ? super State> consumer) {
         for (Entry<RegularDefinition, State> entry : transitions) {
             consumer.accept(entry.getKey(), entry.getValue());
         }
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        State clone = (State)super.clone();
+        this.forEach((clone::addTransition));
+        return clone;
     }
 }

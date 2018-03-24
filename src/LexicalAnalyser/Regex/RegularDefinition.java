@@ -79,7 +79,7 @@ public class RegularDefinition implements RegexElement {
     }
 
 
-    NFA getBasis() {
+    public NFA getBasis() {
         NFAState start = NFAState.newStartState("start "+getRawValue());
         NFAState end = NFAState.newAcceptingState("end "+getRawValue());
         start.addTransition(this,end);

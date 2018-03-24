@@ -1,5 +1,6 @@
 package LexicalAnalyser.BaseModels;
 
+import LexicalAnalyser.NFA.NFA;
 import LexicalAnalyser.Regex.RegularDefinition;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,5 +45,18 @@ class StateGraphTest {
         g.addState(s1);
         g.addState(s2);
         System.out.println(g);
+    }
+
+    @Test
+    void cloneTest(){
+        NFA a = new RegularDefinition("a").getBasis();
+        NFA b = new RegularDefinition("b").getBasis();
+        try {
+            NFA aClone = (NFA) a.clone();
+            System.out.println(a);
+            System.out.println(aClone);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
     }
 }
