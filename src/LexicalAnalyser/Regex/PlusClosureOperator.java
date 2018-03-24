@@ -7,7 +7,12 @@ import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 /**
  * Created by alyswidan on 15/03/18.
  */
-public class PlusClosureOperator implements UnaryRegexOperator {
+public class PlusClosureOperator extends UnaryRegexOperator {
+
+    public PlusClosureOperator() {
+
+        priority = RegexOperator.MINPRIORITY;
+    }
 
     @Override
     public NFA execute(NFA operand) {
@@ -29,4 +34,8 @@ public class PlusClosureOperator implements UnaryRegexOperator {
         return "+";
     }
 
+    @Override
+    public String toString() {
+        return "+";
+    }
 }

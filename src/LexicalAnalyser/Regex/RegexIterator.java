@@ -3,6 +3,7 @@ package LexicalAnalyser.Regex;
 import LexicalAnalyser.RegularDefinitionsTable;
 
 import java.util.Iterator;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -11,77 +12,104 @@ import java.util.function.Predicate;
 public class RegexIterator implements Iterator<RegexElement> {
     private int currentIndex;
     private Regex regex;
+    private RegexElement previousElement;
+    private RegexElement pendingElement;
 
     public RegexIterator(Regex regex) {
-        if(!regex.isPostfix()){
-            regex.toPostfix();
-        }
+        pendingElement = null;
+        previousElement = null;
         currentIndex = 0;
         this.regex = regex;
     }
 
     @Override
     public boolean hasNext() {
-        return currentIndex != regex.length();
+
+        return pendingElement != null || currentIndex != regex.length();
     }
 
     @Override
     public RegexElement next() {
-
-        Predicate<Character> isOperator = RegexOperatorFactory::isOperator;
+        Function<Integer,Character> getCharacter = i->regex.rawRegex.charAt(i);
+        Predicate<Integer> inRange = i->i<regex.length();
+        Predicate<Integer> isOperator = i->inRange.test(i) && RegexOperatorFactory.isOperator(getCharacter.apply(i)) && getCharacter.apply(i)!='.';
         Predicate<StringBuilder> isRegDef = s->RegularDefinitionsTable.containsKey(s.toString());
         Predicate<StringBuilder> isEpsilon = s-> s.toString().equals("\\L");
-        Predicate<Character> isEscape = c -> c == '\\';
-        Predicate<Character> isSpace = c-> c == ' ';
+        Predicate<Integer> isEscape = i -> inRange.test(i) && getCharacter.apply(i) == '\\';
+        Predicate<Integer> isSpace = i-> inRange.test(i) && getCharacter.apply(i) == ' ';
+        Predicate<Character> isUnaryOp = c-> RegexOperatorFactory.getOperator(c) instanceof UnionOperator;
+        Predicate<Character> isOpenBracket = c-> c == '(';
 
-        char currentChar = regex.rawRegex.charAt(currentIndex);
+        if(pendingElement != null){
+            RegexElement regexElement = pendingElement;
+            pendingElement = null;
+            return previousElement = regexElement;
+        }
+
+
+
+        char currentChar = getCharacter.apply(currentIndex);
         boolean entered = false;
         RegexElement regexElement = null;
         StringBuilder regDefCandidate = new StringBuilder();
 
-        while(isSpace.test(currentChar) && hasNext()){
-            currentChar = regex.rawRegex.charAt(++currentIndex);
+
+        /*consume all spaces*/
+        while(isSpace.test(currentIndex) && currentIndex<regex.length()){
+            currentIndex++;
         }
 
-        while(isOperator.negate().test(currentChar)
+        /*loop to collect regular definition names in a string*/
+        while(  currentIndex < regex.length()&&
+                isOperator.negate().test(currentIndex)
                 && isRegDef.negate().test(regDefCandidate)
-                && isEscape.negate().test(currentChar)) {
+                && isEscape.negate().test(currentIndex)
+                && isSpace.negate().test(currentIndex)) {
+
             entered = true;
-            regDefCandidate.append(currentChar);
-            currentChar = regex.rawRegex.charAt(++currentIndex);
+            regDefCandidate.append(getCharacter.apply(currentIndex));
+            currentIndex++;
         }
 
-        if(isEscape.test(currentChar)){
-            currentChar = regex.rawRegex.charAt(++currentIndex);
+        /*if we exited because of an escaped character*/
+        if(isEscape.test(currentIndex)){
+            currentChar = getCharacter.apply(++currentIndex);
             if(currentChar == 'L') {
                 regexElement = new EpsilonRegularDefinition();
-
             }
             else {
                 regexElement = new RegularDefinition(""+currentChar);
             }
             currentIndex++;
         }
+
+        /*if we didn't enter the loop then this must have been an operator*/
         else if (!entered){
             regexElement = RegexOperatorFactory.getOperator(currentChar);
             currentIndex++;
         }
         else{
-
             if (isRegDef.test(regDefCandidate)){
                 regexElement = RegularDefinitionsTable.get(regDefCandidate.toString());
             }
             else{
-                try {
-                    regexElement = new RegularDefinition(regDefCandidate.toString());
-                    RegularDefinitionsTable.put(regDefCandidate.toString(),(RegularDefinition) regexElement);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
+                regexElement = new RegularDefinition(regDefCandidate.toString());
+                RegularDefinitionsTable.put(regDefCandidate.toString(),(RegularDefinition) regexElement);
             }
         }
 
-        return regexElement;
+
+        /*if we need to insert a concatenation between this and the previous character
+        * hold this character for now and return a concatenation operation
+        * */
+        if(previousElement != null &&
+          (previousElement instanceof UnaryRegexOperator || previousElement instanceof RegularDefinition) &&
+          (regexElement instanceof RegularDefinition || regexElement instanceof OpenBracketOperator)){
+
+            pendingElement = regexElement;
+            regexElement = RegexOperatorFactory.getOperator('.');
+        }
+
+        return (previousElement = regexElement);
     }
 }
