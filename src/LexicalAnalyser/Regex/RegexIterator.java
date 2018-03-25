@@ -103,7 +103,8 @@ public class RegexIterator implements Iterator<RegexElement> {
         * hold this character for now and return a concatenation operation
         * */
         if(previousElement != null &&
-          (previousElement instanceof UnaryRegexOperator || previousElement instanceof RegularDefinition) &&
+          (previousElement instanceof UnaryRegexOperator || previousElement instanceof RegularDefinition
+                  || previousElement instanceof ClosedBracketOperator) &&
           (regexElement instanceof RegularDefinition || regexElement instanceof OpenBracketOperator)){
 
             pendingElement = regexElement;
