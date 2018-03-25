@@ -1,5 +1,6 @@
 package LexicalAnalyser.NFA;
 import LexicalAnalyser.DFA.DeadState;
+import LexicalAnalyser.Exceptions.StateNotInGraphException;
 import LexicalAnalyser.Regex.*;
 import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.BaseModels.StateGraph;
@@ -59,33 +60,30 @@ public class NFA extends StateGraph {
     }
 
     @Override
-    public void addState(State state) {
-
-        if (state instanceof NFAState) {
-            NFAState nfaState = (NFAState) state;
-            if (nfaState.isStart()) {
-                if (getStartState() == null) {
-                    setStartState(nfaState);
-                } else {
-                    Set<NFAState> states = new HashSet<>(Arrays.asList(nfaState, (NFAState) getStartState()));
-                    NFAState newStart = NFAState.epsilonSource(states);
-                    setStartState(newStart);
-                    state = newStart;
-                }
+    public void setStartState(State startState) {
+        if(startState instanceof NFAState){
+            NFAState nfaState = (NFAState) startState;
+            if (getStartState() == null) {
+                super.setStartState(nfaState);
             }
-            super.addState(state);
+            else {
+                Set<NFAState> states = new HashSet<>(Arrays.asList(nfaState, (NFAState) getStartState()));
+                NFAState newStart = NFAState.epsilonSource(states);
+                super.setStartState(newStart);
+            }
         }
     }
 
-
-    public NFAState mergeAcceptStates(){
-        Set<NFAState> acceptStates = getAcceptingStates().stream().map(state -> (NFAState)state).collect(Collectors.toSet());
+    public NFAState mergeAcceptStates() {
+        Set<NFAState> acceptStates = getAcceptingStates().stream()
+                                                         .map(state -> (NFAState)state)
+                                                         .collect(Collectors.toSet());
         NFAState newEnd;
         if (acceptStates.size()>1){
             newEnd = NFAState.epsilonSink(acceptStates);
-            acceptStates.forEach(acceptState -> acceptState.setAccepting(false));
-            newEnd.setAccepting(true);
+            acceptStates.forEach(this::removeAcceptingState);
             addState(newEnd);
+            addAcceptingState(newEnd);
         }else {
             newEnd = acceptStates.stream().findFirst().get();
         }

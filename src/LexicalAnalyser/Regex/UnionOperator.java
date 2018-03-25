@@ -31,12 +31,12 @@ public class UnionOperator extends BinaryRegexOperator {
 
         NFA result = new NFA();
 
-        NFAState unionStartState = new NFAState(false,false,"unionStartState");
+        NFAState unionStartState = new NFAState("unionStartState");
         unionStartState.addTransition(new EpsilonRegularDefinition(), leftOperand.getStartState());
         unionStartState.addTransition(new EpsilonRegularDefinition(), rightOperand.getStartState());
-
-        leftOperand.getStartState().setStart(false);
-        rightOperand.getStartState().setStart(false);
+//
+//        leftOperand.getStartState().setStart(false);
+//        rightOperand.getStartState().setStart(false);
 
         result.addAll(leftOperand.getStates());
         result.addAll(rightOperand.getStates());
