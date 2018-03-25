@@ -34,10 +34,12 @@ public class NFA extends StateGraph {
     }
 
     public Set<NFAState> getEpsilonClosure(Set<NFAState> states){
-        return states.stream()
+        Set<NFAState> s = states.stream()
                 .map(this::getEpsilonClosure)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
+
+        return s;
     }
 
     private Set<NFAState> dfs(NFAState state) {

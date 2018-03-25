@@ -3,15 +3,16 @@ package LexicalAnalyser.BaseModels;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by alyswidan on 19/03/18.
  */
 public class MultiMapIterator<K,V> implements Iterator<Entry<K,V>> {
 
-    private Iterator<Map.Entry<K,List<V>>> Entryiterator;
+    private Iterator<Map.Entry<K,Set<V>>> Entryiterator;
     private Iterator<V> listIterator;
-    private Map.Entry<K,List<V>> currentEntry;
+    private Map.Entry<K,Set<V>> currentEntry;
     private MultiMap<K,V> map;
 
     public MultiMapIterator(MultiMap<K,V> multiMap) {

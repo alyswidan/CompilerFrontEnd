@@ -16,6 +16,7 @@ public class DFAState extends State {
     private Set<NFAState> equivalentNFAStates;
 
     public DFAState() {
+        this.equivalentNFAStates = new HashSet<>();
     }
 
     public DFAState(Set<NFAState> equivalentNFAStates, String name) {
@@ -43,10 +44,14 @@ public class DFAState extends State {
         return equivalentNFAStates;
     }
 
-    public DFAState transition(RegularDefinition regDef) {
-        return new DFAState(equivalentNFAStates.stream()
-                .map(state -> (NFAState)state.transition(regDef))
+    public DFAState dfaTransition(RegularDefinition regDef) {
+        DFAState s = new DFAState(equivalentNFAStates
+                .stream()
+                .map(state -> state.transition(regDef))
+                .flatMap(states -> states.stream())
+                .map(state -> (NFAState)state)
                 .collect(Collectors.toSet()));
+        return s;
     }
 
     @Override
@@ -61,7 +66,8 @@ public class DFAState extends State {
 
     @Override
     public int hashCode() {
-        return 31 * getEquivalentNFAStates().hashCode();
+
+        return getEquivalentNFAStates().hashCode();
     }
 
     @Override

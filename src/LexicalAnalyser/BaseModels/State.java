@@ -49,11 +49,10 @@ public class State implements Cloneable{
         this(false,false);
     }
 
-    public State transition(RegularDefinition input){
-
+    public Set<State> transition(RegularDefinition input){
         if(!transitions.containsKey(input))
-            return null;
-        return transitions.get(input).get(0);
+            return new HashSet<>();
+        return transitions.get(input);
     }
 
     public void addTransition(RegularDefinition regdef, State nextState){

@@ -11,7 +11,7 @@ import java.util.function.Consumer;
  * Created by alyswidan on 19/03/18.
  */
 public class MultiMap<K,V> implements Iterable<Entry<K,V>>{
-    private Map<K,List<V>> store;
+    private Map<K,Set<V>> store;
 
 
     public MultiMap() {
@@ -26,17 +26,17 @@ public class MultiMap<K,V> implements Iterable<Entry<K,V>>{
         return store.isEmpty();
     }
 
-    public List<V> get(Object o) {
+    public Set<V> get(Object o) {
         return store.get(o);
     }
 
     public V put(K k, V v) {
-        store.putIfAbsent(k,new ArrayList<>());
+        store.putIfAbsent(k,new HashSet<>());
         store.get(k).add(v);
         return v;
     }
 
-    public Set<Map.Entry<K, List<V>>> entrySet() {
+    public Set<Map.Entry<K, Set<V>>> entrySet() {
         return store.entrySet();
     }
 

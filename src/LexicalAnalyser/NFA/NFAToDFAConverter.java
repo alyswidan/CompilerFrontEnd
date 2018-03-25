@@ -35,7 +35,7 @@ public class NFAToDFAConverter {
 
             for (RegularDefinition regDef : nfa.getLanguage()) {
 
-                DFAState newState = currentState.transition(regDef);
+                DFAState newState = currentState.dfaTransition(regDef);
                 Set<NFAState> epsClosure = nfa.getEpsilonClosure(newState.getEquivalentNFAStates());
 
                 DFAState state = epsClosure.isEmpty()?new DeadState():new DFAState(epsClosure);

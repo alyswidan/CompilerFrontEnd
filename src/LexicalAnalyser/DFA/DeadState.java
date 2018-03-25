@@ -10,14 +10,6 @@ import java.util.Set;
  * Created by alyswidan on 18/03/18.
  */
 public class DeadState extends DFAState {
-
-    public DeadState(){
-
-    }
-    public DeadState(Set<NFAState> equivalentNFAStates) {
-        equivalentNFAStates = new HashSet<>();
-    }
-
     @Override
     public String toString() {
         return "DeadState";
