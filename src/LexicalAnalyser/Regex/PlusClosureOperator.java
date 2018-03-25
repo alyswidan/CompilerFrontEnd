@@ -3,6 +3,7 @@ package LexicalAnalyser.Regex;
 import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.NFA.NFA;
 import LexicalAnalyser.NFA.NFAState;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 
 /**
@@ -19,10 +20,10 @@ public class PlusClosureOperator extends UnaryRegexOperator {
     public NFA execute(NFA operand) {
 
         NFA newNFA = new NFA();
-        newNFA.addAll(operand.getStates());
-        newNFA.getAcceptingStates()
-                .forEach(s-> s.addTransition(new EpsilonRegularDefinition(), operand.getStartState()));
+        operand.getAcceptingStates().forEach(s->s.addTransition("\\L", operand.getStartState()));
         newNFA.setStartState(operand.getStartState());
+        operand.getAcceptingStates().forEach(s-> newNFA.addAcceptingState(s));
+        newNFA.addAll(operand.getStates());
         return newNFA;
     }
 
