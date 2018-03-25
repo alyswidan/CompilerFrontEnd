@@ -28,6 +28,9 @@ public class DFAState extends State {
     public DFAState(Set<NFAState> equivalentNFAStates) {
         this(equivalentNFAStates,"");
     }
+    public DFAState(String s){
+        this(new HashSet<>(),s);
+    }
 
     public void addNFAState(NFAState state){
         if(state != null && state.isAccepting()) {
