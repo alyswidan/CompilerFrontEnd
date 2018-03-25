@@ -1,5 +1,6 @@
 package LexicalAnalyser.DFA;
 
+import LexicalAnalyser.BaseModels.MultiMap;
 import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.Regex.RegularDefinition;
 
@@ -23,6 +24,32 @@ public class DFAMinimizer {
         Set<Set<State>> Newpartition= new HashSet<>();
 
         Newpartition = New_partition(partition);
+        while (!partition.equals((Newpartition))){
+            partition= Newpartition;
+            Newpartition=New_partition(partition);
+        }
+
+        Map<State,State> parents=new HashMap<>();
+        for (Set<State> states : partition) {
+            for (State s:states) {
+                parents.put(s,states.stream().findFirst().get());
+            }
+        }
+        for (Set<State> states : partition) {
+            Map<State,Map<RegularDefinition,State>> labels = new HashMap<>();
+            for (State s:states) {
+                Map<RegularDefinition,State> transitions = new HashMap<>();
+                s.forEach((regularDefinition, state) -> {transitions.put(regularDefinition,parents.get(state));});
+
+            }
+            DFAState state =new DFAState();
+           // state.setName();
+            //state.addTransition();
+
+        }
+
+
+
         return new DFA();
     }
 
@@ -46,9 +73,22 @@ public class DFAMinimizer {
             }
             setslabels.put(states.stream().findFirst().get(),labels);
         }
-        
+        Set<State> newstate=new HashSet<>();
+       setslabels.forEach(((state, stateMapMap) -> {
+           stateMapMap.forEach(((state1, regularDefinitionStateMap) -> {
+                newstate.clear();
+               Map<State,Map<RegularDefinition,State>> old = stateMapMap;
+               old.forEach((state2, regularDefinitionStateMap1) -> {
+                   if(regularDefinitionStateMap.equals(regularDefinitionStateMap1)){
+                     //  state2.setTransitions(regularDefinitionStateMap1);
+                       newstate.add(state2);
+                       stateMapMap.remove(state2);
+                   }
+               });
 
-
+           }));
+           newpartition.add(newstate);
+       }));
 
         return newpartition;
     }

@@ -69,6 +69,8 @@ public class State implements Cloneable{
         return transitions;
     }
 
+
+
     public boolean isAccepting() {
         return isAccepting;
     }
@@ -115,6 +117,7 @@ public class State implements Cloneable{
         isAccepting = accepting;
 
     }
+
 
     public void setStart(boolean start) {
         isStart = start;
