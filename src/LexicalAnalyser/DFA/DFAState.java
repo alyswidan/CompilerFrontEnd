@@ -28,6 +28,11 @@ public class DFAState extends State {
     public DFAState(Set<NFAState> equivalentNFAStates) {
         this(equivalentNFAStates,"");
     }
+    public DFAState(String s)
+    {
+
+        this(new HashSet<>(),s);
+    }
 
     public void addNFAState(NFAState state){
         if(state != null && state.isAccepting()) {
@@ -45,6 +50,8 @@ public class DFAState extends State {
     }
 
     public DFAState dfaTransition(RegularDefinition regDef) {
+        if(equivalentNFAStates.isEmpty())
+            return (DFAState) transition(regDef).stream().findAny().get();
         DFAState s = new DFAState(equivalentNFAStates
                 .stream()
                 .map(state -> state.transition(regDef))
@@ -67,12 +74,13 @@ public class DFAState extends State {
     @Override
     public int hashCode() {
 
-        return getEquivalentNFAStates().hashCode();
+        return getName().hashCode() + getEquivalentNFAStates().hashCode();
     }
 
     @Override
     public String toString() {
-        return super.toString() + "-" + equivalentNFAStates.toString()
-                + " "+(isAccepting()?"A ":"") + (isStart()?"S":"");
+        return getName();
+                //super.toString() + "-" + equivalentNFAStates.toString()
+                //+ " "+(isAccepting()?"A ":"") + (isStart()?"S":"");
     }
 }

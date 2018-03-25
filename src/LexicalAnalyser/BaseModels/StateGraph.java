@@ -40,8 +40,12 @@ public class StateGraph implements Cloneable{
     }
 
     public void addState(State state){
+
         state.setName(getAdjustedName(state.getName()));
+
+        System.out.println(state.getName());
         states.put(state,state);
+        System.out.println(states);
         state.addParentGraph(this);
         /*add all regular definitions on edges out of state to this graph's language*/
         state.forEach((regDef, s) -> {
