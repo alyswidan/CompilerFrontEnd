@@ -51,6 +51,7 @@ public class DFAState extends State {
                 .flatMap(states -> states.stream())
                 .map(state -> (NFAState)state)
                 .collect(Collectors.toSet()));
+        addTransition(regDef,s);
         return s;
     }
 
