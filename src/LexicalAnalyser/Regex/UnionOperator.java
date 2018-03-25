@@ -20,7 +20,7 @@ public class UnionOperator extends BinaryRegexOperator {
     public enum Mode{MERGE_ACCEPT, LEAVE_ACCEPT}
     Mode mode;
     public UnionOperator() {
-        mode = Mode.LEAVE_ACCEPT;
+        mode = Mode.MERGE_ACCEPT;
         priority = RegexOperator.MINPRIORITY + 3;
 
     }
@@ -37,7 +37,6 @@ public class UnionOperator extends BinaryRegexOperator {
     public NFA execute(NFA leftOperand, NFA rightOperand) {
 
         NFA result = new NFA();
-
         NFAState unionStartState = new NFAState("unionStartState");
         unionStartState.addTransition(new EpsilonRegularDefinition(), leftOperand.getStartState());
         unionStartState.addTransition(new EpsilonRegularDefinition(), rightOperand.getStartState());

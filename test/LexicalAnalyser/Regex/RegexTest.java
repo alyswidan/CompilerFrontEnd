@@ -111,8 +111,6 @@ class RegexTest {
         RegexOperator u = RegexOperatorFactory.getOperator('|');
         System.out.println(u.compareTo(k));
         System.out.println(k.compareTo(u));
-
-
     }
 
 
