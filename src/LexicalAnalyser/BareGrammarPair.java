@@ -33,4 +33,13 @@ public class BareGrammarPair {
     public Types getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "name='" + name + '\'' +
+                ", value='" + value + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

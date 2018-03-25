@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,8 +17,8 @@ class GrammarParserTest {
 
     void parseFileTest() {
         GrammarParser parser = new GrammarParser();
-        parser.parseFile("temp.txt");
-
+        List<BareGrammarPair>pairs = parser.parseFile("temp.txt");
+        System.out.println(pairs.stream().map(BareGrammarPair::toString).collect(Collectors.joining("\n")));
 
 //        String x = "asddas";
 //        assert x.equals("abc");

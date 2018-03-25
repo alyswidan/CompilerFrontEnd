@@ -20,15 +20,6 @@ public class GrammarParser {
 
 
     List<BareGrammarPair> parseFile(String grammarPath){
-        /*
-        * http://tutorials.jenkov.com/java-nio/path.html
-        * please use the nio api to manipulate files
-        * the above link has some good information
-        * -----------------------------------------
-        *
-        *
-        * */
-
         String fileName = grammarPath;
         String line = null;
         List<BareGrammarPair> PairList = new ArrayList<BareGrammarPair>();
@@ -39,7 +30,6 @@ public class GrammarParser {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             while((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
                 int idx;
                 String name;
                 String value;
@@ -49,10 +39,6 @@ public class GrammarParser {
                     line=line.substring(1,line.length()-1);
                     String[] splited = line.split(" ");
                     fromArrayToPair(splited,BareGrammarPair.Types.KEYWORD,PairList);
-//                    KW.name.add("keyword");
-//                    KW.value.add(line);
-//                    System.out.println("keyword");
-//                    System.out.println(line);
                     continue;
                 }
                 if(line.startsWith("["))
@@ -60,10 +46,7 @@ public class GrammarParser {
                     line=line.substring(1,line.length()-1);
                     String[] splited = line.split(" ");
                     fromArrayToPair(splited,BareGrammarPair.Types.PUNCTUATION,PairList);
-//                    PN.name.add("punctuations");
-//                    PN.value.add(line);
-//                    System.out.println("punctuations");
-//                    System.out.println(line);
+
                     continue;
                 }
 
@@ -75,11 +58,10 @@ public class GrammarParser {
                         f = true;
                         name = line.substring(0,idx);
                         value = line.substring(idx+1);
-                        System.out.println(name);
-                        System.out.println(value);
+/*                        System.out.println(name);
+                        System.out.println(value);*/
                         PairList.add(new BareGrammarPair(name,value,BareGrammarPair.Types.REGEX));
-//                        RE.name.add(name);
-//                        RE.value.add(value);
+
                         break;
                     }
                 }
@@ -91,11 +73,9 @@ public class GrammarParser {
                         idx = j;
                         name = line.substring(0,idx);
                         value = line.substring(idx+1);
-                        System.out.println(name);
-                        System.out.println(value);
+/*                        System.out.println(name);
+                        System.out.println(value);*/
                         PairList.add(new BareGrammarPair(name,value,BareGrammarPair.Types.REGDEF));
-//                        RD.name.add(name);
-//                        RD.value.add(value);
                         break;
                     }
                 }
@@ -119,13 +99,13 @@ public class GrammarParser {
             if(PairList.get(i).getType().equals(BareGrammarPair.Types.REGEX))
             {
                 REGEXList.add(new Regex(PairList.get(i).getValue()));
-                System.out.println("REGEX: "+PairList.get(i).getValue());
+                /*System.out.println("REGEX: "+PairList.get(i).getValue());*/
             }
             else if(PairList.get(i).getType().equals(BareGrammarPair.Types.REGDEF))
             {
                 RegularDefinitionsTable.put(PairList.get(i).getName(),PairList.get(i).getValue());
-                System.out.println("REGDEF name: "+PairList.get(i).getName());
-                System.out.println("REGDEF value: "+PairList.get(i).getValue());
+/*                System.out.println("REGDEF name: "+PairList.get(i).getName());
+                System.out.println("REGDEF value: "+PairList.get(i).getValue());*/
             }
         }
 
@@ -136,14 +116,14 @@ public class GrammarParser {
         for (int i = 0; i < array.length; i++){
             if(type == BareGrammarPair.Types.PUNCTUATION)
             {
-                System.out.println("PUNCTUATION"+i);
-                System.out.println(array[i]);
+      /*          System.out.println("PUNCTUATION"+i);
+                System.out.println(array[i]);*/
                 PairList.add(new BareGrammarPair("PUNCTUATION"+i,array[i],type));
             }
             else
             {
-                System.out.println(array[i]);
-                System.out.println(array[i]);
+/*                System.out.println(array[i]);
+                System.out.println(array[i]);*/
                 PairList.add(new BareGrammarPair(array[i],array[i],type));
             }
         }
