@@ -76,6 +76,7 @@ public class RegularDefinition implements RegexElement {
         return IntStream.rangeClosed(start_str.charAt(0), end_str.charAt(0))
                 .mapToObj(c -> (char) c + "")
                 .collect(Collectors.toList());
+
     }
 
 

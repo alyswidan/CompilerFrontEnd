@@ -17,18 +17,8 @@ import java.util.List;
  */
 public class Generator {
 
-    DFA generate(Path grammarPath){
-//        GrammarParser grammarParser = new GrammarParser();
-//        RegexParser regexParser = new RegexParser();
-//        NFAToDFAConverter NFAToDFA = new NFAToDFAConverter();
-//
-//        Collection<BareGrammarPair> bareGrammarPairs = grammarParser.parseFile(grammarPath);
-//        Collection<Regex> parsedGrammar = grammarParser.parseBareGrammar(bareGrammarPairs);
-//        Collection<NFA>NFAs = regexParser.parseAll(parsedGrammar);
-//        NFA combinedNFA = NFA.fromMultiple(NFAs);
-//        DFA dfa = NFAToDFA.convert(combinedNFA);
 
-        //return dfa;
+    DFA generate(Path grammarPath){
         return null;
     }
 

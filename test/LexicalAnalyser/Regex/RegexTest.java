@@ -48,8 +48,8 @@ class RegexTest {
 
     @org.junit.jupiter.api.Test
     void iterator() {
-            RegularDefinitionsTable.put("letter", new RegularDefinition("a-z"));
-            RegularDefinitionsTable.put("digit", new RegularDefinition("0-9"));
+            RegularDefinitionsTable.put("letter", "a-z");
+            RegularDefinitionsTable.put("digit", "0-9");
 
         Regex regex = new Regex("\\. letter digit A|.|");
         for (RegexElement element : regex){
@@ -59,19 +59,19 @@ class RegexTest {
 
     @org.junit.jupiter.api.Test
     void iteratorInfix() {
-        RegularDefinitionsTable.put("letter", new RegularDefinition("a-z"));
-        RegularDefinitionsTable.put("digit", new RegularDefinition("0-9"));
+        RegularDefinitionsTable.put("letter", "a-z");
+        RegularDefinitionsTable.put("digit", "0-9");
 
         Regex regex = new Regex("letter+(letter | digit \\. | \\*)*");
-        for (RegexElement element : regex){
-            System.out.print(element.getRawValue() +" " + element.getClass().getSimpleName() + "\n");
+        for (RegexElement element : regex) {
+            System.out.print(element.getRawValue() + " " + element.getClass().getSimpleName() + "\n");
         }
     }
 
     @org.junit.jupiter.api.Test
     void unaryFollowedByBracket() {
-        RegularDefinitionsTable.put("letter", new RegularDefinition("a-z"));
-        RegularDefinitionsTable.put("digit", new RegularDefinition("0-9"));
+        RegularDefinitionsTable.put("letter","a-z");
+        RegularDefinitionsTable.put("digit", "0-9");
 
         Regex regex = new Regex("letter+(letter | digit)*");
         for (RegexElement element : regex){
@@ -82,8 +82,8 @@ class RegexTest {
 
     @org.junit.jupiter.api.Test
     void consecutiveRegDefs() {
-        RegularDefinitionsTable.put("letter", new RegularDefinition("a-z"));
-        RegularDefinitionsTable.put("digit", new RegularDefinition("0-9"));
+        RegularDefinitionsTable.put("letter","a-z");
+        RegularDefinitionsTable.put("digit", "0-9");
 
         Regex regex = new Regex("letter letter letter digit A B digit");
 
@@ -94,8 +94,8 @@ class RegexTest {
 
     @org.junit.jupiter.api.Test
     void regDefFollowedByABracket() {
-        RegularDefinitionsTable.put("letter", new RegularDefinition("a-z"));
-        RegularDefinitionsTable.put("digit", new RegularDefinition("0-9"));
+        RegularDefinitionsTable.put("letter", "a-z");
+        RegularDefinitionsTable.put("digit", "0-9");
 
         Regex regex = new Regex("(A|B)*letter A B|\\L|\\* \\+");
         for (RegexElement element : regex){
@@ -115,3 +115,4 @@ class RegexTest {
 
 
 }
+

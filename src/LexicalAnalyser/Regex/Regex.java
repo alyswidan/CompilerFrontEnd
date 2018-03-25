@@ -12,8 +12,12 @@ public class Regex implements Iterable<RegexElement> {
     protected String rawRegex;
     private boolean isPostfix = false;
     private List<RegexElement> elements;
-    Regex(String rawRegex) {
 
+
+
+
+
+    public Regex(String rawRegex){
         elements = new ArrayList<>();
         this.rawRegex = rawRegex;
     }
