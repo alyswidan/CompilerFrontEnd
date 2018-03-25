@@ -70,7 +70,7 @@ public class RegexIterator implements Iterator<RegexElement> {
             regDefCandidate.append(getCharacter.apply(currentIndex));
             currentIndex++;
         }
-
+        currentChar = getCharacter.apply(currentIndex);
         /*if we exited because of an escaped character*/
         if(isEscape.test(currentIndex)){
             currentChar = getCharacter.apply(++currentIndex);

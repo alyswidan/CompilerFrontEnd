@@ -75,7 +75,8 @@ class RegexTest {
 
         Regex regex = new Regex("letter+(letter | digit)*");
         for (RegexElement element : regex){
-            System.out.print(element.getRawValue() +" " + element.getClass().getSimpleName() + "\n");
+            System.out.println(element);
+//            System.out.print(element +" " + element.getClass().getSimpleName() + "\n");
         }
     }
 
