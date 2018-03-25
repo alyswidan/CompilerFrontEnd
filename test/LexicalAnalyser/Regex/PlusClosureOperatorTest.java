@@ -28,9 +28,17 @@ class PlusClosureOperatorTest {
         RegularDefinition b = new RegularDefinition("b");
         NFA basis1 = a.getBasis();
         NFA basis2 = b.getBasis();
-        UnionOperator union = new UnionOperator();
+        UnionOperator union = new UnionOperator(UnionOperator.Mode.MERGE_ACCEPT);
         PlusClosureOperator plus = new PlusClosureOperator();
         NFA temp = union.execute(basis1, basis2);
         System.out.println(plus.execute(temp));
+    }
+
+    @Test
+    void singleLetterPlus(){
+        RegularDefinition b = new RegularDefinition("b");
+        NFA basis2 = b.getBasis();
+        PlusClosureOperator plus = new PlusClosureOperator();
+        System.out.println(plus.execute(basis2));
     }
 }

@@ -32,7 +32,8 @@ public class RegexIterator implements Iterator<RegexElement> {
     public RegexElement next() {
         Function<Integer,Character> getCharacter = i->regex.rawRegex.charAt(i);
         Predicate<Integer> inRange = i->i<regex.length();
-        Predicate<Integer> isOperator = i->inRange.test(i) && RegexOperatorFactory.isOperator(getCharacter.apply(i)) && getCharacter.apply(i)!='.';
+        Predicate<Integer> isOperator = i->inRange.test(i) && RegexOperatorFactory.isOperator(getCharacter.apply(i))
+                && !(!regex.isPostfix() && getCharacter.apply(i)=='.');
         Predicate<StringBuilder> isRegDef = s->RegularDefinitionsTable.containsKey(s.toString());
         Predicate<StringBuilder> isEpsilon = s-> s.toString().equals("\\L");
         Predicate<Integer> isEscape = i -> inRange.test(i) && getCharacter.apply(i) == '\\';
@@ -70,7 +71,8 @@ public class RegexIterator implements Iterator<RegexElement> {
             regDefCandidate.append(getCharacter.apply(currentIndex));
             currentIndex++;
         }
-
+        if(inRange.test(currentIndex))
+            currentChar = getCharacter.apply(currentIndex);
         /*if we exited because of an escaped character*/
         if(isEscape.test(currentIndex)){
             currentChar = getCharacter.apply(++currentIndex);
@@ -94,7 +96,7 @@ public class RegexIterator implements Iterator<RegexElement> {
             }
             else{
                 regexElement = new RegularDefinition(regDefCandidate.toString());
-                RegularDefinitionsTable.put(regDefCandidate.toString(),(RegularDefinition) regexElement);
+                RegularDefinitionsTable.put(regDefCandidate.toString(),regDefCandidate.toString());
             }
         }
 
@@ -102,7 +104,7 @@ public class RegexIterator implements Iterator<RegexElement> {
         /*if we need to insert a concatenation between this and the previous character
         * hold this character for now and return a concatenation operation
         * */
-        if(previousElement != null &&
+        if(!regex.isPostfix() && previousElement != null &&
           (previousElement instanceof UnaryRegexOperator || previousElement instanceof RegularDefinition
                   || previousElement instanceof ClosedBracketOperator) &&
           (regexElement instanceof RegularDefinition || regexElement instanceof OpenBracketOperator)){

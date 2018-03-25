@@ -76,16 +76,19 @@ public class RegularDefinition implements RegexElement {
         return IntStream.rangeClosed(start_str.charAt(0), end_str.charAt(0))
                 .mapToObj(c -> (char) c + "")
                 .collect(Collectors.toList());
+
     }
 
 
     public NFA getBasis() {
-        NFAState start = NFAState.newStartState("start "+getRawValue());
-        NFAState end = NFAState.newAcceptingState("end "+getRawValue());
+        NFAState start = new NFAState("start("+toString()+")");
+        NFAState end = new NFAState("end("+toString()+")");
         start.addTransition(this,end);
         NFA nfa = new NFA();
         nfa.addState(start);
         nfa.addState(end);
+        nfa.setStartState(start);
+        nfa.addAcceptingState(end);
         return nfa;
     }
 

@@ -4,6 +4,7 @@ import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.NFA.NFAState;
 import LexicalAnalyser.Regex.RegularDefinition;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,9 +34,6 @@ public class DFAState extends State {
     }
 
     public void addNFAState(NFAState state){
-        if(state != null && state.isAccepting()) {
-            setAccepting(true);
-        }
         equivalentNFAStates.add(state);
     }
 
@@ -48,14 +46,13 @@ public class DFAState extends State {
     }
 
     public DFAState dfaTransition(RegularDefinition regDef) {
-        DFAState s = new DFAState(equivalentNFAStates
+
+        return new DFAState(equivalentNFAStates
                 .stream()
                 .map(state -> state.transition(regDef))
-                .flatMap(states -> states.stream())
+                .flatMap(Collection::stream)
                 .map(state -> (NFAState)state)
                 .collect(Collectors.toSet()));
-        addTransition(regDef,s);
-        return s;
     }
 
     @Override
@@ -76,7 +73,6 @@ public class DFAState extends State {
 
     @Override
     public String toString() {
-        return super.toString() + "-" + equivalentNFAStates.toString()
-                + " "+(isAccepting()?"A ":"") + (isStart()?"S":"");
+        return super.toString() + "-" + equivalentNFAStates.toString();
     }
 }

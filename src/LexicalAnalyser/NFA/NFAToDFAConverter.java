@@ -17,10 +17,6 @@ public class NFAToDFAConverter {
     public NFAToDFAConverter() {
     }
 
-    /*
-    * todo: equals is not right this way
-    * todo: whole project needs refactoring
-    * */
     public DFA convert(NFA nfa){
         Deque<DFAState> unmarkedStates = new LinkedList<>();
         DFAState start = new DFAState(nfa.getEpsilonClosure((NFAState)nfa.getStartState()));
@@ -41,7 +37,7 @@ public class NFAToDFAConverter {
                 DFAState state = epsClosure.isEmpty()?new DeadState():new DFAState(epsClosure);
 
                 if (state instanceof DeadState){
-
+                    /*do nothing*/
                 }
                 else if(!resultDFA.hasState(state) ){
                     resultDFA.addState(state);
@@ -50,6 +46,7 @@ public class NFAToDFAConverter {
                 else {
                     state = (DFAState) resultDFA.getState(state);
                 }
+
                 currentState.addTransition(regDef,state);
             }
         }

@@ -1,6 +1,7 @@
 package LexicalAnalyser.Regex;
 
 import LexicalAnalyser.NFA.NFA;
+import com.sun.org.apache.regexp.internal.RE;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -41,12 +42,15 @@ class ConcatenationOperatorTest {
 
     @Test
     void execute() {
-        RegularDefinition left = new RegularDefinition("a*");
-        RegularDefinition right = new RegularDefinition("bc");
+        RegularDefinition left = new RegularDefinition("a");
+        RegularDefinition right = new RegularDefinition("b");
+        RegularDefinition c = new RegularDefinition("c");
         NFA basisLeft = left.getBasis();
         NFA basisRight = right.getBasis();
+        NFA basis3 = c.getBasis();
         ConcatenationOperator concatenate = new ConcatenationOperator();
-        concatenate.execute(basisLeft, basisRight);
-        System.out.println(basisLeft);
+        NFA temp = concatenate.execute(basisLeft, basisRight);
+        System.out.println(concatenate.execute(basis3, temp));
+
     }
 }
