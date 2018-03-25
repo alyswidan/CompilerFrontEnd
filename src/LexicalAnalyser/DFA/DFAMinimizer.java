@@ -15,6 +15,7 @@ import java.util.Set;
 public class DFAMinimizer {
 
     DFA Minimize(DFA dfa){
+        DFA FINALdfa= new DFA();
         Set<State> AcceptingStates= dfa.getAcceptingStates();
         Set<State> RemainingStates= dfa.getStates();
         RemainingStates.removeAll(AcceptingStates);
@@ -30,27 +31,21 @@ public class DFAMinimizer {
         }
 
         Map<State,State> parents=new HashMap<>();
-        for (Set<State> states : partition) {
+        for (Set<State> states : Newpartition) {
             for (State s:states) {
                 parents.put(s,states.stream().findFirst().get());
             }
         }
-        for (Set<State> states : partition) {
+        for (Set<State> states : Newpartition) {
             Map<State,Map<RegularDefinition,State>> labels = new HashMap<>();
-            for (State s:states) {
-                Map<RegularDefinition,State> transitions = new HashMap<>();
-                s.forEach((regularDefinition, state) -> {transitions.put(regularDefinition,parents.get(state));});
-
-            }
-            DFAState state =new DFAState();
-           // state.setName();
-            //state.addTransition();
-
+            DFAState FINALstate =new DFAState();
+            FINALstate.setName((parents.get(states.stream().findFirst().get())).getName());
+            Map<RegularDefinition,State> transitions = new HashMap<>();
+            (states.stream().findFirst().get()).forEach((regularDefinition, state) -> {FINALstate.addTransition(regularDefinition,parents.get(state));});
+            FINALdfa.addState(FINALstate);
         }
 
-
-
-        return new DFA();
+        return FINALdfa;
     }
 
     Set<Set<State>> New_partition(Set<Set<State>> partition)
@@ -74,8 +69,8 @@ public class DFAMinimizer {
             setslabels.put(states.stream().findFirst().get(),labels);
         }
         Set<State> newstate=new HashSet<>();
-       setslabels.forEach(((state, stateMapMap) -> {
-           stateMapMap.forEach(((state1, regularDefinitionStateMap) -> {
+       setslabels.forEach((state, stateMapMap) -> {
+           stateMapMap.forEach((state1, regularDefinitionStateMap) -> {
                 newstate.clear();
                Map<State,Map<RegularDefinition,State>> old = stateMapMap;
                old.forEach((state2, regularDefinitionStateMap1) -> {
@@ -86,9 +81,9 @@ public class DFAMinimizer {
                    }
                });
 
-           }));
+           });
            newpartition.add(newstate);
-       }));
+       });
 
         return newpartition;
     }
