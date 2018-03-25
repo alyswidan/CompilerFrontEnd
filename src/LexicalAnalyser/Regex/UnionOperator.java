@@ -17,9 +17,16 @@ import java.util.stream.Collectors;
 
 public class UnionOperator extends BinaryRegexOperator {
 
-
+    public enum Mode{MERGE_ACCEPT, LEAVE_ACCEPT}
+    Mode mode;
     public UnionOperator() {
+        mode = Mode.LEAVE_ACCEPT;
         priority = RegexOperator.MINPRIORITY + 3;
+
+    }
+    public UnionOperator(Mode mode){
+        this();
+        this.mode = mode;
     }
 
     public String getRawValue(){
@@ -34,14 +41,23 @@ public class UnionOperator extends BinaryRegexOperator {
         NFAState unionStartState = new NFAState("unionStartState");
         unionStartState.addTransition(new EpsilonRegularDefinition(), leftOperand.getStartState());
         unionStartState.addTransition(new EpsilonRegularDefinition(), rightOperand.getStartState());
-//
-//        leftOperand.getStartState().setStart(false);
-//        rightOperand.getStartState().setStart(false);
 
+        Set<State> acceptingStates = new HashSet<>();
+        acceptingStates.addAll(leftOperand.getAcceptingStates());
+        acceptingStates.addAll(rightOperand.getAcceptingStates());
+
+        result.addState(unionStartState);
         result.addAll(leftOperand.getStates());
         result.addAll(rightOperand.getStates());
-
+        result.addAll(acceptingStates);
         result.setStartState(unionStartState);
+        acceptingStates.forEach(s -> result.addAcceptingState(s));
+
+        if(mode == Mode.MERGE_ACCEPT){
+            result.mergeAcceptStates();
+        }
+
+
         return result;
     }
 
