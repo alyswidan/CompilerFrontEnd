@@ -17,6 +17,13 @@ class RegexTest {
         System.out.print(regex.rawRegex);
         assert regex.rawRegex.equals( "ab|");
     }
+
+    @org.junit.jupiter.api.Test
+    void lettersOnly() {
+        Regex regex = new Regex("b o o l e a n   ");
+        regex.toPostfix();
+        System.out.print(regex.rawRegex);
+    }
     @org.junit.jupiter.api.Test
     void concatPostfix() {
         Regex regex = new Regex("a+b");

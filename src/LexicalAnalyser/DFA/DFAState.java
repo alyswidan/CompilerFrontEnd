@@ -70,6 +70,6 @@ public class DFAState extends State {
 
     @Override
     public String toString() {
-        return super.toString() + "-" + equivalentNFAStates.toString();
+        return super.toString() + getName() + "-" + equivalentNFAStates.toString();
     }
 }

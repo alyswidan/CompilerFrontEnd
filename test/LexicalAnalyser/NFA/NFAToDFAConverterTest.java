@@ -46,7 +46,7 @@ class NFAToDFAConverterTest {
 
         states.get(7).addTransition("a", states.get(8));
 
-        states.get(8).addTransition("b-f", states.get(9));
+        states.get(8).addTransition("b", states.get(9));
 
         states.get(9).addTransition("b", states.get(10));
         graph = new NFA();

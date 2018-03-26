@@ -15,6 +15,17 @@ public class Regex implements Iterable<RegexElement> {
     private String acceptingValue; // the value this regex accepts
 
     public Regex(String rawRegex){
+
+        elements = new ArrayList<>();
+        this.rawRegex = getUnescapedRegex(rawRegex).trim();
+    }
+
+    public Regex(String rawRegex, String acceptingValue){
+        this(rawRegex);
+        setAcceptingValue(acceptingValue);
+    }
+
+    private String getUnescapedRegex(String rawRegex){
         StringBuilder builder = new StringBuilder();
         boolean isEscaped = false;
         for(char curr : rawRegex.toCharArray()){
@@ -29,16 +40,8 @@ public class Regex implements Iterable<RegexElement> {
             builder.append(curr);
             isEscaped = false;
         }
-
-        elements = new ArrayList<>();
-        this.rawRegex = builder.toString();
+        return builder.toString();
     }
-
-    public Regex(String rawRegex, String acceptingValue){
-        this(rawRegex);
-        setAcceptingValue(acceptingValue);
-    }
-
     void toPostfix() {
 
 
@@ -57,7 +60,6 @@ public class Regex implements Iterable<RegexElement> {
         Consumer<RegexElement> elementConsumer =  regexElement -> {builder.append(regexElement);elements.add(regexElement);};
         Deque<RegexElement> stack = new LinkedList<>();
         for (RegexElement Present : this) {
-
             if (Present instanceof RegularDefinition) {
                 // this means its a charchter ex : a,b,letter, digit
                 elementConsumer.accept(Present);

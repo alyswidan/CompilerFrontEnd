@@ -85,8 +85,6 @@ public class StateGraph{
     }
 
     public void addAcceptingState(State state) {
-        if(!states.containsKey(state))
-            addState(state);
         acceptingStates.add(state);
     }
 

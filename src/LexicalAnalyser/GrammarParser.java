@@ -10,8 +10,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by alyswidan on 16/03/18.
@@ -37,14 +39,16 @@ public class GrammarParser {
                 if(line.startsWith("{"))
                 {
                     line=line.substring(1,line.length()-1);
-                    String[] splited = line.split(" ");
+                    List<String> splited = Arrays.stream(line.split(" "))
+                                                 .map(this::getSeparatedWord)
+                                                 .collect(Collectors.toList());
                     fromArrayToPair(splited,BareGrammarPair.Types.KEYWORD,PairList);
                     continue;
                 }
                 if(line.startsWith("["))
                 {
                     line=line.substring(1,line.length()-1);
-                    String[] splited = line.split(" ");
+                    List<String> splited = Arrays.stream(line.split(" ")).collect(Collectors.toList());
                     fromArrayToPair(splited,BareGrammarPair.Types.PUNCTUATION,PairList);
 
                     continue;
@@ -58,8 +62,7 @@ public class GrammarParser {
                         f = true;
                         name = line.substring(0,idx);
                         value = line.substring(idx+1);
-/*                        System.out.println(name);
-                        System.out.println(value);*/
+
                         PairList.add(new BareGrammarPair(name,value,BareGrammarPair.Types.REGEX));
 
                         break;
@@ -73,8 +76,6 @@ public class GrammarParser {
                         idx = j;
                         name = line.substring(0,idx);
                         value = line.substring(idx+1);
-/*                        System.out.println(name);
-                        System.out.println(value);*/
                         PairList.add(new BareGrammarPair(name,value,BareGrammarPair.Types.REGDEF));
                         break;
                     }
@@ -92,15 +93,15 @@ public class GrammarParser {
         return PairList;
     }
 
-    Collection<Regex> parseBareGrammar(List<BareGrammarPair> PairList){
-        Collection<Regex> REGEXList = new ArrayList<>();
+    List<Regex> parseBareGrammar(List<BareGrammarPair> PairList){
+        List<Regex> REGEXList = new ArrayList<>();
 
         for (BareGrammarPair pair : PairList) {
 
             if (pair.getType().equals(BareGrammarPair.Types.REGDEF)) {
                 RegularDefinitionsTable.put(pair.getName(), pair.getValue());
             } else {
-                REGEXList.add(new Regex(pair.getValue()));
+                REGEXList.add(new Regex(pair.getValue(),pair.getName()));
             }
 
         }
@@ -108,18 +109,27 @@ public class GrammarParser {
         return REGEXList;
 
     }
-    public void fromArrayToPair(String[] array,BareGrammarPair.Types type,List<BareGrammarPair> PairList) {
-        for (int i = 0; i < array.length; i++){
+    private void fromArrayToPair(List<String> array,BareGrammarPair.Types type,List<BareGrammarPair> PairList) {
+        for (String s : array){
             if(type == BareGrammarPair.Types.PUNCTUATION)
             {
-                PairList.add(new BareGrammarPair("PUNCTUATION"+array[i],array[i],type));
+                PairList.add(new BareGrammarPair("PUNCTUATION"+s,s,type));
             }
             else
             {
-                PairList.add(new BareGrammarPair(array[i],array[i],type));
+                PairList.add(new BareGrammarPair(s,s,type));
             }
         }
     }
+
+    private String getSeparatedWord(String s) {
+        StringBuilder builder = new StringBuilder();
+        for(char c : s.toCharArray()){
+            builder.append(c).append(" ");
+        }
+        return builder.toString();
+    }
+
 
 
 

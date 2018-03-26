@@ -58,6 +58,10 @@ public class RegexParser {
         }
         NFA result = currentStack.removeFirst();
         result.setAcceptingValue(regex.getAcceptingValue()) ;
+        System.out.println(regex);
+        System.out.println("________________________________");
+        System.out.println(result);
+        System.out.println("----------------------------------------");
         return result;
     }
 
