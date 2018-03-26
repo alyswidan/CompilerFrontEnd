@@ -93,7 +93,7 @@ public class GrammarParser {
     }
 
     Collection<Regex> parseBareGrammar(List<BareGrammarPair> PairList){
-        Collection<Regex> REGEXList = new ArrayList<Regex>();
+        Collection<Regex> REGEXList = new ArrayList<>();
 
         for (BareGrammarPair pair : PairList) {
 
@@ -112,14 +112,10 @@ public class GrammarParser {
         for (int i = 0; i < array.length; i++){
             if(type == BareGrammarPair.Types.PUNCTUATION)
             {
-      /*          System.out.println("PUNCTUATION"+i);
-                System.out.println(array[i]);*/
-                PairList.add(new BareGrammarPair("PUNCTUATION"+i,array[i],type));
+                PairList.add(new BareGrammarPair("PUNCTUATION"+array[i],array[i],type));
             }
             else
             {
-/*                System.out.println(array[i]);
-                System.out.println(array[i]);*/
                 PairList.add(new BareGrammarPair(array[i],array[i],type));
             }
         }

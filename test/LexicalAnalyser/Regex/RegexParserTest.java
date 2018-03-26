@@ -14,6 +14,7 @@ class RegexParserTest {
         RegexParser parser = new RegexParser();
         NFA result = parser.parse("a|b");
         System.out.println(result);
+        System.out.println(result.getAcceptingStates());
     }
 
     @Test
@@ -21,12 +22,15 @@ class RegexParserTest {
         RegexParser parser = new RegexParser();
         NFA result = parser.parse("(a b .)*");
         System.out.println(result);
+        System.out.println(result.getAcceptingStates());
     }
 
     @Test
     void complex() {
         RegexParser parser = new RegexParser();
-        NFA result = parser.parse("((a b .)|(a+ b | a*))*");
+        Regex regex = new Regex("((a b .)|(a+ b | a*))*","regex1");
+        NFA result = parser.parse(regex);
         System.out.println(result);
+        System.out.println(result.getAcceptingStates());
     }
 }

@@ -12,10 +12,7 @@ public class Regex implements Iterable<RegexElement> {
     protected String rawRegex;
     private boolean isPostfix = false;
     private List<RegexElement> elements;
-
-
-
-
+    private String acceptingValue; // the value this regex accepts
 
     public Regex(String rawRegex){
         StringBuilder builder = new StringBuilder();
@@ -35,6 +32,11 @@ public class Regex implements Iterable<RegexElement> {
 
         elements = new ArrayList<>();
         this.rawRegex = builder.toString();
+    }
+
+    public Regex(String rawRegex, String acceptingValue){
+        this(rawRegex);
+        setAcceptingValue(acceptingValue);
     }
 
     void toPostfix() {
@@ -136,6 +138,14 @@ public class Regex implements Iterable<RegexElement> {
 
     public int length() {
         return rawRegex.length();
+    }
+
+    public void setAcceptingValue(String acceptingValue) {
+        this.acceptingValue = acceptingValue;
+    }
+
+    public String getAcceptingValue() {
+        return acceptingValue;
     }
 
     @Override

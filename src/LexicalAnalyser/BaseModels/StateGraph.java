@@ -157,6 +157,18 @@ public class StateGraph{
         return states.keySet();
     }
 
+    public String getAcceptingValue(){
+        if(acceptingStates.size() == 1){
+            return acceptingStates.stream().findAny().get().getAcceptingValue();
+        }
+        return "__multiple_Ends__";
+    }
 
-
+    public boolean setAcceptingValue(String acceptingValue){
+        if(acceptingStates.size() == 1){
+            acceptingStates.stream().findAny().ifPresent(state -> state.setAcceptingValue(acceptingValue));
+            return true;
+        }
+        return false;
+    }
 }

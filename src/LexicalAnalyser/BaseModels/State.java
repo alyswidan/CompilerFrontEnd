@@ -18,6 +18,7 @@ public class State {
     private boolean isVisited;
     private String name;
     private StateGraph parentGraph;
+    private String acceptingValue; // if this is an accepting state this is the value it accepts
 
     public String getName() {
         return name;
@@ -90,7 +91,8 @@ public class State {
     }
 
     public String toString() {
-        return this.name +(isAccepting()?"_(Acc)":"")+(isStart()?"_St":"");
+        return this.name +(isAccepting()?"_(Acc)":"")+(isStart()?"_St":"")
+                +(isAccepting()&&getAcceptingValue()!=null?"val="+getAcceptingValue():"");
     }
 
     public void forEach(BiConsumer<? super RegularDefinition, ? super State> consumer) {
@@ -105,5 +107,13 @@ public class State {
 
     public StateGraph getParentGraph() {
         return parentGraph;
+    }
+
+    public String getAcceptingValue() {
+        return acceptingValue;
+    }
+
+    public void setAcceptingValue(String acceptingValue) {
+        this.acceptingValue = acceptingValue;
     }
 }
