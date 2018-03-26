@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class RegularDefinitionTest {
     @Test
     void getParts() {
-        RegularDefinition reg = new RegularDefinition("\\L");
+        RegularDefinition reg = new RegularDefinition("a-z | A-Z");
         System.out.println(reg);
         System.out.println(reg.getParts());
     }

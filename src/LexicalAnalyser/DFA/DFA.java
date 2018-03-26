@@ -3,6 +3,7 @@ package LexicalAnalyser.DFA;
 import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.NFA.NFA;
 import LexicalAnalyser.BaseModels.StateGraph;
+import LexicalAnalyser.NFA.NFAToDFAConverter;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -14,8 +15,12 @@ import java.util.Set;
  */
 public class DFA extends StateGraph {
 
-    DFA fromNFA(NFA nfa) {
-        return new DFA();
+
+    DFA fromNFA(NFA nfa){
+        NFAToDFAConverter converter = new NFAToDFAConverter();
+        return converter.convert(nfa);
+        /*this should also minimize the dfa before returning it*/
+
     }
     //private  Set<State> acceptingStates;
 

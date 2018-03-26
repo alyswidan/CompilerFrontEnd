@@ -26,7 +26,7 @@ public class DFAMinimizer {
         partition.add(AcceptingStates);
         partition.add(RemainingStates);
 
-        Set<Set<State>> Newpartition = new HashSet<>();
+        Set<Set<State>> Newpartition ;
         int ParentCount =1 ;
 
         Newpartition = New_partition(partition);

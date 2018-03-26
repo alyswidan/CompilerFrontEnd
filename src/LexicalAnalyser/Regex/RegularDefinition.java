@@ -4,10 +4,7 @@ import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.NFA.NFA;
 import LexicalAnalyser.NFA.NFAState;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -27,9 +24,16 @@ public class RegularDefinition implements RegexElement {
             this.parts = stringParts.stream()
                     .map(RegularDefinition::new).collect(Collectors.toSet());
         }
-
     }
 
+    public boolean isSplittable(){
+        boolean allValid = true;
+        for(char c : rawRegdef.toCharArray()){
+            if(RegexOperatorFactory.isOperator(c) && c != '|')
+                allValid = false;
+        }
+        return allValid;
+    }
     public Set<RegularDefinition> getParts() {
         if (parts.size() == 0){
             this.parts.add(new RegularDefinition(rawRegdef));
@@ -41,6 +45,8 @@ public class RegularDefinition implements RegexElement {
         List<String> out = new ArrayList<>();
         StringBuilder currentString = new StringBuilder();
         for (char c : s.toCharArray()) {
+            if(c == ' ')
+                continue;
             if (c != sep)
                 currentString.append(c);
             else {

@@ -18,6 +18,7 @@ public class State {
     private boolean isVisited;
     private String name;
     private StateGraph parentGraph;
+    private String acceptingValue; // if this is an accepting state this is the value it accepts
 
     public String getName() {
         return name;
@@ -43,13 +44,15 @@ public class State {
         return transitions.get(input);
     }
 
-    public void addTransition(RegularDefinition regdef, State nextState){
-        transitions.put(regdef,nextState);
+    public void addTransition(RegularDefinition regDef, State nextState){
+        regDef.getParts().forEach(r -> transitions.put(r,nextState));
     }
 
     public void addTransition(String string, State nextState){
-        RegularDefinition regDef = string.equals("\\L")?new EpsilonRegularDefinition():new RegularDefinition(string);
-        regDef.getParts().forEach(r -> addTransition(r,nextState));
+        RegularDefinition regDef = string.equals("\\L")
+                                    ?new EpsilonRegularDefinition()
+                                    :new RegularDefinition(string);
+        addTransition(regDef,nextState);
     }
 
     public MultiMap<RegularDefinition,State> getTransitions() {
@@ -70,9 +73,11 @@ public class State {
     }
 
     public boolean isStart(){return parentGraph.getStartState().equals(this);}
+
     public boolean isAccepting(){
         return parentGraph.getAcceptingStates().contains(this);
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -88,7 +93,8 @@ public class State {
     }
 
     public String toString() {
-        return this.name +(isAccepting()?"_(Acc)":"")+(isStart()?"_St":"");
+        return this.name +(isAccepting()?"_(Acc)":"")+(isStart()?"_St":"")
+                +(isAccepting()&&getAcceptingValue()!=null?"val="+getAcceptingValue():"");
     }
 
     public void forEach(BiConsumer<? super RegularDefinition, ? super State> consumer) {
@@ -103,5 +109,13 @@ public class State {
 
     public StateGraph getParentGraph() {
         return parentGraph;
+    }
+
+    public String getAcceptingValue() {
+        return acceptingValue;
+    }
+
+    public void setAcceptingValue(String acceptingValue) {
+        this.acceptingValue = acceptingValue;
     }
 }

@@ -17,6 +17,13 @@ class RegexTest {
         System.out.print(regex.rawRegex);
         assert regex.rawRegex.equals( "ab|");
     }
+
+    @org.junit.jupiter.api.Test
+    void lettersOnly() {
+        Regex regex = new Regex("b o o l e a n   ");
+        regex.toPostfix();
+        System.out.print(regex.rawRegex);
+    }
     @org.junit.jupiter.api.Test
     void concatPostfix() {
         Regex regex = new Regex("a+b");
@@ -63,6 +70,30 @@ class RegexTest {
         RegularDefinitionsTable.put("digit", "0-9");
 
         Regex regex = new Regex("letter+(letter | digit \\. | \\*)*");
+        for (RegexElement element : regex) {
+            System.out.print(element.getRawValue() + " " + element.getClass().getSimpleName() + "\n");
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    void iteratorNotSplittable() {
+        RegularDefinitionsTable.put("letter", "a-z");
+        RegularDefinitionsTable.put("digits", "digit*");
+        RegularDefinitionsTable.put("digit", "0-9");
+
+        Regex regex = new Regex("digit(digit+ | letter digits digits digits | digit)*");
+        for (RegexElement element : regex) {
+            System.out.print(element.getRawValue() + " " + element.getClass().getSimpleName() + "\n");
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    void iteratorNotSplittableComplexRegDef() {
+        RegularDefinitionsTable.put("letter", "a-z");
+        RegularDefinitionsTable.put("digits", "digit*|0-6");
+        RegularDefinitionsTable.put("digit", "0-9");
+
+        Regex regex = new Regex("digit(digit+ | letter digits digits digits | digit)*");
         for (RegexElement element : regex) {
             System.out.print(element.getRawValue() + " " + element.getClass().getSimpleName() + "\n");
         }

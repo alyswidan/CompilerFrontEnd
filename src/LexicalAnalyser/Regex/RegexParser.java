@@ -29,6 +29,7 @@ public class RegexParser {
     public NFA parse(String rawRegex){
         return parse(new Regex(rawRegex));
     }
+
     public NFA parse(Regex regex){
         /*
         * iterate over elements of the regex and use the execute element method to build
@@ -55,16 +56,15 @@ public class RegexParser {
             }
 
         }
-        return currentStack.removeFirst();
+        NFA result = currentStack.removeFirst();
+        result.setAcceptingValue(regex.getAcceptingValue()) ;
+        System.out.println(regex);
+        System.out.println("________________________________");
+        System.out.println(result);
+        System.out.println("----------------------------------------");
+        return result;
     }
 
-    void executeElement(RegexElement regexElement, NFA currentNFA){
-        /*
-        * executes a single regex element and updates the currentNFA and currentStack
-        *
-        *
-        * */
-    }
 
 
 }

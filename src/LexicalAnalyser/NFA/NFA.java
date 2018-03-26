@@ -17,13 +17,13 @@ public class NFA extends StateGraph {
 
     public static NFA fromRegex(Regex regex){
         //uses Thompson's algorithm to convert the regex string to an nfa
-        return new NFA();
+        RegexParser parser = new RegexParser();
+        return parser.parse(regex);
     }
 
-
-    public static NFA fromMultiple(Collection<NFA> NFAs){
-        UnionOperator union = new UnionOperator();
-        return null;
+    public static NFA newCombinedNFA(List<Regex> regex){
+        List<NFA> nfas = regex.stream().map(NFA::fromRegex).collect(Collectors.toList());
+        return (new MultiUnionOperator()).execute(nfas);
     }
 
     public Set<NFAState> getEpsilonClosure(NFAState state) {
@@ -31,7 +31,8 @@ public class NFA extends StateGraph {
             return new HashSet<>();
         }
         this.unVisitAll();
-        return dfs(state);
+        Set<NFAState> closure = dfs(state);
+        return closure;
     }
 
     public Set<NFAState> getEpsilonClosure(Set<NFAState> states){

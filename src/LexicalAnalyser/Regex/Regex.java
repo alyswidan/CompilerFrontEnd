@@ -12,16 +12,36 @@ public class Regex implements Iterable<RegexElement> {
     protected String rawRegex;
     private boolean isPostfix = false;
     private List<RegexElement> elements;
-
-
-
-
+    private String acceptingValue; // the value this regex accepts
 
     public Regex(String rawRegex){
+
         elements = new ArrayList<>();
-        this.rawRegex = rawRegex;
+        this.rawRegex = getUnescapedRegex(rawRegex).trim();
     }
 
+    public Regex(String rawRegex, String acceptingValue){
+        this(rawRegex);
+        setAcceptingValue(acceptingValue);
+    }
+
+    private String getUnescapedRegex(String rawRegex){
+        StringBuilder builder = new StringBuilder();
+        boolean isEscaped = false;
+        for(char curr : rawRegex.toCharArray()){
+            if(curr == '\\'){
+                isEscaped = true;
+                continue;
+            }
+
+            if(isEscaped && (RegexOperatorFactory.isOperator(curr) || curr == 'L')){
+                builder.append('\\');
+            }
+            builder.append(curr);
+            isEscaped = false;
+        }
+        return builder.toString();
+    }
     void toPostfix() {
 
 
@@ -40,7 +60,6 @@ public class Regex implements Iterable<RegexElement> {
         Consumer<RegexElement> elementConsumer =  regexElement -> {builder.append(regexElement);elements.add(regexElement);};
         Deque<RegexElement> stack = new LinkedList<>();
         for (RegexElement Present : this) {
-
             if (Present instanceof RegularDefinition) {
                 // this means its a charchter ex : a,b,letter, digit
                 elementConsumer.accept(Present);
@@ -121,6 +140,14 @@ public class Regex implements Iterable<RegexElement> {
 
     public int length() {
         return rawRegex.length();
+    }
+
+    public void setAcceptingValue(String acceptingValue) {
+        this.acceptingValue = acceptingValue;
+    }
+
+    public String getAcceptingValue() {
+        return acceptingValue;
     }
 
     @Override
