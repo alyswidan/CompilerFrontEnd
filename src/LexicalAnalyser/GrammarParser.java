@@ -95,18 +95,14 @@ public class GrammarParser {
     Collection<Regex> parseBareGrammar(List<BareGrammarPair> PairList){
         Collection<Regex> REGEXList = new ArrayList<Regex>();
 
-        for (int i = 0; i < PairList.size(); i++) {
-            if(PairList.get(i).getType().equals(BareGrammarPair.Types.REGEX))
-            {
-                REGEXList.add(new Regex(PairList.get(i).getValue()));
-                /*System.out.println("REGEX: "+PairList.get(i).getValue());*/
+        for (BareGrammarPair pair : PairList) {
+
+            if (pair.getType().equals(BareGrammarPair.Types.REGDEF)) {
+                RegularDefinitionsTable.put(pair.getName(), pair.getValue());
+            } else {
+                REGEXList.add(new Regex(pair.getValue()));
             }
-            else if(PairList.get(i).getType().equals(BareGrammarPair.Types.REGDEF))
-            {
-                RegularDefinitionsTable.put(PairList.get(i).getName(),PairList.get(i).getValue());
-/*                System.out.println("REGDEF name: "+PairList.get(i).getName());
-                System.out.println("REGDEF value: "+PairList.get(i).getValue());*/
-            }
+
         }
 
         return REGEXList;

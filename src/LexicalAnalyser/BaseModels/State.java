@@ -70,9 +70,11 @@ public class State {
     }
 
     public boolean isStart(){return parentGraph.getStartState().equals(this);}
+
     public boolean isAccepting(){
         return parentGraph.getAcceptingStates().contains(this);
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

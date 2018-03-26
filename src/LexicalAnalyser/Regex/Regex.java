@@ -18,8 +18,23 @@ public class Regex implements Iterable<RegexElement> {
 
 
     public Regex(String rawRegex){
+        StringBuilder builder = new StringBuilder();
+        boolean isEscaped = false;
+        for(char curr : rawRegex.toCharArray()){
+            if(curr == '\\'){
+                isEscaped = true;
+                continue;
+            }
+
+            if(isEscaped && (RegexOperatorFactory.isOperator(curr) || curr == 'L')){
+                builder.append('\\');
+            }
+            builder.append(curr);
+            isEscaped = false;
+        }
+
         elements = new ArrayList<>();
-        this.rawRegex = rawRegex;
+        this.rawRegex = builder.toString();
     }
 
     void toPostfix() {

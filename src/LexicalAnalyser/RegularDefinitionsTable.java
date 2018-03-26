@@ -54,4 +54,8 @@ public class RegularDefinitionsTable implements Iterable<RegularDefinition>{
         return regularDefinitions.values().iterator();
     }
 
+    @Override
+    public String toString() {
+        return regularDefinitions.toString();
+    }
 }

@@ -20,8 +20,6 @@ class GrammarParserTest {
         List<BareGrammarPair>pairs = parser.parseFile("temp.txt");
         System.out.println(pairs.stream().map(BareGrammarPair::toString).collect(Collectors.joining("\n")));
 
-//        String x = "asddas";
-//        assert x.equals("abc");
     }
 
     @Test
@@ -29,6 +27,17 @@ class GrammarParserTest {
         GrammarParser parser = new GrammarParser();
         List<BareGrammarPair> PairList=parser.parseFile("temp.txt");
         Collection<Regex> RegexList = parser.parseBareGrammar(PairList);
+        System.out.println(RegexList
+                            .stream()
+                            .map(Regex::toString)
+                            .collect(Collectors.joining("\n")));
+        System.out.println("-----------------------------------");
+        System.out.println(RegularDefinitionsTable
+                            .regularDefinitions
+                            .entrySet()
+                            .stream()
+                            .map(entry-> entry.getKey()+"="+entry.getValue().getParts())
+                            .collect(Collectors.joining("\n")));
     }
 
 }

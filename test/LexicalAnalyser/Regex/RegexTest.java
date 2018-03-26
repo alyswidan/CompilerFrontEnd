@@ -69,6 +69,30 @@ class RegexTest {
     }
 
     @org.junit.jupiter.api.Test
+    void iteratorNotSplittable() {
+        RegularDefinitionsTable.put("letter", "a-z");
+        RegularDefinitionsTable.put("digits", "digit*");
+        RegularDefinitionsTable.put("digit", "0-9");
+
+        Regex regex = new Regex("digit(digit+ | letter digits digits digits | digit)*");
+        for (RegexElement element : regex) {
+            System.out.print(element.getRawValue() + " " + element.getClass().getSimpleName() + "\n");
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    void iteratorNotSplittableComplexRegDef() {
+        RegularDefinitionsTable.put("letter", "a-z");
+        RegularDefinitionsTable.put("digits", "digit*|0-6");
+        RegularDefinitionsTable.put("digit", "0-9");
+
+        Regex regex = new Regex("digit(digit+ | letter digits digits digits | digit)*");
+        for (RegexElement element : regex) {
+            System.out.print(element.getRawValue() + " " + element.getClass().getSimpleName() + "\n");
+        }
+    }
+
+    @org.junit.jupiter.api.Test
     void unaryFollowedByBracket() {
         RegularDefinitionsTable.put("letter","a-z");
         RegularDefinitionsTable.put("digit", "0-9");
