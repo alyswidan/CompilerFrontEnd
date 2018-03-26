@@ -16,10 +16,10 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * Created by alyswidan on 14/03/18.
  */
 public class StateGraph{
-    private Map<State,State> states;
+    protected Map<State,State> states;
     private State startState;
     private Set<RegularDefinition> language;
-    private Set<State> acceptingStates;
+    protected  Set<State> acceptingStates;
     private int currentStateNumber;
     private Map<String,Integer> StateNameCounts;
 

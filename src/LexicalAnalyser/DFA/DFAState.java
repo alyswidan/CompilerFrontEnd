@@ -27,13 +27,14 @@ public class DFAState extends State {
     }
 
     public DFAState(Set<NFAState> equivalentNFAStates) {
-        this(equivalentNFAStates,"");
-    }
-    public DFAState(String s){
-        this(new HashSet<>(),s);
+        this(equivalentNFAStates, "");
     }
 
-    public void addNFAState(NFAState state){
+    public DFAState(String s) {
+        this(new HashSet<>(), s);
+    }
+
+    public void addNFAState(NFAState state) {
         equivalentNFAStates.add(state);
     }
 
@@ -51,7 +52,7 @@ public class DFAState extends State {
                 .stream()
                 .map(state -> state.transition(regDef))
                 .flatMap(Collection::stream)
-                .map(state -> (NFAState)state)
+                .map(state -> (NFAState) state)
                 .collect(Collectors.toSet()));
     }
 

@@ -34,6 +34,7 @@ class DFAMinimizerTest {
         DFA dfa = new DFA();
         dfa.addState(A);
         dfa.setStartState(A);
+        dfa.addAcceptingState(E);
         dfa.addState(B);
         dfa.addState(C);
         dfa.addState(D);
@@ -41,9 +42,40 @@ class DFAMinimizerTest {
 
         DFAMinimizer mini= new DFAMinimizer();
         DFA ff= new DFA();
-        ff=mini.Minimize(dfa);
-        //System.out.println(ff);
+        System.out.println("before \n"+dfa);
+       // ff=mini.Minimize(dfa);
+        //System.out.println("after "+ff);
+    }
 
+    @Test
+    void simpleMinimizationTest(){
+        DFAState A = new DFAState("A");
+        DFAState B = new DFAState("B");
+
+        RegularDefinition reg1= new RegularDefinition("a");
+        RegularDefinition reg2= new RegularDefinition("b");
+
+        A.addTransition(reg1,A);
+        B.addTransition(reg2,B);
+
+        DFA dfa = new DFA();
+
+        dfa.addState(A);
+        dfa.addState(B);
+
+        System.out.println(dfa.getStartState());
+        System.out.println(dfa.getAcceptingStates());
+
+        dfa.setStartState(A);
+        System.out.println(dfa.getStartState());
+        System.out.println(dfa.getAcceptingStates());
+
+        dfa.addAcceptingState(B);
+
+        System.out.println(dfa.getStartState());
+        System.out.println(dfa.getAcceptingStates());
+
+        System.out.println(dfa);
 
     }
 

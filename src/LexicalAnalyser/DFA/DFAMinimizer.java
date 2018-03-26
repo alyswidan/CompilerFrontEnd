@@ -4,10 +4,7 @@ import LexicalAnalyser.BaseModels.MultiMap;
 import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.Regex.RegularDefinition;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -17,13 +14,20 @@ public class DFAMinimizer {
 
     DFA Minimize(DFA dfa) {
         DFA FINALdfa = new DFA();
+
+        DFAState newStart = (DFAState) dfa.getStartState();
+        System.out.println("new start state: " + newStart);
+
         Set<State> AcceptingStates = dfa.getAcceptingStates();
         Set<State> RemainingStates = dfa.getStates();
         RemainingStates.removeAll(AcceptingStates);
+
         Set<Set<State>> partition = new HashSet<>();
         partition.add(AcceptingStates);
         partition.add(RemainingStates);
+
         Set<Set<State>> Newpartition = new HashSet<>();
+        int ParentCount =1 ;
 
         Newpartition = New_partition(partition);
         while (!partition.equals((Newpartition))) {
@@ -31,69 +35,114 @@ public class DFAMinimizer {
             Newpartition = New_partition(partition);
         }
 
-        Map<State, State> parents = new HashMap<>();
+        Map<State, Integer> parents = new HashMap<>();
         for (Set<State> states : Newpartition) {
             for (State s : states) {
-                parents.put(s, states.stream().findFirst().get());
+                parents.put(s,ParentCount);
             }
+            ParentCount++;
         }
+
+        Set<State> newAcceptStates = dfa.getAcceptingStates();
+        //DFAState parentStart = (DFAState) parents.get(newStart);///need to get parent of start state
+        //newAcceptStates.forEach(s -> s = (DFAState) parents.get(s));//need to get parent of accepting states
+
         for (Set<State> states : Newpartition) {
             Map<State, Map<RegularDefinition, State>> labels = new HashMap<>();
             DFAState FINALstate = new DFAState();
-            FINALstate.setName((parents.get(states.stream().findFirst().get())).getName());
+            //FINALstate.setName((parents.get(states.stream().findFirst().get())).getName());
             Map<RegularDefinition, State> transitions = new HashMap<>();
             (states.stream().findFirst().get()).forEach((regularDefinition, state) -> {
-                FINALstate.addTransition(regularDefinition, parents.get(state));
+               // FINALstate.addTransition(regularDefinition, parents.get(state));
             });
-            FINALdfa.addState(FINALstate);
+            FINALdfa.addState(FINALstate);/////////here
         }
-
+        newAcceptStates.forEach(s -> FINALdfa.addAcceptingState(s));
+       // FINALdfa.setStartState(parentStart);
         return FINALdfa;
     }
 
+
     Set<Set<State>> New_partition(Set<Set<State>> partition) {
+
         Set<Set<State>> newpartition = new HashSet<>();
-        Map<State, State> parents = new HashMap<>();
+
+        Map<State, Integer> parents = new HashMap<>();
+        Map<Integer, State> parentsTostatue = new HashMap<>();
+        ArrayList<Integer> dummy= new ArrayList<>();
+        dummy.add(0);
+        int ParentCount =1 ;
         for (Set<State> states : partition) {
+            parentsTostatue.put(ParentCount,states.stream().findFirst().get());
             for (State s : states) {
-                parents.put(s, states.stream().findFirst().get());
+                parents.put(s,ParentCount);
             }
+            ParentCount++;
         }
-        Map<State, Map<State, Map<RegularDefinition, State>>> setslabels = new ConcurrentHashMap<>();
+
+
+       Map<Integer,Map<State, Map<RegularDefinition, State>>> ALLsetsTransitions = new ConcurrentHashMap <>();
 
         for (Set<State> states : partition) {
-            Map<State, Map<RegularDefinition, State>> labels = new ConcurrentHashMap<>();
+            Map<State, Map<RegularDefinition, State>> setTransitions = new ConcurrentHashMap<>();
             for (State s : states) {
                 Map<RegularDefinition, State> transitions = new ConcurrentHashMap<>();
                 s.forEach((regularDefinition, state) -> {
-                    transitions.put(regularDefinition, parents.get(state));
+                    transitions.put(regularDefinition, parentsTostatue.get((parents.get(state))));
                 });
-                labels.put(s, transitions);
+                setTransitions.put(s, transitions);
             }
-            if (states.stream().findFirst().isPresent()) {
 
-                setslabels.put(states.stream().findFirst().get(), labels);
-            }
+            ALLsetsTransitions.put(parents.get(states.stream().findFirst().get()),setTransitions);
         }
-        Set<State> newstate = new HashSet<>();
-        setslabels.forEach((state, stateMapMap) -> {
 
-            stateMapMap.forEach((state1, regularDefinitionStateMap) -> {
-                newstate.clear();
-
-                Map<State, Map<RegularDefinition, State>> old = stateMapMap;
-                old.forEach((state2, regularDefinitionStateMap1) -> {
-                    if (regularDefinitionStateMap.equals(regularDefinitionStateMap1)) {
-                        //  state2.setTransitions(regularDefinitionStateMap1);
-                        newstate.add(state2);
-                        stateMapMap.remove(state2);
+        Set<State> newStatesSet = new HashSet<>();
+        ALLsetsTransitions.forEach((Parentnum, setTransitions) -> {
+            newStatesSet.clear();
+            Map<RegularDefinition, State> compareTransition = setTransitions.get(parentsTostatue.get(Parentnum));
+            setTransitions.forEach((currentstate, currenttransitions) ->{
+                if(compareTransition.equals(currenttransitions))
+                {
+                    if (dummy.get(0)==0)
+                    {
+                        dummy.set(0,dummy.get(0)+1);
                     }
-                });
-
+                    else
+                    {
+                     ;
+                    }
+                }
+                else
+                {
+                    newStatesSet.add(currentstate);
+                    setTransitions.remove(currentstate);
+                }
             });
-            newpartition.add(newstate);
+
+            if(!newStatesSet.isEmpty())
+            {
+                newpartition.add(newStatesSet);
+            }
+                newpartition.add(setTransitions.keySet());
+
         });
 
         return newpartition;
     }
 }
+
+//            Map<State, Map<RegularDefinition, State>> setTransitionscopy = setTransitions;
+//            System.out.println("setTransitions: "+setTransitions);
+
+//            setTransitionscopy.forEach((state2, transitions2) -> {
+//                System.out.println("state2: "+state2+"transitions2: "+transitions2);
+//                if (setTransitions.containsValue(transitions2)) {
+//                    //  state2.setTransitions(regularDefinitionStateMap1);
+//                    newStatesSet.add(state2);
+//                    setTransitions.remove(state2);
+//                    System.out.println("setTransitions after removing: "+setTransitions);
+//                    }
+//                    else{
+//                        System.out.println("leave state ");
+//                        }
+//                });
