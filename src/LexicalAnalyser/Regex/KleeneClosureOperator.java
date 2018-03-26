@@ -38,6 +38,7 @@ public class KleeneClosureOperator extends UnaryRegexOperator {
         newNFA.addAll(operand.getStates());
         newNFA.addState(newStart);
         newNFA.setStartState(newStart);
+        newNFA.addState(newEnd);
         newNFA.addAcceptingState(newEnd);
         return newNFA;
     }

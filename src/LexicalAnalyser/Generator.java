@@ -18,10 +18,13 @@ import java.util.List;
 public class Generator {
 
 
-    NFA generate(String grammarPath){
+    DFA generate(String grammarPath){
         GrammarParser grammarParser = new GrammarParser();
         List<Regex> regexes = grammarParser.parseBareGrammar(grammarParser.parseFile(grammarPath));
-        return NFA.newCombinedNFA(regexes);
+        NFAToDFAConverter converter = new NFAToDFAConverter();
+        NFA nfa = NFA.newCombinedNFA(regexes);
+//        DFA dfa = converter.convert(nfa);
+        return null;
     }
 
 }

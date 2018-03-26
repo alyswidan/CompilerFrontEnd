@@ -108,6 +108,7 @@ public class RegexIterator implements Iterator<RegexElement> {
                 }
             }
             else{
+
                 regexElement = new RegularDefinition(regDefCandidate.toString());
                 RegularDefinitionsTable.put(regDefCandidate.toString(),regDefCandidate.toString());
             }

@@ -44,13 +44,15 @@ public class State {
         return transitions.get(input);
     }
 
-    public void addTransition(RegularDefinition regdef, State nextState){
-        transitions.put(regdef,nextState);
+    public void addTransition(RegularDefinition regDef, State nextState){
+        regDef.getParts().forEach(r -> transitions.put(r,nextState));
     }
 
     public void addTransition(String string, State nextState){
-        RegularDefinition regDef = string.equals("\\L")?new EpsilonRegularDefinition():new RegularDefinition(string);
-        regDef.getParts().forEach(r -> addTransition(r,nextState));
+        RegularDefinition regDef = string.equals("\\L")
+                                    ?new EpsilonRegularDefinition()
+                                    :new RegularDefinition(string);
+        addTransition(regDef,nextState);
     }
 
     public MultiMap<RegularDefinition,State> getTransitions() {

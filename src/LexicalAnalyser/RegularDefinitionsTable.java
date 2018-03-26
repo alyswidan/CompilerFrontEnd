@@ -34,7 +34,7 @@ public class RegularDefinitionsTable implements Iterable<RegularDefinition>{
 
         RegularDefinition regularDefinition=new RegularDefinition(regdef);
 
-        return regularDefinitions.put(s, regularDefinition);
+        return regularDefinitions.put(s.trim(), regularDefinition);
     }
 
     public static RegularDefinition remove(Object o) {
