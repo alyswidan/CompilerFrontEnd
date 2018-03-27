@@ -13,5 +13,6 @@ import java.util.stream.Collectors;
  * Created by alyswidan on 18/03/18.
  */
 public class DFAState extends State {
-
+    public DFAState() {
+    }
 }

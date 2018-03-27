@@ -5,7 +5,8 @@ import LexicalAnalyser.DFA.DFA;
 import LexicalAnalyser.DFA.DFAState;
 import LexicalAnalyser.DFA.DeadState;
 import LexicalAnalyser.Regex.RegularDefinition;
-import org.jetbrains.annotations.NotNull;
+
+//import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -57,7 +58,7 @@ public class NFAToDFAConverter {
         return resultDFA;
     }
 
-    @NotNull
+
     private DFAState addToResultDFA(Set<NFAState> equivalentStates) {
         DFAState state = new DFAState();
         resultDFA.addState(state);
