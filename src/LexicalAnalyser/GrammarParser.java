@@ -1,17 +1,13 @@
 package LexicalAnalyser;
 
 import LexicalAnalyser.Regex.Regex;
-import LexicalAnalyser.Regex.RegexElement;
-import LexicalAnalyser.Regex.RegularDefinition;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,11 +16,12 @@ import java.util.stream.Collectors;
  */
 public class GrammarParser {
 
-
-    List<BareGrammarPair> parseFile(String grammarPath){
+    private int lineNumber ;
+    List<GrammarTuple> parseFile(String grammarPath){
+        lineNumber = 0;
         String fileName = grammarPath;
         String line = null;
-        List<BareGrammarPair> PairList = new ArrayList<BareGrammarPair>();
+        List<GrammarTuple> PairList = new ArrayList<GrammarTuple>();
 
         try {
 
@@ -44,15 +41,16 @@ public class GrammarParser {
                     List<String> values = Arrays.stream(splited)
                                                  .map(this::getSeparatedWord)
                                                  .collect(Collectors.toList());
-                    fromArrayToPair(values,names,BareGrammarPair.Types.KEYWORD,PairList);
+                    fromArrayToPair(values,names, GrammarTuple.Types.KEYWORD,PairList);
+                    lineNumber++;
                     continue;
                 }
                 if(line.startsWith("["))
                 {
                     line=line.substring(1,line.length()-1);
                     List<String> splited = Arrays.stream(line.split(" ")).collect(Collectors.toList());
-                    fromArrayToPair(splited,null,BareGrammarPair.Types.PUNCTUATION,PairList);
-
+                    fromArrayToPair(splited,null, GrammarTuple.Types.PUNCTUATION,PairList);
+                    lineNumber++;
                     continue;
                 }
 
@@ -65,7 +63,18 @@ public class GrammarParser {
                         name = line.substring(0,idx);
                         value = line.substring(idx+1);
 
-                        PairList.add(new BareGrammarPair(name,value,BareGrammarPair.Types.REGEX));
+                        if(name.equals("relop")){
+                            String []splitted = value.split("|");
+                            StringBuilder builder = new StringBuilder();
+                            for(String s : splitted){
+                                if(s.equals("|"))
+                                    builder.append("| ");
+                                else
+                                    builder.append(getSeparatedWord(s)).append(" ");
+                            }
+                            value = builder.toString().trim();
+                        }
+                        PairList.add(new GrammarTuple(name,value, GrammarTuple.Types.REGEX,lineNumber));
 
                         break;
                     }
@@ -78,11 +87,11 @@ public class GrammarParser {
                         idx = j;
                         name = line.substring(0,idx);
                         value = line.substring(idx+1);
-                        PairList.add(new BareGrammarPair(name,value,BareGrammarPair.Types.REGDEF));
+                        PairList.add(new GrammarTuple(name,value, GrammarTuple.Types.REGDEF,lineNumber));
                         break;
                     }
                 }
-
+            lineNumber++;
             }
             bufferedReader.close();
         }
@@ -95,15 +104,15 @@ public class GrammarParser {
         return PairList;
     }
 
-    List<Regex> parseBareGrammar(List<BareGrammarPair> PairList){
+    List<Regex> parseBareGrammar(List<GrammarTuple> PairList){
         List<Regex> REGEXList = new ArrayList<>();
 
-        for (BareGrammarPair pair : PairList) {
+        for (GrammarTuple pair : PairList) {
 
-            if (pair.getType().equals(BareGrammarPair.Types.REGDEF)) {
+            if (pair.getType().equals(GrammarTuple.Types.REGDEF)) {
                 RegularDefinitionsTable.put(pair.getName(), pair.getValue());
             } else {
-                REGEXList.add(new Regex(pair.getValue(),pair.getName()));
+                REGEXList.add(new Regex(pair.getValue(),pair.getName(),pair.getOrder()));
             }
 
         }
@@ -111,16 +120,16 @@ public class GrammarParser {
         return REGEXList;
 
     }
-    private void fromArrayToPair(List<String> values,List<String> names,BareGrammarPair.Types type,List<BareGrammarPair> PairList) {
+    private void fromArrayToPair(List<String> values, List<String> names, GrammarTuple.Types type, List<GrammarTuple> PairList) {
 
         for (int i = 0; i < values.size(); i++) {
-            if(type == BareGrammarPair.Types.PUNCTUATION)
+            if(type == GrammarTuple.Types.PUNCTUATION)
             {
-                PairList.add(new BareGrammarPair("PUNCTUATION"+values.get(i),values.get(i),type));
+                PairList.add(new GrammarTuple("PUNCTUATION"+values.get(i),values.get(i),type,lineNumber));
             }
             else
             {
-                PairList.add(new BareGrammarPair(names.get(i),values.get(i),type));
+                PairList.add(new GrammarTuple(names.get(i),values.get(i),type,lineNumber));
             }
         }
     }

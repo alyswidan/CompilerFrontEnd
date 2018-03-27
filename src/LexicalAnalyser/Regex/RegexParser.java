@@ -54,14 +54,14 @@ public class RegexParser {
                 NFA b = currentStack.removeFirst();
                 currentStack.addFirst(((BinaryRegexOperator) element).execute(b,a));
             }
-
         }
         NFA result = currentStack.removeFirst();
         result.setAcceptingValue(regex.getAcceptingValue()) ;
-        System.out.println(regex);
+        result.setAcceptingOrder(regex.getAcceptingOrder());
+        /*System.out.println(regex);
         System.out.println("________________________________");
         System.out.println(result);
-        System.out.println("----------------------------------------");
+        System.out.println("----------------------------------------");*/
         return result;
     }
 

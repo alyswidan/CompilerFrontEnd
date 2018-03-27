@@ -10,9 +10,9 @@ import java.util.Set;
  */
 public class MultiMapIterator<K,V> implements Iterator<Entry<K,V>> {
 
-    private Iterator<Map.Entry<K,Set<V>>> Entryiterator;
+    private Iterator<Map.Entry<K,List<V>>> Entryiterator;
     private Iterator<V> listIterator;
-    private Map.Entry<K,Set<V>> currentEntry;
+    private Map.Entry<K,List<V>> currentEntry;
     private MultiMap<K,V> map;
 
     public MultiMapIterator(MultiMap<K,V> multiMap) {

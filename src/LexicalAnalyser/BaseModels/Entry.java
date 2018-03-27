@@ -30,9 +30,9 @@ public class Entry<K,V>{
 
     @Override
     public String toString() {
-        return "Entry{" +
-                "key=" + key +
-                ", value=" + value +
-                '}';
+        return " ( " +
+                "key: " + key +
+                ", value: " + value +
+                " )";
     }
 }

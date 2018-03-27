@@ -19,4 +19,9 @@ public class DeadState extends DFAState {
     public boolean equals(Object o) {
         return o instanceof DeadState;
     }
+
+    @Override
+    public boolean isAccepting() {
+        return false;
+    }
 }

@@ -84,12 +84,14 @@ public class NFAToDFAConverter {
     }
 
     private Optional<String> getAcceptingValue(Set<NFAState> states){
-        Optional<String> result = states.stream()
-                                   .map(State::getAcceptingValue)
-                                   .filter(Objects::nonNull)
-                                   .findAny();
-        return result;
-
+        boolean isAccepting = states.stream().anyMatch(State::isAccepting);
+        if(!isAccepting)
+            return Optional.empty();
+//        System.out.println(states.stream().filter(State::isAccepting).map(state -> "("+state.getAcceptingValue() + ", " +state.getAcceptingOrder()+ "," +state.isAccepting()+")").collect(Collectors.toList()));
+        return states.stream()
+                     .sorted(Comparator.comparing(State::getAcceptingOrder))
+                     .map(State::getAcceptingValue)
+                     .findFirst();
     }
 
 

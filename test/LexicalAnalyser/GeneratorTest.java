@@ -1,5 +1,7 @@
 package LexicalAnalyser;
 
+import LexicalAnalyser.DFA.DFA;
+import LexicalAnalyser.DFA.DFASimulator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,8 +12,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class GeneratorTest {
     @Test
     void generate() {
-        Generator g = new Generator();
-        System.out.println(g.generate("temp.txt"));
-    }
 
+    }
+    @Test
+    void simulation(){
+        Generator g = new Generator();
+        DFA dfa = g.generate("temp.txt");
+        DFASimulator simulator = new DFASimulator(dfa,"if(x>=10){this is awesome;}else if(x == 20){awesome}");
+        while (simulator.hasNext()){
+            System.out.println(simulator.next());
+        }
+
+    }
 }

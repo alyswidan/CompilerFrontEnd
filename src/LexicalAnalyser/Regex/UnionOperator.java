@@ -37,7 +37,7 @@ public class UnionOperator extends BinaryRegexOperator {
     public NFA execute(NFA leftOperand, NFA rightOperand) {
 
         NFA result = new NFA();
-        NFAState unionStartState = new NFAState("unionStartState");
+        NFAState unionStartState = new NFAState();
         unionStartState.addTransition(new EpsilonRegularDefinition(), leftOperand.getStartState());
         unionStartState.addTransition(new EpsilonRegularDefinition(), rightOperand.getStartState());
 

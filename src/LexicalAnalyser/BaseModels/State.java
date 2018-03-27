@@ -19,6 +19,7 @@ public class State {
     private String name;
     private StateGraph parentGraph;
     private String acceptingValue; // if this is an accepting state this is the value it accepts
+    private int acceptingOrder = Integer.MAX_VALUE;
 
     public String getName() {
         return name;
@@ -38,9 +39,9 @@ public class State {
         parentGraph = null;
     }
 
-    public Set<State> transition(RegularDefinition input){
+    public List<State> transition(RegularDefinition input){
         if(!transitions.containsKey(input))
-            return new HashSet<>();
+            return new ArrayList<>();
         return transitions.get(input);
     }
 
@@ -93,8 +94,8 @@ public class State {
     }
 
     public String toString() {
-        return this.name +(isAccepting()?"_(Acc)":"")+(isStart()?"_St":"")
-                +(isAccepting()&&getAcceptingValue()!=null?"val="+getAcceptingValue():"");
+        return this.name +(isAccepting()?"_(Acc_":"")+(isStart()?"_St":"")
+                +(isAccepting()&&getAcceptingValue()!=null?"val="+getAcceptingValue()+", ord="+getAcceptingOrder()+")":"");
     }
 
     public void forEach(BiConsumer<? super RegularDefinition, ? super State> consumer) {
@@ -117,5 +118,13 @@ public class State {
 
     public void setAcceptingValue(String acceptingValue) {
         this.acceptingValue = acceptingValue;
+    }
+
+    public int getAcceptingOrder() {
+        return acceptingOrder;
+    }
+
+    public void setAcceptingOrder(int acceptingOrder) {
+        this.acceptingOrder = acceptingOrder;
     }
 }
