@@ -13,6 +13,7 @@ public class Regex implements Iterable<RegexElement> {
     private boolean isPostfix = false;
     private List<RegexElement> elements;
     private String acceptingValue; // the value this regex accepts
+    private int acceptingOrder;
 
     public Regex(String rawRegex){
 
@@ -22,6 +23,12 @@ public class Regex implements Iterable<RegexElement> {
 
     public Regex(String rawRegex, String acceptingValue){
         this(rawRegex);
+        setAcceptingValue(acceptingValue);
+    }
+
+    public Regex(String rawRegex, String acceptingValue,int acceptingOrder){
+        this(rawRegex);
+        this.acceptingOrder = acceptingOrder;
         setAcceptingValue(acceptingValue);
     }
 
@@ -153,5 +160,9 @@ public class Regex implements Iterable<RegexElement> {
     @Override
     public String toString() {
         return rawRegex;
+    }
+
+    public int getAcceptingOrder() {
+        return acceptingOrder;
     }
 }

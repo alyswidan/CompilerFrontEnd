@@ -22,7 +22,7 @@ public class DFASimulator implements Iterator<Entry<String,String>>{
     private int currentIndex;
 
     public DFASimulator(DFA dfa,String input) {
-        this.inputString = input+' ';
+        this.inputString = input;
         this.dfa = dfa;
         reset();
         this.currentIndex = 0;
@@ -56,7 +56,7 @@ public class DFASimulator implements Iterator<Entry<String,String>>{
     public Entry<String, String> next() {
         Deque<DFAState> path = new LinkedList<>();
         StringBuilder builder = new StringBuilder();
-        while(Character.isWhitespace(inputString.charAt(currentIndex))) {
+        while(currentIndex < inputString.length() && Character.isWhitespace(inputString.charAt(currentIndex))) {
             currentIndex++;
         }
         path.addFirst(currentState);

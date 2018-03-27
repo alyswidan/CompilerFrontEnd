@@ -27,8 +27,8 @@ public class KleeneClosureOperator extends UnaryRegexOperator {
          */
 
         NFA newNFA = new NFA();
-        NFAState newStart = new NFAState("kleeneStart");
-        NFAState newEnd = new NFAState("kleeneEnd");
+        NFAState newStart = new NFAState();
+        NFAState newEnd = new NFAState();
 
         newStart.addTransition("\\L",operand.getStartState());
         operand.getAcceptingStates().forEach(s->s.addTransition("\\L",newEnd));

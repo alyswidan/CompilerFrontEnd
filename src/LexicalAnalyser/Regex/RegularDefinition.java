@@ -87,8 +87,8 @@ public class RegularDefinition implements RegexElement {
 
 
     public NFA getBasis() {
-        NFAState start = new NFAState("start("+toString()+")");
-        NFAState end = new NFAState("end("+toString()+")");
+        NFAState start = new NFAState();
+        NFAState end = new NFAState();
         start.addTransition(this,end);
         NFA nfa = new NFA();
         nfa.addState(start);

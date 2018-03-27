@@ -20,12 +20,12 @@ public class StateGraph{
     private State startState;
     private Set<RegularDefinition> language;
     private Set<State> acceptingStates;
-    private int currentStateNumber;
+    private static int currentStateNumber;
     private Map<String,Integer> StateNameCounts;
 
     public StateGraph() {
         StateNameCounts = new HashMap<>();
-        currentStateNumber = 0;
+
         states = new HashMap<>();
         acceptingStates = new HashSet<>();
         language = new HashSet<>();
@@ -169,4 +169,14 @@ public class StateGraph{
         }
         return false;
     }
+
+    public boolean setAcceptingOrder(int acceptingOrder){
+        if(acceptingStates.size() == 1){
+            acceptingStates.stream().findAny().ifPresent(state -> state.setAcceptingOrder(acceptingOrder));
+            return true;
+        }
+        return false;
+    }
+
+
 }

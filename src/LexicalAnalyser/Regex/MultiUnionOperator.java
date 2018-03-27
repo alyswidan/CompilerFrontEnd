@@ -17,15 +17,16 @@ public class MultiUnionOperator extends MaryRegexOperator {
     @Override
     public NFA execute(List<NFA> operands) {
         NFA result = new NFA();
-        Set<NFAState> startStates = operands.stream()
+        List<NFAState> startStates = operands.stream()
                                           .map(nfa -> (NFAState)nfa.getStartState())
-                                          .collect(Collectors.toSet());
+                                          .collect(Collectors.toList());
 
-        Set<NFAState> acceptingStates = operands.stream()
+        List<NFAState> acceptingStates = operands.stream()
                                                 .map(StateGraph::getAcceptingStates)
                                                 .flatMap(Collection::stream)
                                                 .map(state -> (NFAState)state)
-                                                .collect(Collectors.toSet());
+                                                .collect(Collectors.toList());
+
 
         NFAState newStart = NFAState.epsilonSource(startStates);
 

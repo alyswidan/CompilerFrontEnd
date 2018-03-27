@@ -27,7 +27,7 @@ public class NFAState extends State {
         return thisState;
     }
 
-    public static NFAState epsilonSource(Set<NFAState> outStates){
+    public static NFAState epsilonSource(Collection<NFAState> outStates){
         NFAState thisState = new NFAState();
         outStates.forEach(outState -> thisState.addTransition(new EpsilonRegularDefinition(),outState));
         return thisState;
