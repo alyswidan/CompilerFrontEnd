@@ -13,10 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DFAMinimizer {
 
     DFA Minimize(DFA dfa) {
-        DFA FINALdfa = new DFA();
 
-        DFAState newStart = (DFAState) dfa.getStartState();
-        System.out.println("new start state: " + newStart);
 
         Set<State> AcceptingStates = dfa.getAcceptingStates();
         Set<State> RemainingStates = dfa.getStates();
@@ -27,8 +24,6 @@ public class DFAMinimizer {
         partition.add(RemainingStates);
 
         Set<Set<State>> Newpartition ;
-        int ParentCount =1 ;
-
         Newpartition = New_partition(partition);
         while (!partition.equals((Newpartition))) {
             partition = Newpartition;
@@ -36,29 +31,39 @@ public class DFAMinimizer {
         }
 
         Map<State, Integer> parents = new HashMap<>();
-        for (Set<State> states : Newpartition) {
+        Map<Integer, State> parentsTostatue = new HashMap<>();
+        int ParentCount =1 ;
+        for (Set<State> states : partition) {
+            parentsTostatue.put(ParentCount,states.stream().findFirst().get());
             for (State s : states) {
                 parents.put(s,ParentCount);
             }
             ParentCount++;
         }
 
+        DFA FINALdfa = new DFA();
+        DFAState newStart = (DFAState) dfa.getStartState();
         Set<State> newAcceptStates = dfa.getAcceptingStates();
-        //DFAState parentStart = (DFAState) parents.get(newStart);///need to get parent of start state
-        //newAcceptStates.forEach(s -> s = (DFAState) parents.get(s));//need to get parent of accepting states
+        System.out.println("new start state: " + newStart);
 
-        for (Set<State> states : Newpartition) {
-            Map<State, Map<RegularDefinition, State>> labels = new HashMap<>();
-            DFAState FINALstate = new DFAState();
-            //FINALstate.setName((parents.get(states.stream().findFirst().get())).getName());
-            Map<RegularDefinition, State> transitions = new HashMap<>();
-            (states.stream().findFirst().get()).forEach((regularDefinition, state) -> {
-               // FINALstate.addTransition(regularDefinition, parents.get(state));
-            });
-            FINALdfa.addState(FINALstate);/////////here
+        DFAState parentStart = (DFAState) parentsTostatue.get(parents.get(newStart));///need to get parent of start state
+        newAcceptStates.forEach(s -> s = (DFAState) parentsTostatue.get(parents.get(s)));//need to get parent of accepting states
+
+        for (Set<State> states : partition) {
+
+                DFAState FINALstate = new DFAState();
+                FINALstate.setName((parentsTostatue.get(parents.get(states.stream().findFirst().get()))).getName());
+
+                (states.stream().findFirst().get()).forEach((regularDefinition, state) -> {
+                    FINALstate.addTransition(regularDefinition, parentsTostatue.get(parents.get(state)));
+                });
+                FINALdfa.addState(FINALstate);/////////
+
+
+
         }
         newAcceptStates.forEach(s -> FINALdfa.addAcceptingState(s));
-       // FINALdfa.setStartState(parentStart);
+        FINALdfa.setStartState(parentStart);
         return FINALdfa;
     }
 

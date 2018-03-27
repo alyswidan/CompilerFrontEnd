@@ -55,7 +55,7 @@ class DFAMinimizerTest {
         RegularDefinition reg1= new RegularDefinition("a");
         RegularDefinition reg2= new RegularDefinition("b");
 
-        A.addTransition(reg1,A);
+        A.addTransition(reg1,B);
         B.addTransition(reg2,B);
 
         DFA dfa = new DFA();
