@@ -16,18 +16,4 @@ public class DFA extends StateGraph {
         /*this should also minimize the dfa before returning it*/
     }
 
-    @Override
-    public void addState(State state) {
-        if(state instanceof DFAState){
-            DFAState dfaState = (DFAState) state;
-            boolean isAccepting = ((DFAState) state).getEquivalentNFAStates()
-                                                    .stream()
-                                                    .anyMatch(State::isAccepting);
-            if(isAccepting){
-                addAcceptingState(dfaState);
-            }
-        }
-
-        super.addState(state);
-    }
 }
