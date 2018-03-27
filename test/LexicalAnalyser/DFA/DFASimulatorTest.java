@@ -16,24 +16,24 @@ class DFASimulatorTest {
     @Test
     void step() {
 
-        DFAState A = new DFAState();
-        DFAState B = new DFAState();
-        DFAState C = new DFAState();
-        DFAState D = new DFAState();
-        DFAState E = new DFAState();
+        DFAState A = new DFAState("A");
+        DFAState B = new DFAState("B");
+        DFAState C = new DFAState("C");
+        DFAState D = new DFAState("D");
+        DFAState E = new DFAState("E");
 
-        RegularDefinition reg1= new RegularDefinition("a");
-        RegularDefinition reg2= new RegularDefinition("b");
-        A.addTransition(reg1,B);
-        A.addTransition(reg2,C);
-        B.addTransition(reg1,B);
-        B.addTransition(reg2,D);
-        C.addTransition(reg1,B);
-        C.addTransition(reg2,C);
-        D.addTransition(reg1,B);
-        D.addTransition(reg2,E);
-        E.addTransition(reg1,B);
-        E.addTransition(reg2,C);
+        RegularDefinition a= new RegularDefinition("a");
+        RegularDefinition b= new RegularDefinition("b");
+        A.addTransition(a,B);
+        A.addTransition(b,C);
+        B.addTransition(a,B);
+        B.addTransition(b,D);
+        C.addTransition(a,B);
+        C.addTransition(b,C);
+        D.addTransition(a,B);
+        D.addTransition(b,E);
+        E.addTransition(a,B);
+        E.addTransition(b,C);
 
         DFA dfa = new DFA();
         dfa.addState(A);
@@ -43,15 +43,126 @@ class DFASimulatorTest {
         dfa.addState(D);
         dfa.addState(E);
 
-        DFASimulator dfas= new DFASimulator(dfa);
-        System.out.println(dfa.getStates());
-        dfas.step('a');
-        dfas.step('b');
-        dfas.step('a');
-        dfas.step('a');
-        dfas.step('a');
-        dfas.step('a');
-        dfas.step('a');
+
+    }
+
+    @Test
+    void testWithAcceptingValue(){
+        //a dfa that accepts aa+ and ab+
+        RegularDefinition a= new RegularDefinition("a");
+        RegularDefinition b= new RegularDefinition("b");
+
+        DFAState A = new DFAState("A");
+        DFAState B = new DFAState("B");
+        DFAState C = new DFAState("C");
+        DFAState D = new DFAState("D");
+        DeadState dead = new DeadState();
+        DFA dfa = new DFA();
+
+
+        A.addTransition(a,B);
+        A.addTransition(b,dead);
+        dfa.addState(A);
+        dfa.setStartState(A);
+
+        B.addTransition(a,D);
+        B.addTransition(b,C);
+        dfa.addState(B);
+
+        C.addTransition(a,dead);
+        C.addTransition(b,C);
+        C.setAcceptingValue("ab+");
+        dfa.addState(C);
+        dfa.addAcceptingState(C);
+
+        D.addTransition(a,D);
+        D.addTransition(b,dead);
+        D.setAcceptingValue("aa+");
+        dfa.addState(D);
+        dfa.addAcceptingState(D);
+
+        dfa.addState(dead);
+
+        System.out.println(dfa);
+
+        String testString = "abbbaaa abba";
+        DFAState currentState=null,previousState=null;
+        DFASimulator sim = new DFASimulator(dfa,testString);
+        while(sim.hasNext()){
+            System.out.println(sim.next());
+        }
+
+    }
+
+
+    @Test
+    void multipleBackTraks(){
+        //a dfa that accepts aa+ and ab+
+        RegularDefinition a= new RegularDefinition("a");
+        RegularDefinition b= new RegularDefinition("b");
+
+        DFAState A = new DFAState("A");
+        DFAState B = new DFAState("B");
+        DFAState C = new DFAState("C");
+        DFAState D = new DFAState("D");
+        DFAState E = new DFAState("E");
+        DFAState F = new DFAState("E");
+        DFAState G = new DFAState("E");
+        DFAState H = new DFAState("E");
+        DeadState dead = new DeadState();
+        DFA dfa = new DFA();
+
+
+        A.addTransition(a,B);
+        A.addTransition(b,F);
+        dfa.addState(A);
+        dfa.setStartState(A);
+
+        B.addTransition(a,dead);
+        B.addTransition(b,C);
+        dfa.addState(B);
+
+        C.addTransition(a,F);
+        C.addTransition(b,D);
+        C.setAcceptingValue("C");
+        dfa.addState(C);
+        dfa.addAcceptingState(C);
+
+        D.addTransition(a,E);
+        D.addTransition(b,dead);
+        dfa.addState(D);
+
+
+        E.addTransition(a,dead);
+        E.addTransition(b,G);
+        E.setAcceptingValue("E");
+        dfa.addState(E);
+        dfa.addAcceptingState(E);
+
+        F.addTransition(a,G);
+        F.addTransition(b,H);
+        dfa.addState(F);
+
+        G.addTransition(a,dead);
+        G.addTransition(b,H);
+        dfa.addState(G);
+
+        H.addTransition(a,H);
+        H.addTransition(b,dead);
+        H.setAcceptingValue("H");
+        dfa.addState(H);
+        dfa.addAcceptingState(H);
+
+        dfa.addState(dead);
+
+        System.out.println(dfa);
+
+        String testString = "abaaabbab";
+        DFASimulator sim = new DFASimulator(dfa,testString);
+        while(sim.hasNext()){
+            System.out.println(sim.next());
+        }
+
     }
 
 }
