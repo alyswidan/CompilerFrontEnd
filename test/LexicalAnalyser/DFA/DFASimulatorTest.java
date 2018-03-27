@@ -16,11 +16,11 @@ class DFASimulatorTest {
     @Test
     void step() {
 
-        DFAState A = new DFAState("A");
-        DFAState B = new DFAState("B");
-        DFAState C = new DFAState("C");
-        DFAState D = new DFAState("D");
-        DFAState E = new DFAState("E");
+        DFAState A = new DFAState();
+        DFAState B = new DFAState();
+        DFAState C = new DFAState();
+        DFAState D = new DFAState();
+        DFAState E = new DFAState();
 
         RegularDefinition reg1= new RegularDefinition("a");
         RegularDefinition reg2= new RegularDefinition("b");

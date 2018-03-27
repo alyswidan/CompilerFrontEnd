@@ -22,7 +22,7 @@ public class DFASimulator {
         DFAState cs=currentState;
         String regx =Character.toString(input);
         RegularDefinition reg= new RegularDefinition(regx);
-        currentState = currentState.dfaTransition(reg);
+//        currentState = currentState.dfaTransition(reg);
         //cs=;
         System.out.println("From: "+previousState.getName()+"  on input: "+input+" To "+currentState.getName());
         return currentState;

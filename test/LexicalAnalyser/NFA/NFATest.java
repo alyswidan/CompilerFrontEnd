@@ -17,7 +17,7 @@ class NFATest {
     @BeforeAll
     static void Setup(){
         states = new ArrayList<>();
-        states.add(new NFAState(false,true,"0"));
+        states.add(new NFAState("0"));
         for (int i = 1; i <=5 ; i++) {
             states.add(new NFAState(""+i));
         }

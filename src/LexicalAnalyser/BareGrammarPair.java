@@ -15,9 +15,31 @@ public class BareGrammarPair {
     private String name,value;
     private Types type;
 
+    public String getValue() {
+        return value;
+    }
+
+    public String getName() {
+
+        return name;
+    }
+
     public BareGrammarPair(String name, String value, Types type) {
         this.name = name;
         this.value = value;
         this.type = type;
+    }
+
+    public Types getType() {
+        return type;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "name='" + name + '\'' +
+                ", value='" + value + '\'' +
+                ", type=" + type +
+                '}';
     }
 }

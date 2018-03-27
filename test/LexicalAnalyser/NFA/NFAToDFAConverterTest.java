@@ -20,7 +20,7 @@ class NFAToDFAConverterTest {
     static void Setup(){
 
         states = new ArrayList<>();
-        states.add(new NFAState(false,true,"0"));
+        states.add(new NFAState("0"));
         for (int i = 1; i <=10 ; i++) {
             states.add(new NFAState(""+i));
         }
@@ -46,15 +46,13 @@ class NFAToDFAConverterTest {
 
         states.get(7).addTransition("a", states.get(8));
 
-        states.get(8).addTransition("b-f", states.get(9));
+        states.get(8).addTransition("b", states.get(9));
 
         states.get(9).addTransition("b", states.get(10));
-
-        states.get(10).setAccepting(true);
-
-
         graph = new NFA();
         states.forEach(graph::addState);
+        graph.addAcceptingState(states.get(10));
+        graph.setStartState(states.get(0));
 
     }
     @Test

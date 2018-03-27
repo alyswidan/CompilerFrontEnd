@@ -16,9 +16,9 @@ class StateGraphTest {
     @BeforeAll
     static void createTestGraph(){
         g = new StateGraph();
-        start = new State(false,true,"start" );
-        end  = new State(true, false, "end");
-        temp = new State(false,false,"temp");
+        start = new State("start" );
+        end  = new State("end");
+        temp = new State("temp");
         start.addTransition("a", end);
         start.addTransition("b", end);
         start.addTransition("a",temp);
@@ -47,16 +47,4 @@ class StateGraphTest {
         System.out.println(g);
     }
 
-    @Test
-    void cloneTest(){
-        NFA a = new RegularDefinition("a").getBasis();
-        NFA b = new RegularDefinition("b").getBasis();
-        try {
-            NFA aClone = (NFA) a.clone();
-            System.out.println(a);
-            System.out.println(aClone);
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-    }
 }

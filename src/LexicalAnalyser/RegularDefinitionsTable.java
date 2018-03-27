@@ -30,8 +30,11 @@ public class RegularDefinitionsTable implements Iterable<RegularDefinition>{
         return regularDefinitions.get(o);
     }
 
-    public static RegularDefinition put(String s, RegularDefinition regularDefinition) {
-        return regularDefinitions.put(s, regularDefinition);
+    public static RegularDefinition put(String s, String regdef) {
+
+        RegularDefinition regularDefinition=new RegularDefinition(regdef);
+
+        return regularDefinitions.put(s.trim(), regularDefinition);
     }
 
     public static RegularDefinition remove(Object o) {
@@ -51,4 +54,8 @@ public class RegularDefinitionsTable implements Iterable<RegularDefinition>{
         return regularDefinitions.values().iterator();
     }
 
+    @Override
+    public String toString() {
+        return regularDefinitions.toString();
+    }
 }

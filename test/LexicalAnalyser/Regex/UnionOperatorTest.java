@@ -18,11 +18,12 @@ class UnionOperatorTest {
         NFA basis1 = a.getBasis();
         NFA basis2 = b.getBasis();
         NFA basis3 = c.getBasis();
-        UnionOperator union = new UnionOperator();
+        UnionOperator union = new UnionOperator(UnionOperator.Mode.MERGE_ACCEPT);
         NFA temp = union.execute(basis1, basis2);
-        temp = union.execute(temp, basis3);
-        KleeneClosureOperator kc = new KleeneClosureOperator();
-        System.out.println(kc.execute(temp));
+//        temp = union.execute(temp, basis3);
+        System.out.println(union.execute(basis3, temp));
+//        KleeneClosureOperator kc = new KleeneClosureOperator();
+//        System.out.println(kc.execute(temp));
     }
 
     @Test
@@ -31,7 +32,7 @@ class UnionOperatorTest {
         RegularDefinition b = new RegularDefinition("b");
         NFA basis1 = a.getBasis();
         NFA basis2 = b.getBasis();
-        UnionOperator union = new UnionOperator();
+        UnionOperator union = new UnionOperator(UnionOperator.Mode.MERGE_ACCEPT);
         System.out.println(union.execute(basis1, basis2));
     }
 }

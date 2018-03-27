@@ -17,19 +17,15 @@ import java.util.List;
  */
 public class Generator {
 
-    DFA generate(Path grammarPath){
-//        GrammarParser grammarParser = new GrammarParser();
-//        RegexParser regexParser = new RegexParser();
-//        NFAToDFAConverter NFAToDFA = new NFAToDFAConverter();
-//
-//        Collection<BareGrammarPair> bareGrammarPairs = grammarParser.parseFile(grammarPath);
-//        Collection<Regex> parsedGrammar = grammarParser.parseBareGrammar(bareGrammarPairs);
-//        Collection<NFA>NFAs = regexParser.parseAll(parsedGrammar);
-//        NFA combinedNFA = NFA.fromMultiple(NFAs);
-//        DFA dfa = NFAToDFA.convert(combinedNFA);
 
-        //return dfa;
-        return null;
+    DFA generate(String grammarPath){
+        GrammarParser grammarParser = new GrammarParser();
+        List<Regex> regexes = grammarParser.parseBareGrammar(grammarParser.parseFile(grammarPath));
+        NFAToDFAConverter converter = new NFAToDFAConverter();
+        NFA nfa = NFA.newCombinedNFA(regexes);
+        System.out.println(nfa);
+        DFA dfa = converter.convert(nfa);
+        return dfa;
     }
 
 }

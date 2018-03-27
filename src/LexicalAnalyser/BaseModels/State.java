@@ -1,6 +1,7 @@
 package LexicalAnalyser.BaseModels;
 
 import LexicalAnalyser.NFA.NFA;
+import LexicalAnalyser.NFA.NFAState;
 import LexicalAnalyser.Regex.EpsilonRegularDefinition;
 import LexicalAnalyser.Regex.RegularDefinition;
 //import org.jetbrains.annotations.NotNull;
@@ -12,14 +13,12 @@ import java.util.function.Consumer;
 /**
  * Created by alyswidan on 14/03/18.
  */
-public class State implements Cloneable{
-    private boolean isAccepting;
-    private boolean isStart;
+public class State {
     private MultiMap<RegularDefinition,State> transitions;
     private boolean isVisited;
     private String name;
-    private Set<StateGraph> parentGraphs;
-
+    private StateGraph parentGraph;
+    private String acceptingValue; // if this is an accepting state this is the value it accepts
 
     public String getName() {
         return name;
@@ -29,24 +28,14 @@ public class State implements Cloneable{
         this.name = name;
     }
 
-    public State(String name) {
-        this(false,false,name);
+    public State(){
+        this("");
     }
 
-    public State(boolean isAccepting, boolean isStart, String name) {
-        this.isAccepting = isAccepting;
-        this.isStart = isStart;
+    public State(String name) {
         this.name = name;
         transitions = new MultiMap<>();
-        parentGraphs = new HashSet<>();
-    }
-
-    public State(boolean isAccepting, boolean isStart) {
-        this(isAccepting,isStart,"");
-    }
-
-    public State(){
-        this(false,false);
+        parentGraph = null;
     }
 
     public Set<State> transition(RegularDefinition input){
@@ -55,28 +44,21 @@ public class State implements Cloneable{
         return transitions.get(input);
     }
 
-    public void addTransition(RegularDefinition regdef, State nextState){
-        transitions.put(regdef,nextState);
+    public void addTransition(RegularDefinition regDef, State nextState){
+        regDef.getParts().forEach(r -> transitions.put(r,nextState));
     }
 
     public void addTransition(String string, State nextState){
-        RegularDefinition regDef = string.equals("\\L")?new EpsilonRegularDefinition():new RegularDefinition(string);
-        regDef.getParts().forEach(r -> addTransition(r,nextState));
+        RegularDefinition regDef = string.equals("\\L")
+                                    ?new EpsilonRegularDefinition()
+                                    :new RegularDefinition(string);
+        addTransition(regDef,nextState);
     }
 
     public MultiMap<RegularDefinition,State> getTransitions() {
 
         return transitions;
     }
-
-    public boolean isAccepting() {
-        return isAccepting;
-    }
-
-    public boolean isStart() {
-        return isStart;
-    }
-
 
     public boolean isVisited() {
         return isVisited;
@@ -90,6 +72,12 @@ public class State implements Cloneable{
         isVisited = false;
     }
 
+    public boolean isStart(){return parentGraph.getStartState().equals(this);}
+
+    public boolean isAccepting(){
+        return parentGraph.getAcceptingStates().contains(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -101,35 +89,12 @@ public class State implements Cloneable{
 
     @Override
     public int hashCode() {
-//        int result = (isAccepting() ? 1 : 0);
-//
-//        for (Entry<RegularDefinition, State> entry : getTransitions()) {
-//            RegularDefinition reg = entry.getKey();
-//            State s = entry.getValue();
-//            result += reg.hashCode() + s.name.hashCode();
-//        }
         return name.hashCode();
     }
 
-    public void setAccepting(boolean accepting) {
-        isAccepting = accepting;
-
-    }
-
-    public void setStart(boolean start) {
-        isStart = start;
-    }
-
     public String toString() {
-        return this.name + " "+(isAccepting()?"A ":"") + (isStart()?"S":"");
-    }
-
-    public void addParentGraph(StateGraph graph){
-        parentGraphs.add(graph);
-    }
-
-    public Set<StateGraph> getParentGraphs(){
-        return parentGraphs;
+        return this.name +(isAccepting()?"_(Acc)":"")+(isStart()?"_St":"")
+                +(isAccepting()&&getAcceptingValue()!=null?"val="+getAcceptingValue():"");
     }
 
     public void forEach(BiConsumer<? super RegularDefinition, ? super State> consumer) {
@@ -138,10 +103,19 @@ public class State implements Cloneable{
         }
     }
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        State clone = (State)super.clone();
-        this.forEach((clone::addTransition));
-        return clone;
+    public void setParentGraph(StateGraph parentGraph) {
+        this.parentGraph = parentGraph;
+    }
+
+    public StateGraph getParentGraph() {
+        return parentGraph;
+    }
+
+    public String getAcceptingValue() {
+        return acceptingValue;
+    }
+
+    public void setAcceptingValue(String acceptingValue) {
+        this.acceptingValue = acceptingValue;
     }
 }

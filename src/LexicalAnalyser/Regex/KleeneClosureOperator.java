@@ -26,42 +26,20 @@ public class KleeneClosureOperator extends UnaryRegexOperator {
          * return updated operand
          */
 
-//        NFAState start = (NFAState) operand.getStartState();
-//        NFAState end  = operand.mergeAcceptStates();
-//
-//
-//        NFAState newStart = NFAState.newStartState("kleeneClousreStart");
-//        NFAState newEnd = NFAState.newAcceptingState("KleeneeClosureEnd");
-//
-//        newStart.addTransition(new EpsilonRegularDefinition(), start);
-//        end.addTransition(new EpsilonRegularDefinition(), newEnd);
-//        end.addTransition(new EpsilonRegularDefinition(), start);
-//        newStart.addTransition(new EpsilonRegularDefinition(), newEnd);
-//
-//        operand.setStartState(newStart);
-//        operand.setEndState(newEnd);
-
         NFA newNFA = new NFA();
+        NFAState newStart = new NFAState("kleeneStart");
+        NFAState newEnd = new NFAState("kleeneEnd");
+
+        newStart.addTransition("\\L",operand.getStartState());
+        operand.getAcceptingStates().forEach(s->s.addTransition("\\L",newEnd));
+        operand.getAcceptingStates().forEach(s->s.addTransition("\\L", operand.getStartState()));
+
+        newStart.addTransition("\\L", newEnd);
         newNFA.addAll(operand.getStates());
-
-        NFAState newStart = new NFAState(false,false,"KleeneClosureStart");
-        NFAState newEnd = new NFAState(false,false,"KleeneeClosureEnd");
-
         newNFA.addState(newStart);
-        newNFA.addState(newEnd);
-
-        newStart.addTransition(new EpsilonRegularDefinition(), operand.getStartState());
-        newNFA.getAcceptingStates().forEach(s->s.addTransition(new EpsilonRegularDefinition(), newEnd));
-
-        newNFA.getAcceptingStates().forEach(s->s.addTransition(new EpsilonRegularDefinition(), operand.getStartState()));
-
-        operand.getStartState().setStart(false);
-        operand.getAcceptingStates().forEach(s->s.setAccepting(false));
-
-        newStart.addTransition(new EpsilonRegularDefinition(), newEnd);
-
         newNFA.setStartState(newStart);
-        newNFA.setEndState(newEnd);
+        newNFA.addState(newEnd);
+        newNFA.addAcceptingState(newEnd);
         return newNFA;
     }
 
