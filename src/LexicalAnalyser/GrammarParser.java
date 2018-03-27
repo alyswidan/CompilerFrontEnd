@@ -39,17 +39,19 @@ public class GrammarParser {
                 if(line.startsWith("{"))
                 {
                     line=line.substring(1,line.length()-1);
-                    List<String> splited = Arrays.stream(line.split(" "))
+                    String[] splited = line.trim().split(" ");
+                    List<String> names = Arrays.stream(splited).collect(Collectors.toList());
+                    List<String> values = Arrays.stream(splited)
                                                  .map(this::getSeparatedWord)
                                                  .collect(Collectors.toList());
-                    fromArrayToPair(splited,BareGrammarPair.Types.KEYWORD,PairList);
+                    fromArrayToPair(values,names,BareGrammarPair.Types.KEYWORD,PairList);
                     continue;
                 }
                 if(line.startsWith("["))
                 {
                     line=line.substring(1,line.length()-1);
                     List<String> splited = Arrays.stream(line.split(" ")).collect(Collectors.toList());
-                    fromArrayToPair(splited,BareGrammarPair.Types.PUNCTUATION,PairList);
+                    fromArrayToPair(splited,null,BareGrammarPair.Types.PUNCTUATION,PairList);
 
                     continue;
                 }
@@ -109,15 +111,16 @@ public class GrammarParser {
         return REGEXList;
 
     }
-    private void fromArrayToPair(List<String> array,BareGrammarPair.Types type,List<BareGrammarPair> PairList) {
-        for (String s : array){
+    private void fromArrayToPair(List<String> values,List<String> names,BareGrammarPair.Types type,List<BareGrammarPair> PairList) {
+
+        for (int i = 0; i < values.size(); i++) {
             if(type == BareGrammarPair.Types.PUNCTUATION)
             {
-                PairList.add(new BareGrammarPair("PUNCTUATION"+s,s,type));
+                PairList.add(new BareGrammarPair("PUNCTUATION"+values.get(i),values.get(i),type));
             }
             else
             {
-                PairList.add(new BareGrammarPair(s,s,type));
+                PairList.add(new BareGrammarPair(names.get(i),values.get(i),type));
             }
         }
     }
