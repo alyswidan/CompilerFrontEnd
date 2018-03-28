@@ -21,6 +21,7 @@ public class DFASimulator implements Iterator<Entry<String,String>>{
     private String inputString;
     private int currentIndex;
 
+
     public DFASimulator(DFA dfa,String input) {
         this.inputString = input;
         this.dfa = dfa;
@@ -29,7 +30,6 @@ public class DFASimulator implements Iterator<Entry<String,String>>{
     }
 
     private void step(char input){
-        DFAState previousState=currentState;
         RegularDefinition reg= new RegularDefinition(Character.toString(input));
         if(Character.isWhitespace(input)){
             currentState = new DeadState();
@@ -37,7 +37,6 @@ public class DFASimulator implements Iterator<Entry<String,String>>{
         else {
             currentState = currentState.dfaTransition(reg);
         }
-//        System.out.println("From: "+previousState.getName()+"  on input: "+input+" To "+currentState.getName());
     }
 
     private void reset(){

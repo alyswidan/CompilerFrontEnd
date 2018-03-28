@@ -18,11 +18,9 @@ public class DFA extends StateGraph {
 
     DFA fromNFA(NFA nfa) {
         NFAToDFAConverter converter = new NFAToDFAConverter();
-        return converter.convert(nfa);
-        /*this should also minimize the dfa before returning it*/
-
+        DFAMinimizer minimizer= new DFAMinimizer();
+        return minimizer.Minimize(converter.convert(nfa));
     }
-    //private  Set<State> acceptingStates;
 
     public void setStartState(State startState) {
         if (startState instanceof DFAState) {

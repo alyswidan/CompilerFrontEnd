@@ -23,7 +23,7 @@ public class Generator {
         List<Regex> regexes = grammarParser.parseBareGrammar(grammarParser.parseFile(grammarPath));
         NFAToDFAConverter converter = new NFAToDFAConverter();
         NFA nfa = NFA.newCombinedNFA(regexes);
-        System.out.println(nfa);
+//        System.out.println(nfa);
         DFA dfa = converter.convert(nfa);
         return dfa;
     }

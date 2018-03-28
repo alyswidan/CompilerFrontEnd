@@ -10,6 +10,11 @@ import java.util.Set;
  * Created by alyswidan on 18/03/18.
  */
 public class DeadState extends DFAState {
+    public DeadState() {
+        super();
+        setName("dead");
+    }
+
     @Override
     public String toString() {
         return "DeadState";
@@ -23,5 +28,10 @@ public class DeadState extends DFAState {
     @Override
     public boolean isAccepting() {
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
     }
 }

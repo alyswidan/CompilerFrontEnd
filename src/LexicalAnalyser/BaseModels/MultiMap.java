@@ -19,7 +19,10 @@ public class MultiMap<K,V> implements Iterable<Entry<K,V>>{
     }
 
     public int size() {
-        return store.size();
+        int s = 0;
+        for (List<V> l : store.values())
+            s+=l.size();
+        return s;
     }
 
     public boolean isEmpty() {
