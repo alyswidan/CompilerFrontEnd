@@ -4,6 +4,7 @@ import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.NFA.NFA;
 import LexicalAnalyser.NFA.NFAState;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -11,7 +12,7 @@ import java.util.stream.IntStream;
 /**
  * Created by alyswidan on 14/03/18.
  */
-public class RegularDefinition implements RegexElement {
+public class RegularDefinition implements RegexElement,Serializable {
 
 
     protected String rawRegdef;

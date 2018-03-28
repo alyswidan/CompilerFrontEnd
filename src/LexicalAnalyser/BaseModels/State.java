@@ -6,6 +6,7 @@ import LexicalAnalyser.Regex.EpsilonRegularDefinition;
 import LexicalAnalyser.Regex.RegularDefinition;
 //import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -13,7 +14,7 @@ import java.util.function.Consumer;
 /**
  * Created by alyswidan on 14/03/18.
  */
-public class State {
+public class State implements Serializable{
     private MultiMap<RegularDefinition,State> transitions;
     private boolean isVisited;
     private String name;

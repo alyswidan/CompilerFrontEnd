@@ -4,13 +4,14 @@ package LexicalAnalyser.BaseModels;
 
 import com.sun.istack.internal.NotNull;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.Consumer;
 
 /**
  * Created by alyswidan on 19/03/18.
  */
-public class MultiMap<K,V> implements Iterable<Entry<K,V>>{
+public class MultiMap<K,V> implements Iterable<Entry<K,V>>,Serializable{
     private Map<K,List<V>> store;
 
 

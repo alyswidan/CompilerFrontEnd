@@ -8,6 +8,7 @@ import LexicalAnalyser.Regex.RegularDefinition;
 import LexicalAnalyser.Utils;
 
 import javax.swing.table.TableRowSorter;
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -15,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 /**
  * Created by alyswidan on 14/03/18.
  */
-public class StateGraph{
+public class StateGraph implements Serializable{
     protected Map<State,State> states;
     private State startState;
     private Set<RegularDefinition> language;

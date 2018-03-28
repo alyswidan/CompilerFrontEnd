@@ -5,6 +5,10 @@ import LexicalAnalyser.BaseModels.State;
 import LexicalAnalyser.Regex.RegularDefinition;
 import com.sun.org.apache.xpath.internal.SourceTree;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.nio.file.Path;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -20,7 +24,6 @@ public class DFASimulator implements Iterator<Entry<String,String>>{
     private DFAState currentState;
     private String inputString;
     private int currentIndex;
-
 
     public DFASimulator(DFA dfa,String input) {
         this.inputString = input;
