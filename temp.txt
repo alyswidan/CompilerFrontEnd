@@ -3,8 +3,8 @@ digit = 0 - 9
 digits = digit+
 {if else while}
 {boolean int float}
-id: letter (letter|digit)*
 num: digit+ | digit+ . digits ( \L | E digits)
+id: letter (letter|digit)*
 relop: \=\= | !\= | > | >\= | < | <\=
 assign: =
 [; , \( \) { }]

@@ -28,7 +28,6 @@ public class Main {
             try(ObjectInputStream deserializer = new ObjectInputStream(new FileInputStream(fileName+".ser")))
             {
                 dfa = (DFA)deserializer.readObject();
-//                System.out.println(dfa);
             }
             catch(IOException ex)
             {
