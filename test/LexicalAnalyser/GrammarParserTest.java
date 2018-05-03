@@ -15,7 +15,7 @@ class GrammarParserTest {
 
     void parseFileTest() {
         GrammarParser parser = new GrammarParser();
-        List<GrammarTuple>pairs = parser.parseFile("temp.txt");
+        List<GrammarTuple>pairs = parser.parseFile("grammar.txt");
         System.out.println(pairs.stream().map(GrammarTuple::toString).collect(Collectors.joining("\n")));
 
     }
@@ -23,7 +23,7 @@ class GrammarParserTest {
     @Test
     void parseBareGrammar() {
         GrammarParser parser = new GrammarParser();
-        List<GrammarTuple> PairList=parser.parseFile("temp.txt");
+        List<GrammarTuple> PairList=parser.parseFile("grammar.txt");
         Collection<Regex> RegexList = parser.parseBareGrammar(PairList);
         System.out.println(RegexList
                             .stream()

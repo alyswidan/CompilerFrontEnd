@@ -26,7 +26,7 @@ class GeneratorTest {
     @Test
     void simulation(){
         Generator g = new Generator();
-        DFA dfa = g.generate("temp.txt");
+        DFA dfa = g.generate("grammar.txt");
 
         DFASimulator simulator = new DFASimulator(dfa,"  boolean float int x >= <= == 0 12 > < 10*2 11+23 1/3 ) ( { } if else while = ; ,");
 

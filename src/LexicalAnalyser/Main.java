@@ -17,6 +17,7 @@ public class Main {
         String fileName = args[1];
         if(mode.equalsIgnoreCase("generate")){
             DFA dfa = new Generator().generate(fileName);
+            System.out.println(dfa);
             try (ObjectOutputStream serializer = new ObjectOutputStream(new FileOutputStream(fileName+".ser"))){
                 serializer.writeObject(dfa);
             } catch (IOException e) {

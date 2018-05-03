@@ -16,7 +16,7 @@ import java.util.Set;
 public class DFA extends StateGraph {
 
 
-    DFA fromNFA(NFA nfa) {
+    public DFA fromNFA(NFA nfa) {
         NFAToDFAConverter converter = new NFAToDFAConverter();
         DFAMinimizer minimizer= new DFAMinimizer();
         return minimizer.Minimize(converter.convert(nfa));

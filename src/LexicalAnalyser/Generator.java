@@ -1,6 +1,7 @@
 package LexicalAnalyser;
 
 import LexicalAnalyser.DFA.DFA;
+import LexicalAnalyser.DFA.DFAMinimizer;
 import LexicalAnalyser.NFA.NFA;
 import LexicalAnalyser.NFA.NFAToDFAConverter;
 import LexicalAnalyser.Regex.Regex;
@@ -25,7 +26,9 @@ public class Generator {
         NFA nfa = NFA.newCombinedNFA(regexes);
 //        System.out.println(nfa);
         DFA dfa = converter.convert(nfa);
-        return dfa;
+        DFAMinimizer minimizer= new DFAMinimizer();
+        DFA miniDFA = minimizer.Minimize(dfa);
+        return miniDFA;
     }
 
 }

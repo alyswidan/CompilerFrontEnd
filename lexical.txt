@@ -1,0 +1,15 @@
+letter = a-z | A-Z
+digit = 0 - 9
+{real begin end if else then while do read write}
+{program var integer}
+[: ; , . \(\)]
+id: letter (letter|digit)*
+digits = digit+
+num: digit+ | digit+ . digits ( \L | E digits)
+relop: \= | <> | > | >\= | < | <\=
+assign: \: \=
+addop: \+ | -
+incop: \+ \+
+decop: - -
+mulop: \* | /
+
