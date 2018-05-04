@@ -15,13 +15,13 @@ The output should be the following
 ```python
     {
         E:{
-            [A, T]: [f1, f2, ..., fn],
-            B : [f1, f2, fn],
+            'AT': [f1, f2, ..., fn],
+            'B' : [f1, f2, fn],
             "id": ["id"]
         }
         S:{
-            B:[f1, f2, ..., fn]
-            ['(', E, ')']:[f1, f2, ..., fn]
+            'B':[f1, f2, ..., fn]
+            '(E)':[f1, f2, ..., fn]
         }
     }
 ```
