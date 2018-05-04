@@ -14,3 +14,4 @@ list of productions after removing left recursion or after left factoring the gr
     [E, A, S, B]
 ```
 Where A and B are new production objects added to the grammar after the process
+Also a list of the terminals of the grammer which will be needed in the construction of the LL(1) parsing table
