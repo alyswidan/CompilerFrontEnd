@@ -25,6 +25,6 @@ The output should be the following
          'S -> aBa',
          'B -> bB',
          'B -> bB',
-         'B -> '\L'
+         'B -> \L'
     ]
 ```
