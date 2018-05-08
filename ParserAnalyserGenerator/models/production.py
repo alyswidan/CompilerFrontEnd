@@ -13,8 +13,10 @@ class Production:
 
         self.name = name
         self.members_dict = {}
+        self.ordered_member_names = []
         for member in members:
             self.add_member(member)
+            self.ordered_member_names.append(Production.get_name(member))
 
     def get_member(self, name):
         try:
@@ -36,7 +38,10 @@ class Production:
             add a member list to the production
             :param member: type=list(Production for non terminals and string for terminals)
         """
+        self.members_dict[Production.get_name(member)] = member
 
+    @staticmethod
+    def get_name(member):
         member_name = ''
         for part in member:
             if isinstance(part, str):
@@ -44,9 +49,20 @@ class Production:
             elif isinstance(part, Production):
                 member_name += part.name
             else:
-                raise ValueError(f'object of type {type(part)} is not a prodution nor a string')
+                raise ValueError(f'object of type {type(part)}'
+                                    f' is not a prodution nor a string')
 
-        self.members_dict[member_name] = member
+        return member_name
+
+    def __iter__(self):
+        for name in self.ordered_member_names:
+            yield name, self.get_member(name)
 
     def __str__(self):
         return ' | '.join(self.members_dict.keys())
+    
+
+# prod_E = Production('E', [['id'],['\L']])
+# prod_S = Production('S', [['+',prod_E],['(','id',')']])
+# for i in prod_S:
+#     print(i)
