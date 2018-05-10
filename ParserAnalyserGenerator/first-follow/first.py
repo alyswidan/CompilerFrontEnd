@@ -4,22 +4,24 @@ def first(grammar):
     """
         :param grammar: type=list(Production), this represents the whole grammar
     """
+    print('entering first with ', grammar)
     result = {}
     
     for prod in grammar:
         prod_res = {} # first of parts of this production
         
         for member in prod:
+            print('exploring ', member)
             member_name = Production.get_name(member)
-            if isinstance(member[0], str):
-                prod_res[member_name] = member[0]
-            elif isinstance(member[0], Production):
+            if isinstance(member, str):
+                prod_res[member_name] = member
+            elif isinstance(member, Production):
                 if member_name in result.keys():
                     prod_res[member_name] = combine_firsts(result[member_name])
                 else:
-                    prod_res[member_name] = combine_firsts(first([member[0]]))
+                    prod_res[member_name] = combine_firsts(first([member]))
 
-        result[prod.get_name()] = prod_res
+        result[prod.name] = prod_res
 
     return result
 

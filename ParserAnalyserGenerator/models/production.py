@@ -56,10 +56,12 @@ class Production:
 
     def __iter__(self):
         for name in self.ordered_member_names:
-            yield name, self.get_member(name)
+            yield self.get_member(name)
 
     def __str__(self):
         return ' | '.join(self.members_dict.keys())
+
+    __repr__ = __str__
     
 
 # prod_E = Production('E', [['id'],['\L']])
