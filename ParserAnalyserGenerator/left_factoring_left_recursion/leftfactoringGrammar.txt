@@ -1,0 +1,1 @@
+#A -> abB | aB | cdg | cdeB | cdfB
