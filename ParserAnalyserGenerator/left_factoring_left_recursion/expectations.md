@@ -12,5 +12,6 @@ list of productions
 list of productions after removing left recursion or after left factoring the grammar
 ```python
     [E, A, S, B]
+
 ```
 Where A and B are new production objects added to the grammar after the process
