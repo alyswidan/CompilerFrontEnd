@@ -4,10 +4,7 @@ class production():
         self.productions = productions
 
 
-def leftFactoring(Filename):
-    filein = open(Filename,'r')
-    lines = filein.read()
-
+def leftFactoring(lines):
     splits = lines.split("#")
     print(splits)
     grammar = []
@@ -89,5 +86,3 @@ def leftFactoring(Filename):
     for x in outputList:
         print(x)
     return outputList
-
-leftFactoring('leftfactoringGrammar.txt')

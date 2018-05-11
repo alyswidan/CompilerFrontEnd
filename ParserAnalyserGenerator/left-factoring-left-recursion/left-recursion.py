@@ -71,5 +71,3 @@ def leftRecursion(Filename):
     for x in outputList:
         print(x)
     return outputList
-
-leftRecursion('leftrecursionGrammar2.txt')
