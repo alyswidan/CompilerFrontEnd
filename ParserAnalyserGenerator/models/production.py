@@ -11,6 +11,7 @@ class Production:
             a production object with the name X. 
         """
 
+        self.is_start = False
         self.name = name
         self.members_dict = {}
         if members:
