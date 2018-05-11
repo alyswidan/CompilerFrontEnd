@@ -1,5 +1,5 @@
 class Production:
-    def __init__(self, name, members):
+    def __init__(self, name=None, members=None):
         """
             :param name: type=string, name of the production 
             :param members: type=list(list(Production for non terminals and string for terminals)) 
@@ -13,8 +13,9 @@ class Production:
 
         self.name = name
         self.members_dict = {}
-        for member in members:
-            self.add_member(member)
+        if members:
+            for member in members:
+                self.add_member(member)
 
     def get_member(self, name):
         try:
@@ -43,14 +44,14 @@ class Production:
         member_name = ''
         for part in member:
             if isinstance(part, str):
-                member_name += part
+                member_name += part +' '
             elif isinstance(part, Production):
-                member_name += part.name
+                member_name += part.name +' '
             else:
                 raise ValueError(f'object of type {type(part)}'
                                     f' is not a prodution nor a string')
 
-        return member_name
+        return member_name.strip()
 
     def __iter__(self):
         for member in self.members_dict.values():
