@@ -20,10 +20,13 @@ table = {
         'e': ['empty'],
         '$': ['empty']},
 }
+input = 'c e ax d b $'
+print("input:  ",input)
 '''
 str='a'
 temp = table['S']
 str1 = (''.join(temp[str]))
+
 print(str1)
 new = str1.split(">")[1]
 new_stack =  []
@@ -43,45 +46,51 @@ f_input = input_stack.pop()
 input_stack.append(f_input)
 
 '''
-input = 'c e ax d b $'
-print("input:  ",input)
-input_stack = []
-stack = []
-input_stack = arrange_stack(input_stack, input)
-s = next(iter(table))  # first element of the table
-stack.append('$')
-stack.append(s)
-#print(stack)
-#print(input_stack)
-flag = 0
-while flag != 1:
-  #print(stack)
-  temp = stack.pop()
-  f_input = input_stack.pop()
-  input_stack.append(f_input)
-  if temp==f_input :
-    if temp=="$":
-      print("accepted")
-      break
-    #print("macted :",temp)
-    input_stack.pop()
-  else:
-    try:
-      temp2 = table[temp]
-      str1 = (''.join(temp2[f_input]))
 
-      if str1 == 'empty':
-        print("Error:(illegal" + temp + ") – discard " + f_input)
-        input_stack.pop()
-        stack.append(temp)
-      elif str1.split(">")[1]=="\L":
-        print(str1)
-        pass
-      else:
-        print(str1)
-        stack = arrange_stack(stack, str1.split(">")[1])
-    except KeyError:
-      print("Error: missing " + temp+" , inserted")
+def parser_generator(input,table):
+  input_stack = []
+  stack = []
+  input_stack = arrange_stack(input_stack, input)
+  s = next(iter(table))  # first element of the table
+  stack.append('$')
+  stack.append(s)
+  #print(stack)
+  #print(input_stack)
+  flag = 0
+  while flag != 1:
+    #print(stack)
+    temp = stack.pop()
+    f_input = input_stack.pop()
+    input_stack.append(f_input)
+    if temp==f_input :
+      if temp=="$":
+        print("accepted")
+        break
+      #print("macted :",temp)
+      input_stack.pop()
+    else:
+      try:
+        temp2 = table[temp]
+        str1 = (''.join(temp2[f_input]))
+
+        if str1 == 'empty':
+          print("Error:(illegal" + temp + ") – discard " + f_input)
+          input_stack.pop()
+          stack.append(temp)
+        elif str1.split(">")[1]=="\L":
+          print(str1)
+          pass
+        else:
+          print(str1)
+          stack = arrange_stack(stack, str1.split(">")[1])
+      except KeyError:
+        print("Error: missing " + temp+" , inserted")
+
+parser_generator(input,table)
+
+
+
+
 
 
 
