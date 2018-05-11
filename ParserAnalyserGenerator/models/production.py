@@ -13,10 +13,8 @@ class Production:
 
         self.name = name
         self.members_dict = {}
-        self.ordered_member_names = []
         for member in members:
             self.add_member(member)
-            self.ordered_member_names.append(Production.get_name(member))
 
     def get_member(self, name):
         try:
@@ -55,11 +53,11 @@ class Production:
         return member_name
 
     def __iter__(self):
-        for name in self.ordered_member_names:
-            yield self.get_member(name)
+        for member in self.members_dict.values():
+            yield member
 
     def __str__(self):
-        return ' | '.join(self.members_dict.keys())
+        return f'{self.name} -> {" | ".join(self.members_dict.keys())}'
 
     __repr__ = __str__
     
