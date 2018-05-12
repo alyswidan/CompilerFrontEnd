@@ -1,3 +1,4 @@
+import re
 def arrange_stack(stack, input):
   input=input.split(" ")
   i = len(input) - 1
@@ -5,28 +6,41 @@ def arrange_stack(stack, input):
     stack.append(input[i])
     i -= 1
   return stack
-table = {
-  'S': {'ax': ['S->A b S'],
-        'b': ['empty'],
-        'c': ['S->A b S'],
-        'd': ['empty'],
-        'e': ['S->e'],
-        '$': ['S->\L']},
+def gettoken():
+  token = input()
+  token = re.findall('<(.+),',token)[0]
+  print(token)
+  return token
+  # try:
+  #  x = input_stack.pop()     # here we should get the token from the lexical
+  #  return x
+  # except IndexError:
+  #   return None
 
-  'A':  {'ax': ['A->ax'],
-        'b': ['sync'],
-        'c': ['A->c A d'],
-        'd': ['sync'],
-        'e': ['empty'],
-        '$': ['empty']},
-}
-input = 'c e ax d b $'
-print("input:  ",input)
+# table = {
+#   'S': {'ax': ['S->A b S'],
+#         'b': ['empty'],
+#         'c': ['S->A b S'],
+#         'd': ['empty'],
+#         'e': ['S->e'],
+#         '$': ['S->\L']},
+#
+#   'A':  {'ax': ['A->ax'],
+#         'b': ['sync'],
+#         'c': ['A->c A d'],
+#         'd': ['sync'],
+#         'e': ['empty'],
+#         '$': ['empty']},
+# }
+# input = 'c e ax d b $'
+# input_stack =[]
+# input_stack = arrange_stack(input_stack, input)
+
+#print("input:  ",input)
 '''
 str='a'
 temp = table['S']
 str1 = (''.join(temp[str]))
-
 print(str1)
 new = str1.split(">")[1]
 new_stack =  []
@@ -46,10 +60,12 @@ f_input = input_stack.pop()
 input_stack.append(f_input)
 '''
 
-def parser_generator(input,table):
-  input_stack = []
+
+
+def parser_generator(table):
+  input_stack1 = []
   stack = []
-  input_stack = arrange_stack(input_stack, input)
+  input_stack1.append(gettoken())
   s = next(iter(table))  # first element of the table
   stack.append('$')
   stack.append(s)
@@ -57,16 +73,21 @@ def parser_generator(input,table):
   #print(input_stack)
   flag = 0
   while flag != 1:
-    #print(stack)
     temp = stack.pop()
-    f_input = input_stack.pop()
-    input_stack.append(f_input)
+    try:
+      f_input = input_stack1.pop()
+    except IndexError:
+      f_input = gettoken()
+      if f_input is None:
+        print("incorrect input ")
+        break
+    input_stack1.append(f_input)
     if temp==f_input :
       if temp=="$":
         print("accepted")
         break
       #print("macted :",temp)
-      input_stack.pop()
+      input_stack1.pop()
     else:
       try:
         temp2 = table[temp]
@@ -74,7 +95,7 @@ def parser_generator(input,table):
 
         if str1 == 'empty':
           print("Error:(illegal" + temp + ") – discard " + f_input)
-          input_stack.pop()
+          input_stack1.pop()
           stack.append(temp)
         elif str1.split(">")[1]=="\L":
           print(str1)
@@ -85,14 +106,7 @@ def parser_generator(input,table):
       except KeyError:
         print("Error: missing " + temp+" , inserted")
 
-# parser_generator(input,table)
+table = {'S': {'a': 'S->AbS', 'b': 'empty', 'c': 'S->AbS', 'd': 'empty', 'e': 'S->e', '$': 'S->\\L'},
+         'A': {'a': 'A->a', 'b': 'sync', 'c': 'A->cAd', 'd': 'sync', 'e': 'empty', '$': 'empty'}}
 
-
-
-
-
-
-
-
-
-
+parser_generator(table)

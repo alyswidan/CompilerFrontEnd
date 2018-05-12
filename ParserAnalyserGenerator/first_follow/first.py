@@ -5,7 +5,7 @@ def compute_first(grammar):
         :param grammar: type=list(Production), this represents the whole grammar
     """
 
-    print('grammar=',grammar)
+    # print('grammar=',grammar)
     for prod in grammar:
         prod_res = {} # first of parts of this production
 

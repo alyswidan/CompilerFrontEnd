@@ -4,9 +4,9 @@ from left_factoring_left_recursion.left_recursion import leftRecursion
 from first_follow.follow import compute_follow
 from first_follow.first import compute_first
 from table_construction.tableConstruction import constructParsingTable
-
-
+import pickle
 from models.grammar import Grammar
+from parsing.parser import parser_generator
 
 arg_parser = argparse.ArgumentParser('a parser generator')
 arg_parser.add_argument('mode', choices=['generate', 'parse'],
@@ -14,12 +14,13 @@ arg_parser.add_argument('mode', choices=['generate', 'parse'],
 
 arg_parser.add_argument('-f', '--grammar_file', help='the grammar file used to build the table')
 
-arg_parser.add_argument('-p','--program', help='the program we want to pars')
+arg_parser.add_argument('-p','--program', help='the program we want to parse')
 
 args = arg_parser.parse_args()
 
 if args.mode == 'generate':
-    cleaned_grammar = leftRecursion(args.grammar_file)
+    terminals, cleaned_grammar = leftRecursion(args.grammar_file)
+    cleaned_grammar = leftFactoring(cleaned_grammar)
     grammar_obj = Grammar()
     for production in cleaned_grammar:
         grammar_obj.add_production(production)
@@ -28,10 +29,19 @@ if args.mode == 'generate':
     grammar_obj.set_start(start_symbol)
 
     print('cleaned_grammar=',cleaned_grammar)
+    print('-------------------------------------------------------------------')
     first = compute_first(grammar_obj.as_list())
     print('first=',first)
+    print('-------------------------------------------------------------------')
     follow = compute_follow(grammar_obj.as_list(), first)
     print('follow=',follow)
-    table = constructParsingTable(first, follow)
-
+    table = constructParsingTable(first, follow, terminals)
+    print('-------------------------------------------------------------------')
     print(table)
+    with open('table.pkl', 'wb+') as file:
+        pickle.dump(table, file)
+elif args.mode == 'parse':
+    with open('table.pkl', 'rb') as file:
+        table = pickle.load(file)
+
+    parser_generator(table)

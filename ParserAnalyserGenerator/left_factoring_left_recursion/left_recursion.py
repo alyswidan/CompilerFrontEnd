@@ -1,3 +1,7 @@
+from left_factoring_left_recursion.left_factoring import leftFactoring
+
+
+import re
 class production():
     def __init__(self, non_terminal, productions):
         self.non_terminal = non_terminal
@@ -6,16 +10,20 @@ class production():
 def leftRecursion(Filename):
     filein = open(Filename,'r')
     lines = filein.read()
+    terminals = re.findall('\'([^\' ]+)\'',lines)
+    # print('terminals=',terminals)
 
     splits = lines.split("#")
-    for split in splits:
-        print(split)
+    splits = [split.replace("'","") for split in splits]
+    # print(splits)
+    print('----------------')
     grammar = []
     for prod in splits:
         if prod:
-            splittingProd = prod.split(" = ")
-            non_terminal = splittingProd[0]
-            productions = splittingProd[1].split(" | ")
+            splittingProd = prod.split("=")
+            non_terminal = splittingProd[0].strip()
+            # print(splittingProd)
+            productions = splittingProd[1].strip().split(" | ")
             for i in range(len(productions)):
                 productions[i]= productions[i].rstrip('\n')
 
@@ -39,8 +47,8 @@ def leftRecursion(Filename):
                 else:
                     newlist.append(p)
 
-            grammar[i].prodictions = newlist
-            # print(grammar[i].prodictions)
+            grammar[i].productions = newlist
+            # print(grammar[i].productions)
             # print("--------------------")
         listOfprod = grammar[i].productions
         recursivelist = []
@@ -71,5 +79,12 @@ def leftRecursion(Filename):
         outputList.append(p.non_terminal + ' -> ' + (' | '.join(p.productions)))
     # for x in outputList:
     #     print(x)
-    return outputList
+    return terminals, outputList
 
+# first_output = leftRecursion("grammar.txt")
+# print("first")
+# print(first_output)
+#
+# output = leftFactoring(first_output)
+# print("second")
+# print(output)

@@ -50,8 +50,9 @@ class Grammar:
 
     def _is_non_terminal(self, candidate):
 
-        # res = sum([int(c.isupper()) for c in candidate]) == len(candidate)
-        return candidate[0] != "'" and candidate != '\L'
+        res = sum([int(c.isupper() or c =='_' or c.isnumeric()) for c in candidate]) == len(candidate)
+        # candidate[0] != "'" and candidate != '\L'
+        return res
 
     def set_start(self, production_name):
         self.productions[production_name].is_start = True

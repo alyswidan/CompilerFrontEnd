@@ -53,8 +53,10 @@ public class Main {
             DFASimulator simulator = new DFASimulator(dfa,builder.toString());
             while (simulator.hasNext()){
                 Entry<String,String> token = simulator.next();
-                System.out.println("< "+token.getKey()+", "+token.getValue()+" >");
+                token.setKey(token.getKey().replaceAll("PUNCTUATION","").replaceAll("\\\\",""));
+                System.out.println("<"+token.getKey()+", "+token.getValue()+">");
             }
+            System.out.println("<$,$>");
 
 
         }else{
