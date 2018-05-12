@@ -7,7 +7,7 @@ def arrange_stack(stack, input):
   return stack
 def gettoken():
   try:
-   x = input_stack.pop()
+   x = input_stack.pop()     # here we should get the token from the lexical
    return x
   except IndexError:
     return None
@@ -74,6 +74,9 @@ def parser_generator(table):
       f_input = input_stack1.pop()
     except IndexError:
       f_input = gettoken()
+      if f_input is None:
+        print("incorrect input ")
+        break
     input_stack1.append(f_input)
     if temp==f_input :
       if temp=="$":
@@ -100,10 +103,6 @@ def parser_generator(table):
         print("Error: missing " + temp+" , inserted")
 
 parser_generator(table)
-
-
-
-
 
 
 
