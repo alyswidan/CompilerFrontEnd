@@ -5,6 +5,12 @@ def arrange_stack(stack, input):
     stack.append(input[i])
     i -= 1
   return stack
+def gettoken():
+  try:
+   x = input_stack.pop()
+   return x
+  except IndexError:
+    return None
 table = {
   'S': {'ax': ['S->A b S'],
         'b': ['empty'],
@@ -21,7 +27,10 @@ table = {
         '$': ['empty']},
 }
 input = 'c e ax d b $'
-print("input:  ",input)
+input_stack =[]
+input_stack = arrange_stack(input_stack, input)
+
+#print("input:  ",input)
 '''
 str='a'
 temp = table['S']
@@ -44,12 +53,15 @@ stack.append(s)
 temp = stack.pop()
 f_input = input_stack.pop()
 input_stack.append(f_input)
+
 '''
 
-def parser_generator(input,table):
-  input_stack = []
+
+
+def parser_generator(table):
+  input_stack1 = []
   stack = []
-  input_stack = arrange_stack(input_stack, input)
+  input_stack1.append(gettoken())
   s = next(iter(table))  # first element of the table
   stack.append('$')
   stack.append(s)
@@ -57,16 +69,18 @@ def parser_generator(input,table):
   #print(input_stack)
   flag = 0
   while flag != 1:
-    #print(stack)
     temp = stack.pop()
-    f_input = input_stack.pop()
-    input_stack.append(f_input)
+    try:
+      f_input = input_stack1.pop()
+    except IndexError:
+      f_input = gettoken()
+    input_stack1.append(f_input)
     if temp==f_input :
       if temp=="$":
         print("accepted")
         break
       #print("macted :",temp)
-      input_stack.pop()
+      input_stack1.pop()
     else:
       try:
         temp2 = table[temp]
@@ -74,7 +88,7 @@ def parser_generator(input,table):
 
         if str1 == 'empty':
           print("Error:(illegal" + temp + ") – discard " + f_input)
-          input_stack.pop()
+          input_stack1.pop()
           stack.append(temp)
         elif str1.split(">")[1]=="\L":
           print(str1)
@@ -85,8 +99,7 @@ def parser_generator(input,table):
       except KeyError:
         print("Error: missing " + temp+" , inserted")
 
-# parser_generator(input,table)
-
+parser_generator(table)
 
 
 
