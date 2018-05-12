@@ -89,5 +89,3 @@ def leftFactoring(Filename):
     for x in outputList:
         print(x)
     return outputList
-
-leftFactoring('leftfactoringGrammar.txt')

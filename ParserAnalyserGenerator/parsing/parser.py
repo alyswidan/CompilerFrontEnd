@@ -44,7 +44,6 @@ stack.append(s)
 temp = stack.pop()
 f_input = input_stack.pop()
 input_stack.append(f_input)
-
 '''
 
 def parser_generator(input,table):
@@ -86,7 +85,7 @@ def parser_generator(input,table):
       except KeyError:
         print("Error: missing " + temp+" , inserted")
 
-parser_generator(input,table)
+# parser_generator(input,table)
 
 
 

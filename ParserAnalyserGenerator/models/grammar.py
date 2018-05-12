@@ -15,26 +15,26 @@ class Grammar:
         """
 
         name, value = production_string.split(self.separator)
+        name = name.strip()
         production_obj = Production(name=name)
         members = [member.strip() for member in value.split('|')]
         for member_idx, member in enumerate(members):
             parts = [part.strip() for part in member.split(' ')]
             member_lst = []
             for part_idx, part in enumerate(parts):
-                if part in self.productions:
-                    if self._is_non_terminal(part):
+                if self._is_non_terminal(part):
+                    if part in self.productions:
                         member_lst.append(self.productions[part])
+                    elif part == name:
+                        member_lst.append(production_obj)
                     else:
+                        if part not in self.dependants:
+                            self.dependants[part] = []
+
                         member_lst.append(part)
-                elif part == name:
-                    member_lst.append(production_obj)
-
+                        self.dependants[part].append((name, member, part_idx))
                 else:
-                    if part not in self.dependants:
-                        self.dependants[part] = []
-
                     member_lst.append(part)
-                    self.dependants[part].append((name, member, part_idx))
 
 
             production_obj.add_member(member_lst)
@@ -49,7 +49,9 @@ class Grammar:
         return list(self.productions.values())
 
     def _is_non_terminal(self, candidate):
-        return sum([int(c.isupper()) for c in candidate]) == len(candidate)
+
+        # res = sum([int(c.isupper()) for c in candidate]) == len(candidate)
+        return candidate[0] != "'" and candidate != '\L'
 
     def set_start(self, production_name):
         self.productions[production_name].is_start = True

@@ -4,13 +4,14 @@ def compute_first(grammar):
     """
         :param grammar: type=list(Production), this represents the whole grammar
     """
+
+    print('grammar=',grammar)
     for prod in grammar:
         prod_res = {} # first of parts of this production
 
         for member in prod:
             # for each part of this production, for E->AT | +S, AT is a member and +S is another
             member_name = Production.get_name(member)
-
             prod_res[member_name] = []
 
             for part in member:

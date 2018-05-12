@@ -85,16 +85,3 @@ def compute_follow(grammar, grammar_firsts):
     return follow
 
 
-
-g = Grammar()
-g.add_production('E->T E1')
-g.add_production('E1->+ T E1 | \L')
-g.add_production('T->F T1')
-g.add_production('T1->* F T1 | \L')
-g.add_production('F->( E ) | id')
-g.set_start('E')
-print(g)
-# first = compute_first(g.as_list())
-# print(compute_follow(g.as_list(), first))
-print(g.productions)
-

@@ -44,8 +44,6 @@ def constructParsingTable(first, follow):
 
     terminals = terminals - {'\L'}
 
-
-    # terminals.append('$') # append $ to the list of terminals
     table = {} # the dict of dicts that will be returned at the end as the parsing table
     
     for non_terminal_key in first.keys(): # iterate over the rows
@@ -86,4 +84,3 @@ def constructParsingTable(first, follow):
     return table
 
 
-print(constructParsingTable(first, follow))

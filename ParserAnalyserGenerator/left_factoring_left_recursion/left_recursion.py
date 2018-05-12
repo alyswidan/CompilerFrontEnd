@@ -8,7 +8,8 @@ def leftRecursion(Filename):
     lines = filein.read()
 
     splits = lines.split("#")
-    print(splits)
+    for split in splits:
+        print(split)
     grammar = []
     for prod in splits:
         if prod:
@@ -19,11 +20,11 @@ def leftRecursion(Filename):
                 productions[i]= productions[i].rstrip('\n')
 
             g = production(non_terminal,productions)
-            print(g.non_terminal)
-            print(g.productions)
+            # print(g.non_terminal)
+            # print(g.productions)
 
             grammar.append(g)
-    print("~~~~~~~~~~~~")
+    # print("~~~~~~~~~~~~")
     count = 0
     newgrammar = []
     for i in range (0,len(grammar)):
@@ -39,8 +40,8 @@ def leftRecursion(Filename):
                     newlist.append(p)
 
             grammar[i].prodictions = newlist
-            print(grammar[i].prodictions)
-            print("--------------------")
+            # print(grammar[i].prodictions)
+            # print("--------------------")
         listOfprod = grammar[i].productions
         recursivelist = []
         remaininglist = []
@@ -53,8 +54,8 @@ def leftRecursion(Filename):
                 remaininglist.append(p+' '+grammar[i].non_terminal+str(count))
         if flag:
             recursivelist.append('\L')
-            print(recursivelist)
-            print(remaininglist)
+            # print(recursivelist)
+            # print(remaininglist)
             g = production(grammar[i].non_terminal,remaininglist)
             ng = production(grammar[i].non_terminal+str(count),recursivelist)
             newgrammar.append(g)
@@ -65,11 +66,10 @@ def leftRecursion(Filename):
 
     outputList = []
     for p in newgrammar:
-        print(p.non_terminal)
-        print(p.productions)
+        # print(p.non_terminal)
+        # print(p.productions)
         outputList.append(p.non_terminal + ' -> ' + (' | '.join(p.productions)))
-    for x in outputList:
-        print(x)
+    # for x in outputList:
+    #     print(x)
     return outputList
 
-leftRecursion('leftrecursionGrammar2.txt')
