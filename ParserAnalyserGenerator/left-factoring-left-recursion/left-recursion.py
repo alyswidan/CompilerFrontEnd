@@ -14,8 +14,9 @@ def leftRecursion(Filename):
     grammar = []
     for prod in splits:
         if prod:
-            splittingProd = prod.split(" -> ")
+            splittingProd = prod.split(" = ")
             non_terminal = splittingProd[0]
+            print(splittingProd)
             productions = splittingProd[1].split(" | ")
             for i in range(len(productions)):
                 productions[i]= productions[i].rstrip('\n')
@@ -74,7 +75,7 @@ def leftRecursion(Filename):
         print(x)
     return outputList
 
-first_output = leftRecursion("leftfactoringGrammar.txt")
+first_output = leftRecursion("grammar.txt")
 print("first")
 print(first_output)
 

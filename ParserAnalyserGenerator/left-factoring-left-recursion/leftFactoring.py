@@ -43,11 +43,25 @@ def leftFactoring(splits):
                     # print("~~~~~~~~~~~~~")
                     k=0
                     commonhere = ''
+                    # commonhere = list(set([c for c in thisproduction if c in nextproduction]))
+                    # s = set(thisproduction)
+                    # t = set (nextproduction)
+                    # commonhere = s & t
+                    # commonhere = str(''.join(commonhere))
+                    # print(commonhere)
+                    # k = len(commonhere)
+                    # print(k)
+                    print(thisproduction)
+                    print(nextproduction)
                     while thisproduction[k] == nextproduction[k]:
                         commonhere += thisproduction[k]
                         k +=1
+                        if (k == len(thisproduction)) | (k == len(nextproduction)):
+                            break
+                        print(commonhere)
+                        print(k)
                     # print("common here ", commonhere)
-                    if commonhere :
+                    if commonhere:
                         flag = True
                         remaining.append(thisproduction[k:])
                         remaining.append(nextproduction[k:])
