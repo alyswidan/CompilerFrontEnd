@@ -1,3 +1,5 @@
+from leftFactoring import leftFactoring
+
 class production():
     def __init__(self, non_terminal, productions):
         self.non_terminal = non_terminal
@@ -8,22 +10,23 @@ def leftRecursion(Filename):
     lines = filein.read()
 
     splits = lines.split("#")
-    print(splits)
+    # print(splits)
     grammar = []
     for prod in splits:
         if prod:
             splittingProd = prod.split(" = ")
             non_terminal = splittingProd[0]
+            print(splittingProd)
             productions = splittingProd[1].split(" | ")
             for i in range(len(productions)):
                 productions[i]= productions[i].rstrip('\n')
 
             g = production(non_terminal,productions)
-            print(g.non_terminal)
-            print(g.productions)
+            # print(g.non_terminal)
+            # print(g.productions)
 
             grammar.append(g)
-    print("~~~~~~~~~~~~")
+    # print("~~~~~~~~~~~~")
     count = 0
     newgrammar = []
     for i in range (0,len(grammar)):
@@ -38,9 +41,9 @@ def leftRecursion(Filename):
                 else:
                     newlist.append(p)
 
-            grammar[i].prodictions = newlist
-            print(grammar[i].prodictions)
-            print("--------------------")
+            grammar[i].productions = newlist
+            # print(grammar[i].productions)
+            # print("--------------------")
         listOfprod = grammar[i].productions
         recursivelist = []
         remaininglist = []
@@ -53,8 +56,8 @@ def leftRecursion(Filename):
                 remaininglist.append(p+' '+grammar[i].non_terminal+str(count))
         if flag:
             recursivelist.append('\L')
-            print(recursivelist)
-            print(remaininglist)
+            # print(recursivelist)
+            # print(remaininglist)
             g = production(grammar[i].non_terminal,remaininglist)
             ng = production(grammar[i].non_terminal+str(count),recursivelist)
             newgrammar.append(g)
@@ -65,11 +68,17 @@ def leftRecursion(Filename):
 
     outputList = []
     for p in newgrammar:
-        print(p.non_terminal)
-        print(p.productions)
+        # print(p.non_terminal)
+        # print(p.productions)
         outputList.append(p.non_terminal + ' -> ' + (' | '.join(p.productions)))
     for x in outputList:
         print(x)
     return outputList
 
-leftRecursion('leftrecursionGrammar2.txt')
+first_output = leftRecursion("grammar.txt")
+print("first")
+print(first_output)
+
+output = leftFactoring(first_output)
+print("second")
+print(output)
