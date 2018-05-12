@@ -1,0 +1,12 @@
+{if else while}
+{boolean int float}
+letter = a-z | A-Z
+digit = 0 - 9
+digits = digit+
+num: digit+ | digit+ . digits ( \L | E digits)
+id: letter (letter|digit)*
+relop: \=\= | !\= | > | >\= | < | <\=
+assign: =
+[; , \( \) { }]
+addop: \+ | -
+mulop: \* | /

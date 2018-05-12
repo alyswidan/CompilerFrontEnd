@@ -7,6 +7,10 @@ def arrange_stack(stack, input):
     i -= 1
   return stack
 def gettoken():
+  """
+  This reads each token from the command line given as <id,x>
+  and returns id.
+  """
   token = input()
   token = re.findall('<(.+),',token)[0]
   print(token)
@@ -16,6 +20,25 @@ def gettoken():
   #  return x
   # except IndexError:
   #   return None
+
+# table = {
+#   'S': {'ax': ['S->A b S'],
+#         'b': ['empty'],
+#         'c': ['S->A b S'],
+#         'd': ['empty'],
+#         'e': ['S->e'],
+#         '$': ['S->\L']},
+#
+#   'A':  {'ax': ['A->ax'],
+#         'b': ['sync'],
+#         'c': ['A->c A d'],
+#         'd': ['sync'],
+#         'e': ['empty'],
+#         '$': ['empty']},
+# }
+# input = 'c e ax d b $'
+# input_stack =[]
+# input_stack = arrange_stack(input_stack, input)
 
 # table = {
 #   'S': {'ax': ['S->A b S'],
@@ -58,6 +81,7 @@ stack.append(s)
 temp = stack.pop()
 f_input = input_stack.pop()
 input_stack.append(f_input)
+
 '''
 
 
@@ -110,3 +134,4 @@ table = {'S': {'a': 'S->AbS', 'b': 'empty', 'c': 'S->AbS', 'd': 'empty', 'e': 'S
          'A': {'a': 'A->a', 'b': 'sync', 'c': 'A->cAd', 'd': 'sync', 'e': 'empty', '$': 'empty'}}
 
 parser_generator(table)
+
