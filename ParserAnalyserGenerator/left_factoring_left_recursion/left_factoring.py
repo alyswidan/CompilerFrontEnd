@@ -10,11 +10,11 @@ def leftFactoring(splits):
     grammar = []
     for prod in splits:
         if prod:
-            splittingProd = prod.split(" -> ")
-            non_terminal = splittingProd[0]
-            productions = splittingProd[1].split(" | ")
+            splittingProd = prod.split("->")
+            non_terminal = splittingProd[0].strip()
+            productions = splittingProd[1].split("|")
             for i in range(len(productions)):
-                productions[i]= productions[i].rstrip('\n')
+                productions[i]= productions[i].rstrip('\n').strip()
 
             g = production(non_terminal,productions)
             print(g.non_terminal)

@@ -81,7 +81,7 @@ def leftRecursion(Filename):
     #     print(x)
     return start_symbol, terminals, outputList
 
-# first_output = leftRecursion("grammar.txt")
+# _,_,first_output = leftRecursion("grammar.txt")
 # print("first")
 # print(first_output)
 #
