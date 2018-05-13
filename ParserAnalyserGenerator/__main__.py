@@ -3,6 +3,7 @@ from left_factoring_left_recursion.left_factoring import leftFactoring
 from left_factoring_left_recursion.left_recursion import leftRecursion
 from first_follow.follow import compute_follow
 from first_follow.first import compute_first
+from parsing.parser import parser_generator
 from table_construction.tableConstruction import constructParsingTable
 import pickle
 from models.grammar import Grammar
@@ -38,9 +39,10 @@ if args.mode == 'generate':
     print('-------------------------------------------------------------------')
     print(table)
     with open('table.pkl', 'wb+') as file:
-        pickle.dump(table, file)
-# elif args.mode == 'parse':
-#     with open('table.pkl', 'rb') as file:
-#         table = pickle.load(file)
-#
-#     parser_generator(table)
+        pickle.dump((start_symbol, table), file)
+
+elif args.mode == 'parse':
+    with open('table.pkl', 'rb') as file:
+        start_symbol, table = pickle.load(file)
+
+    parser_generator(table, start_symbol)

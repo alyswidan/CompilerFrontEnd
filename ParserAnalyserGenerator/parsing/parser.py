@@ -86,11 +86,13 @@ input_stack.append(f_input)
 
 
 
-def parser_generator(table):
+def parser_generator(table,start_symbol):
   input_stack1 = []
   stack = []
   input_stack1.append(gettoken())
-  s = next(iter(table))  # first element of the table
+  # s = next(iter(table))  # first element of the table
+  s = start_symbol
+  print(s)
   stack.append('$')
   stack.append(s)
   #print(stack)
@@ -151,5 +153,5 @@ table ={'PRIMITIVE_TYPE': {'id': 'sync', ';': 'empty', 'int': 'PRIMITIVE_TYPE->i
 table_lec = {'S': {'a': 'S->A b S', 'b': 'empty', 'c': 'S->A b S', 'd': 'empty', 'e': 'S->e', '$': 'S->\\L'},
              'A': {'a': 'A->a', 'b': 'sync', 'c': 'A->c A d', 'd': 'sync', 'e': 'empty', '$': 'empty'}}
 
-parser_generator(table)
+# parser_generator(table,'METHOD_BODY')
 
