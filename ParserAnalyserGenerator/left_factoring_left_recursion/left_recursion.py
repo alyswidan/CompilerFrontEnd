@@ -1,5 +1,5 @@
 from left_factoring_left_recursion.left_factoring import leftFactoring
-
+import re
 
 import re
 class production():
@@ -11,18 +11,17 @@ def leftRecursion(Filename):
     filein = open(Filename,'r')
     lines = filein.read()
     terminals = re.findall('\'([^\' ]+)\'',lines)
-    # print('terminals=',terminals)
+    print('terminals=',terminals)
 
     splits = lines.split("#")
-    splits = [split.replace("'","") for split in splits]
     start_symbol = splits[1].split('=')[0].strip()
     print('----------------')
     grammar = []
     for prod in splits:
         if prod:
-            splittingProd = prod.split("=")
+            splittingProd = prod.split(" = ")
             non_terminal = splittingProd[0].strip()
-            # print(splittingProd)
+            print(splittingProd)
             productions = splittingProd[1].strip().split(" | ")
             for i in range(len(productions)):
                 productions[i]= productions[i].rstrip('\n')
@@ -79,7 +78,11 @@ def leftRecursion(Filename):
         outputList.append(p.non_terminal + ' -> ' + (' | '.join(p.productions)))
     # for x in outputList:
     #     print(x)
-    return start_symbol, terminals, outputList
+
+    outputList = [split.replace("'","") for split in outputList]
+
+    return start_symbol,terminals, outputList
+
 
 # _,_,first_output = leftRecursion("grammar.txt")
 # print("first")

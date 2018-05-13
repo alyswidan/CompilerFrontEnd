@@ -23,10 +23,11 @@ def compute_first(grammar):
                     break
                 elif isinstance(part, Production):
                     if member_name in result.keys():
+                        # print(f'found {member_name} in memo')
                         prod_res[member_name].extend(combine_firsts(result[part.name]))
                     else:
                         # print(f'recursing with {part}')
-                        compute_first([part])
+                        x=compute_first([part])
                         y=combine_firsts(result[part.name])
                         # print(f'came back from {part} to {prod.name}with {x}')
                         # print(f'adding {y} to {prod.name}')
@@ -35,6 +36,7 @@ def compute_first(grammar):
                 # for AT, if A has epsilon in its first then we add the first of T to the first of AT
                 # other wise we just go see the other members
                 if '\L' not in prod_res[member_name]:
+                    # print('--------------------------')
                     break
 
             result[prod.name] = prod_res
