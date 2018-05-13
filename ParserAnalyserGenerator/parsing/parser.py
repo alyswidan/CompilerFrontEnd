@@ -106,7 +106,10 @@ def parser_generator(table,start_symbol):
     try:
       f_input = input_stack1.pop()
     except IndexError:
-      f_input = gettoken()
+      try:
+        f_input = gettoken()
+      except EOFError:
+        print("Accept")
       if f_input is None:
         print("incorrect input ")
         break
@@ -126,6 +129,8 @@ def parser_generator(table,start_symbol):
           print("Error:(illegal" + temp + ") – discard " + f_input)
           input_stack1.pop()
           stack.append(temp)
+        elif str1 == 'sync':
+          stack.pop();
         elif str1.split(">")[1]=="\L":
           print(str1)
           pass
