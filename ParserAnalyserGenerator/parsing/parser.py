@@ -102,43 +102,48 @@ def parser_generator(table,start_symbol):
   flag = 0
   while flag != 1:
     print(stack)
-    temp = stack.pop()
     try:
-      f_input = input_stack1.pop()
-    except IndexError:
+      temp = stack.pop()
       try:
-        f_input = gettoken()
-      except EOFError:
-        print("Accept")
-      if f_input is None:
-        print("incorrect input ")
-        break
-    input_stack1.append(f_input)
-    if temp==f_input :
-      if temp=="$":
-        print("accepted")
-        break
-      #print("macted :",temp)
-      input_stack1.pop()
-    else:
-      try:
-        temp2 = table[temp]
-        str1 = (''.join(temp2[f_input]))
+        f_input = input_stack1.pop()
+      except IndexError:
+        try:
+          f_input = gettoken()
+        except EOFError:
+          print("Accept")
+        if f_input is None:
+          print("incorrect input ")
+          break
+      input_stack1.append(f_input)
+      if temp==f_input :
+        if temp=="$":
+          print("accepted")
+          break
+        #print("macted :",temp)
+        input_stack1.pop()
+      else:
+        try:
+          temp2 = table[temp]
+          str1 = (''.join(temp2[f_input]))
 
-        if str1 == 'empty':
-          print("Error:(illegal" + temp + ") – discard " + f_input)
-          input_stack1.pop()
-          stack.append(temp)
-        elif str1 == 'sync':
-          stack.pop();
-        elif str1.split(">")[1]=="\L":
-          print(str1)
-          pass
-        else:
-          print(str1)
-          stack = arrange_stack(stack, str1.split(">")[1])
-      except KeyError:
-        print("Error: missing " + temp+" , inserted")
+          if str1 == 'empty':
+            print("Error:(illegal" + temp + ") – discard " + f_input)
+            input_stack1.pop()
+            stack.append(temp)
+          elif str1  == 'sync':
+            stack.pop();
+          elif str1.split(">")[1]=="\L":
+            print(str1)
+            pass
+          else:
+            print(str1)
+            stack = arrange_stack(stack, str1.split(">")[1])
+        except KeyError:
+          print("Error: missing " + temp+" , inserted")
+    except IndexError:
+      print("incorrect code")
+      flag=1
+
 
 
 
