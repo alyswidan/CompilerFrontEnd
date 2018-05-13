@@ -6,7 +6,7 @@ from first_follow.first import compute_first
 from table_construction.tableConstruction import constructParsingTable
 import pickle
 from models.grammar import Grammar
-from parsing.parser import parser_generator
+# from parsing.parser import parser_generator
 
 arg_parser = argparse.ArgumentParser('a parser generator')
 arg_parser.add_argument('mode', choices=['generate', 'parse'],
@@ -19,13 +19,12 @@ arg_parser.add_argument('-p','--program', help='the program we want to parse')
 args = arg_parser.parse_args()
 
 if args.mode == 'generate':
-    terminals, cleaned_grammar = leftRecursion(args.grammar_file)
+    start_symbol, terminals, cleaned_grammar = leftRecursion(args.grammar_file)
     cleaned_grammar = leftFactoring(cleaned_grammar)
     grammar_obj = Grammar()
     for production in cleaned_grammar:
         grammar_obj.add_production(production)
-
-    start_symbol = cleaned_grammar[0].split('->')[0].strip()
+    print(start_symbol)
     grammar_obj.set_start(start_symbol)
 
     print('cleaned_grammar=',cleaned_grammar)
@@ -40,8 +39,8 @@ if args.mode == 'generate':
     print(table)
     with open('table.pkl', 'wb+') as file:
         pickle.dump(table, file)
-elif args.mode == 'parse':
-    with open('table.pkl', 'rb') as file:
-        table = pickle.load(file)
-
-    parser_generator(table)
+# elif args.mode == 'parse':
+#     with open('table.pkl', 'rb') as file:
+#         table = pickle.load(file)
+#
+#     parser_generator(table)

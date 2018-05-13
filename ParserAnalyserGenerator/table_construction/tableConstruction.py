@@ -1,3 +1,7 @@
+from first_follow.first import compute_first
+from first_follow.follow import compute_follow
+from models.grammar import Grammar
+
 first = { 'S':{
                 'AbS': ['a', 'c'],
                 'e': ['e'],
@@ -45,9 +49,10 @@ def constructParsingTable(first, follow, terminals):
             if terminal_key in [item for sublist in first[non_terminal_key].values() for item in sublist]:
                 for val in first[non_terminal_key].values():
                     if terminal_key in val and terminal_key:
-                        set_of_pathes = ''.join([k for k,v in first[non_terminal_key].items() if terminal_key in v]).split('|')
-                        req_path = ''
+                        set_of_pathes = [k for k,v in first[non_terminal_key].items() if terminal_key in v]
+                        print([k for k,v in first[non_terminal_key].items() if terminal_key in v])
                         for path in set_of_pathes:
+                            req_path = ''
                             if len(set_of_pathes) == 1: # if one path this is the required path
                                 req_path = path
                                 break
@@ -56,7 +61,7 @@ def constructParsingTable(first, follow, terminals):
                                 break
                             else:
                                 pass
-                                
+                        print(f'the required path {req_path}')
                         entry_in_table[terminal_key] = non_terminal_key + '->' + req_path
             
             # check if in the follow of the non terminal
@@ -74,5 +79,5 @@ def constructParsingTable(first, follow, terminals):
     
     return table
 
-
-print(constructParsingTable(first, follow, terminals))
+# {'A': {'a': 'A->a', 'b': 'sync', 'c': 'A->c A d', 'd': 'sync', 'e': 'empty', '$': 'empty'},
+#  'S': {'a': 'S->A b S', 'b': 'empty', 'c': 'S->A b S', 'd': 'empty', 'e': 'S->e', '$': 'empty'}}

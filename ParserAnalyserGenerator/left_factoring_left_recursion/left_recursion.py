@@ -15,7 +15,7 @@ def leftRecursion(Filename):
 
     splits = lines.split("#")
     splits = [split.replace("'","") for split in splits]
-    # print(splits)
+    start_symbol = splits[1].split('=')[0].strip()
     print('----------------')
     grammar = []
     for prod in splits:
@@ -79,7 +79,7 @@ def leftRecursion(Filename):
         outputList.append(p.non_terminal + ' -> ' + (' | '.join(p.productions)))
     # for x in outputList:
     #     print(x)
-    return terminals, outputList
+    return start_symbol, terminals, outputList
 
 # first_output = leftRecursion("grammar.txt")
 # print("first")
