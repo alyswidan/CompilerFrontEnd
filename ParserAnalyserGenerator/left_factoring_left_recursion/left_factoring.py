@@ -109,9 +109,9 @@ def leftFactoring(splits):
     # print(">>>>>>>>>>>>>>>>>>>>>")
     outputList = []
     for p in newGrammar:
-        print(p.non_terminal)
-        print(p.productions)
+        # print(p.non_terminal)
+        # print(p.productions)
         outputList.append(p.non_terminal+' -> '+(' | '.join(p.productions)))
-    for x in outputList:
-        print(x)
+    # for x in outputList:
+    #     print(x)
     return outputList

@@ -13,7 +13,9 @@ def gettoken():
   """
   token = input()
   token = re.findall('<(.+),',token)[0]
-  print(token)
+  if token == 'assign':
+    token = '='
+  print('token=',token)
   return token
   # try:
   #  x = input_stack.pop()     # here we should get the token from the lexical
@@ -99,6 +101,7 @@ def parser_generator(table,start_symbol):
   #print(input_stack)
   flag = 0
   while flag != 1:
+    print(stack)
     temp = stack.pop()
     try:
       f_input = input_stack1.pop()
@@ -132,6 +135,8 @@ def parser_generator(table,start_symbol):
       except KeyError:
         print("Error: missing " + temp+" , inserted")
 
+
+
 table ={'PRIMITIVE_TYPE': {'id': 'sync', ';': 'empty', 'int': 'PRIMITIVE_TYPE->int', 'float': 'PRIMITIVE_TYPE->float', 'if': 'empty', '(': 'empty', ')': 'empty', '{': 'empty', '}': 'empty', 'else': 'empty', 'while': 'empty', '=': 'empty', 'relop': 'empty', 'addop': 'empty', 'mulop': 'empty', 'num': 'empty', '+': 'empty', '-': 'empty', '$': 'empty'},
         'DECLARATION': {'id': 'empty', ';': 'empty', 'int': 'DECLARATION->PRIMITIVE_TYPE id ;', 'float': 'DECLARATION->PRIMITIVE_TYPE id ;', 'if': 'empty', '(': 'empty', ')': 'empty', '{': 'empty', '}': 'sync', 'else': 'empty', 'while': 'empty', '=': 'empty', 'relop': 'empty', 'addop': 'empty', 'mulop': 'empty', 'num': 'empty', '+': 'empty', '-': 'empty', '$': 'sync'},
         'STATEMENT': {'id': 'STATEMENT->ASSIGNMENT', ';': 'empty', 'int': 'STATEMENT->DECLARATION', 'float': 'STATEMENT->DECLARATION', 'if': 'STATEMENT->IF', '(': 'empty', ')': 'empty', '{': 'empty', '}': 'sync', 'else': 'empty', 'while': 'STATEMENT->WHILE', '=': 'empty', 'relop': 'empty', 'addop': 'empty', 'mulop': 'empty', 'num': 'empty', '+': 'empty', '-': 'empty', '$': 'sync'},
@@ -154,4 +159,18 @@ table_lec = {'S': {'a': 'S->A b S', 'b': 'empty', 'c': 'S->A b S', 'd': 'empty',
              'A': {'a': 'A->a', 'b': 'sync', 'c': 'A->c A d', 'd': 'sync', 'e': 'empty', '$': 'empty'}}
 
 # parser_generator(table,'METHOD_BODY')
+# float y;
+# if(x>4){
+#     y=20.4;
+# }else{
+#     y=50;
+# }
+# while(y>=0){
+#     y=y-1;
+#     x*=5;
+#     z/=10;
+#
+#
+# }
+
 

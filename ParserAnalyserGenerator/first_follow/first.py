@@ -8,23 +8,28 @@ def compute_first(grammar):
     # print('grammar=',grammar)
     for prod in grammar:
         prod_res = {} # first of parts of this production
-
+        # print(f'exploring prod {prod}')
         for member in prod:
             # for each part of this production, for E->AT | +S, AT is a member and +S is another
             member_name = Production.get_name(member)
             prod_res[member_name] = []
-
+            # print(f'exploring member {member} of prod {prod}')
             for part in member:
                 # for the above production, A is a part and T is a part of the member AT
+                # print(f'exploring part {part} of member {member} of prod {prod}')
                 if isinstance(part, str):
+                    # print(f'{part} is a string')
                     prod_res[member_name].append(part)
                     break
                 elif isinstance(part, Production):
                     if member_name in result.keys():
-                        prod_res[member_name].extend(combine_firsts(result[member_name]))
+                        prod_res[member_name].extend(combine_firsts(result[part.name]))
                     else:
-                        x= compute_first([part])
-                        y=combine_firsts(list(x.values())[0])
+                        # print(f'recursing with {part}')
+                        compute_first([part])
+                        y=combine_firsts(result[part.name])
+                        # print(f'came back from {part} to {prod.name}with {x}')
+                        # print(f'adding {y} to {prod.name}')
                         prod_res[member_name].extend(y)
 
                 # for AT, if A has epsilon in its first then we add the first of T to the first of AT

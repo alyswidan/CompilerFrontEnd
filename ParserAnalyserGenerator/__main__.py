@@ -2,7 +2,7 @@ import argparse
 from left_factoring_left_recursion.left_factoring import leftFactoring
 from left_factoring_left_recursion.left_recursion import leftRecursion
 from first_follow.follow import compute_follow
-from first_follow.first import compute_first
+from first_follow.first import compute_first, flatten_grammar_firsts
 from parsing.parser import parser_generator
 from table_construction.tableConstruction import constructParsingTable
 import pickle
@@ -31,7 +31,7 @@ if args.mode == 'generate':
     print('cleaned_grammar=',cleaned_grammar)
     print('-------------------------------------------------------------------')
     first = compute_first(grammar_obj.as_list())
-    print('first=',first)
+    print('first=',flatten_grammar_firsts(first))
     print('-------------------------------------------------------------------')
     follow = compute_follow(grammar_obj.as_list(), first)
     print('follow=',follow)

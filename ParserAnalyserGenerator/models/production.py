@@ -59,7 +59,9 @@ class Production:
             yield member
 
     def __str__(self):
-        return f'{self.name} -> {" | ".join(self.members_dict.keys())}'
+        # -> {" | ".join(self.members_dict.keys())}
+        return f'{self.name}'
+
 
     __repr__ = __str__
     
