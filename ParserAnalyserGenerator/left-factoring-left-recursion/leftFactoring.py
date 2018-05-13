@@ -17,8 +17,8 @@ def leftFactoring(splits):
                 productions[i]= productions[i].rstrip('\n')
 
             g = production(non_terminal,productions)
-            # print(g.non_terminal)
-            # print(g.productions)
+            print(g.non_terminal)
+            print(g.productions)
             grammar.append(g)
     newGrammar = []
     for g in grammar:
@@ -43,28 +43,24 @@ def leftFactoring(splits):
                     # print("~~~~~~~~~~~~~")
                     k=0
                     commonhere = ''
-                    # commonhere = list(set([c for c in thisproduction if c in nextproduction]))
-                    # s = set(thisproduction)
-                    # t = set (nextproduction)
-                    # commonhere = s & t
-                    # commonhere = str(''.join(commonhere))
-                    # print(commonhere)
-                    # k = len(commonhere)
-                    # print(k)
-                    print(thisproduction)
-                    print(nextproduction)
+                    # print(thisproduction)
+                    # print(nextproduction)
                     while thisproduction[k] == nextproduction[k]:
                         commonhere += thisproduction[k]
                         k +=1
                         if (k == len(thisproduction)) | (k == len(nextproduction)):
                             break
-                        print(commonhere)
-                        print(k)
-                    # print("common here ", commonhere)
-                    if commonhere:
+                        # print(commonhere)
+                        # print(k)
+                    # print(f'common>{commonhere}<')
+                    # print("common here", commonhere)
+                    if commonhere and commonhere is not ' ' and commonhere is not '\'':
                         flag = True
-                        remaining.append(thisproduction[k:])
-                        remaining.append(nextproduction[k:])
+                        if thisproduction[k:]:
+                            remaining.append(thisproduction[k:])
+                        if nextproduction[k:]:
+                            remaining.append(nextproduction[k:])
+
                         if commonhere in commondict:
                             x = commondict.get(commonhere)
                             if thisproduction[k:] not in x:
@@ -73,6 +69,8 @@ def leftFactoring(splits):
                                 commondict[commonhere].append(nextproduction[k:])
                         else:
                             commondict[commonhere]= remaining
+                        if (not thisproduction[k:]) | (not nextproduction[k:]):
+                            remaining.append('\\L')
                         # print(remaining)
                         # print(commondict)
                     elif not flag:
@@ -111,8 +109,8 @@ def leftFactoring(splits):
     # print(">>>>>>>>>>>>>>>>>>>>>")
     outputList = []
     for p in newGrammar:
-        # print(p.non_terminal)
-        # print(p.productions)
+        print(p.non_terminal)
+        print(p.productions)
         outputList.append(p.non_terminal+' -> '+(' | '.join(p.productions)))
     for x in outputList:
         print(x)
