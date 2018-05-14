@@ -131,6 +131,7 @@ def parser_generator(table,start_symbol):
             input_stack1.pop()
             stack.append(temp)
           elif str1  == 'sync':
+            print("Error: missing " + temp + " , inserted")
             stack.pop();
           elif str1.split(">")[1]=="\L":
             print(str1)
